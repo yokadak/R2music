@@ -1,0 +1,75 @@
+<template>
+<div id="home">
+  <homeNavTop path ='/userCenter'></homeNavTop>
+  <homeLabel class="homeLabel"></homeLabel>
+  <homeBgBox class="homeBgBox" :songs = "recommendSongs"></homeBgBox>
+  <playControl class="homePlayControl"></playControl>
+  <!-- <swiper :songs = "recommendSongs"></swiper> -->
+</div>
+</template>
+
+<script>
+  //组件导入
+  import homeNavTop from './childComponents/homeNavTop'
+  import homeLabel from './childComponents/homeLabel'
+  import homeBgBox from './childComponents/homeBgBox'
+  import playControl from 'components/content/base/playControl'
+  import swiper from 'components/common/swiper/swiper'
+
+  //网络请求导入
+  import {getRecommendSong} from "network/home"
+  //处理数据的js导入
+  import {getWantedSongInfo} from "common/js/handleSongData"
+  
+  export default {
+   name:"home",
+   components:{
+     homeNavTop,
+     homeLabel,
+     homeBgBox,
+     playControl,
+     swiper 
+   },
+   data() {
+     return {
+      recommendSongs:[]
+     }
+   },
+   created() {
+    //请求首页推荐歌曲数据（新歌速递）
+     this._getRecommendSong(0)//type = 0 请求全部地区类型的歌曲
+   },
+
+   methods: {
+      _getRecommendSong(type){
+        getRecommendSong(type).then(res => {
+          let list = res.data.map((item) => {
+            return getWantedSongInfo(item)
+          })
+          //删除从索引9开始到原数组结尾的所有元素
+          list.splice(29)
+          this.recommendSongs = list
+          console.log( this.recommendSongs)      
+        })
+      }
+   },
+}
+</script>
+
+<style scoped >
+  #home{
+    height: 667px;
+    position: relative;
+  }
+  .homePlayControl{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 55px;
+  }
+
+
+  
+  
+</style>

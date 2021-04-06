@@ -2,12 +2,16 @@
 
 /*:root -> 获取根元素html*/
 :root {
-  --color-text: #666;
-  --color-high-text: #ff5777;
-  --color-tint: #ff8198;
-  --color-background: #fff;
+  --color-text:rgba(255,255,255,0.74);
+  --color-high-text: white;
+  --color-tint: #333;
+  --bgcolor: #1D1717;
+  --popUpBgColor: rgba(70,71,71,0.95);
+  --borderBottomColor: rgba(196,192,192,0.24);
   --font-size: 14px;
   --line-height: 1.5;
+  --icon-color: white;
+  background-color: #1D1717;
 }
 
 *,
@@ -17,7 +21,14 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+.bgBox{
+  background-color:var(--color-tint);
+  width: 90%;
+  margin:auto;
+  margin-top:5px;
+  border-radius: 10px;
+  padding-bottom: 10px;    
+}
 body {
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   user-select: none; /* 禁止用户鼠标在页面上选中文字/图片等 */
