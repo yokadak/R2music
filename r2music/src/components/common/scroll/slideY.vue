@@ -30,7 +30,8 @@
     methods: {
       init() {
         this.bs = new BScroll(this.$refs.slide, { 
-          mouseWheel: true, 
+          mouseWheel: true,
+          click: true, 
           observeDOM: true,  
           scrollX: false,
           scrollY: true,

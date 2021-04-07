@@ -2,7 +2,7 @@
 <div id="home">
   <homeNavTop path ='/userCenter'></homeNavTop>
   <homeLabel class="homeLabel"></homeLabel>
-  <homeBgBox class="homeBgBox" :songs = "recommendSongs"></homeBgBox>
+  <homeBgBox class="homeBgBox" :songs = "recommendSongs" path ='/player'></homeBgBox>
   <playControl class="homePlayControl"></playControl>
   <!-- <swiper :songs = "recommendSongs"></swiper> -->
 </div>

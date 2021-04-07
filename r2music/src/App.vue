@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <!-- <router-view></router-view> -->
     <!-- <home></home> -->
     <!-- <swiperTestY></swiperTestY> -->
     <!-- <home></home> -->
     <!-- <slideY></slideY> -->
+    <search></search>
   </div>
 </template>
 
@@ -13,13 +14,15 @@
   import swiperTest from './swiperTest'
   import swiperTestY from './swiperTestY'
   import home from './views/home/home'
+  import search from './views/search/search'
 export default {
   name:'app',
   components:{  
     swiperTest,
     swiperTestY,
     home,
-    slideY
+    slideY,
+    search,
   }
 }
 </script>

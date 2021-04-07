@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 const home = () => import("../views/home/home.vue") 
 const menu = () => import("../views/menu/appMenu.vue") 
 const userCenter = () => import("../views/userCenter/userCenter.vue") 
+const player = () => import("../views/player/player.vue") 
 //解决报错
 const originalPush = VueRouter.prototype.push
    VueRouter.prototype.push = function push(location) {
@@ -28,6 +29,10 @@ const routes = [
   {
     path:"/userCenter",
     component:userCenter
+  },
+  {
+    path:"/player",
+    component:player
   }
 
 

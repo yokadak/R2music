@@ -1,18 +1,46 @@
 <template>
   <div class="searchNav">
     <div class="searchBox">
-      <input>
+      <input type="text" name="search" autocomplete="off"
+      :placeholder="placeholder" v-model="keywords" @input="inputChange()">
       <button class="searchConfirm"><i class="fa fa-search"></i></button>
-      <button class="searchClean"><i class="fa fa-close"></i></button>
+      <button class="searchClean" @click="clear"><i class="fa fa-close" v-show="keywords"></i></button>
     </div>
     <div class="cancelButton">取消</div>
   </div>
 </template>
 
 <script>
-export default {
-  name:"searchNav"
+  import {debounce} from 'common/js/utils.js'
 
+export default {
+  name:"searchNav",
+  props: {
+    placeholder: {
+      type: String,
+      default: '搜索歌曲、歌手、专辑'
+    }
+  },
+  data() {
+    return {
+      keywords:''
+    }
+  },
+  // created () {
+  //   this.$watch('keywords', debounce((newQuery) => {
+  //     this.$emit('keywords', newQuery)
+  //   }, 300))
+  // },
+  methods: {
+    clear () {
+      this.keywords = ''
+      this.$emit('onInputChange',this.keywords);
+    },
+    inputChange: debounce(function(){
+      this.$emit('onInputChange',this.keywords);
+    },300)
+
+  }
 }
 </script>
 
@@ -32,6 +60,8 @@ export default {
     width:95%;
 	  border-radius:10px;
 	  background:white;
+    color: var(--popUpBgColor);
+    font-size: 14px;
 	  height:30px;
 	  padding-left:30px;
     border:none;

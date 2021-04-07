@@ -1,6 +1,6 @@
 <template>
 <div class="bgBox">
-  <slideY class="wrapper" ref="homeSlideY">
+  <slideY class="wrapper" ref="homeSlideY" >
     <div v-for="item of songs" :key="item.id" class="aSongBox"> 
         <img v-lazy="item.image">
         <div class="homeBoxCenter">
@@ -14,12 +14,12 @@
               <span class="albumName">{{item.album}}</span></div>
             </info>
           </div>
-          <div class="playIcon"><span class="fa fa-play-circle"></span></div>
+          <div class="playIcon"><span class="fa fa-play-circle" @click="play"></span></div>
         </div> 
     </div>
   </slideY>  
   <operationBar class="homeOperationBar">
-    <div slot="operation-3" class="biggerIcon"><span class="fa fa-heart-o"></span></div>
+    <div slot="operation-3" class="biggerIcon"><span class="fa fa-heart-o" @click="like"></span></div>
   </operationBar>
 </div>
 </template>
@@ -42,6 +42,7 @@
       operationBar
   },
     props:{
+      path: String,
       songs:{
         type:Array,
         default(){
@@ -54,7 +55,12 @@
       //   refresh()
     },
     methods: {
-      
+      play(){
+        this.$router.push(this.path);
+      },
+      like(){
+      console.log("i like");
+      }
     },
 }
 </script>

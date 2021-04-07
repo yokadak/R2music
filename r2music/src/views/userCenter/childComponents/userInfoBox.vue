@@ -10,11 +10,13 @@
     import infoBox from 'components/content/base/infoBox'
 export default {
   name:"userInfoBox",
+   components:{
     infoBox,
+  }
   }
   
 </script>
-
+ 
 <style>
   .userInfoBox{
      width:81%;
