@@ -6,7 +6,9 @@
     <!-- <home></home> -->
     <!-- <slideY></slideY> -->
     <!-- <searchResult></searchResult> -->
-    <search></search>
+    <!-- <search></search> -->
+    <singerPage></singerPage>
+
   </div>
 </template>
 
@@ -17,6 +19,7 @@
   import home from './views/home/home'
   import searchResult from './views/search/searchResult'
   import search from './views/search/search'
+  import singerPage from './views/singer/singerPage'
 export default {
   name:'app',
   components:{  
@@ -26,6 +29,7 @@ export default {
     slideY,
     searchResult,
     search,
+    singerPage,
   }
 }
 </script>

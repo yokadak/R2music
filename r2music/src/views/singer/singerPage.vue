@@ -29,6 +29,13 @@
   import switchPageBlock from 'components/content/base/switchPageBlock'
   import songBox from 'components/content/base/songBox'
   import playControl from 'components/content/base/playControl'
+  //网络请求
+  import {getSingerInfo} from "network/singer"
+  import {getSingerSongs} from "network/singer"
+  //处理数据的js导入（抽取歌曲有用信息)
+  import {getWantedSingerSongs} from "common/js/handleSongData"
+
+
 export default {
   name:"singerPage",
   components:{
@@ -37,7 +44,27 @@ export default {
     switchPageBlock,
     songBox,
     info
-  }
+  },
+  created() {
+    this._getSingerInfo(11972054)
+    this._getSingerSongs(6452)
+  },
+  methods: {
+    _getSingerInfo(id){
+      getSingerInfo(id).then(res =>{
+        let singerInfo = res.artist;
+        console.log(singerInfo)
+      })
+    },
+    _getSingerSongs(id){
+      getSingerSongs(id).then(res =>{
+        let singerSongs = res.hotSongs.map((item) =>{
+          return getWantedSingerSongs(item)
+        });
+        console.log(singerSongs)
+      })
+    },
+  },
 
 }
 </script>

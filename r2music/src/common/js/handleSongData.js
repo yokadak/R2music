@@ -26,7 +26,24 @@ export function getWantedSongInfo(theSong){
     id: theSong.id,
     name: theSong.name,
     singer: getSingerName(theSong.artists),
-    album: theSong.album.name?theSong.album.name:theSong.name,
+    album: theSong.album.name,
     image: theSong.album.picUrl
+  })
+}
+export function getSearchInfo(theSong){
+  return new Asong({
+    id: theSong.id,
+    name: theSong.name,
+    singer: getSingerName(theSong.artists),
+    album: theSong.name,
+  })
+}
+export function getWantedSingerSongs(theSong){
+  return new Asong({
+    id: theSong.id,
+    name: theSong.name,
+    singer: getSingerName(theSong.ar),
+    album: theSong.al.name,
+    image: theSong.al.picUrl
   })
 }
