@@ -30,6 +30,7 @@
   //网络请求，搜索结果
   import {getSearchResult} from "network/search"
   //抽取歌曲信息
+  import {getSearchInfo} from "common/js/handleSongData"
   import {getWantedSongInfo} from "common/js/handleSongData"
 
 
@@ -107,7 +108,7 @@ export default {
       this.isShowRes = true
       getSearchResult(this.keywords,10).then(res =>{
        const albumsList = res.result.albums.map((item) =>{
-         return getWantedSongInfo(item)
+         return getSearchInfo(item)
        })
       // const albumsList = res.result.albums
        console.log(albumsList)
