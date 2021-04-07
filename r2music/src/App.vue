@@ -5,6 +5,7 @@
     <!-- <swiperTestY></swiperTestY> -->
     <!-- <home></home> -->
     <!-- <slideY></slideY> -->
+    <!-- <searchResult></searchResult> -->
     <search></search>
   </div>
 </template>
@@ -14,6 +15,7 @@
   import swiperTest from './swiperTest'
   import swiperTestY from './swiperTestY'
   import home from './views/home/home'
+  import searchResult from './views/search/searchResult'
   import search from './views/search/search'
 export default {
   name:'app',
@@ -22,6 +24,7 @@ export default {
     swiperTestY,
     home,
     slideY,
+    searchResult,
     search,
   }
 }

@@ -4,7 +4,7 @@ export default class Asong{
   constructor({id,name,singer,album,image}){
     this.id = id
     this.name = name
-    this.singer = singer
+    this.singer = singer  
     this.album = album
     this.image = image
   }
@@ -26,7 +26,7 @@ export function getWantedSongInfo(theSong){
     id: theSong.id,
     name: theSong.name,
     singer: getSingerName(theSong.artists),
-    album: theSong.album.name,
+    album: theSong.album.name?theSong.album.name:theSong.name,
     image: theSong.album.picUrl
   })
 }

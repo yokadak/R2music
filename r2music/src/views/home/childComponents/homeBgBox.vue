@@ -6,11 +6,11 @@
         <div class="homeBoxCenter">
           <div class="homeInfo">
             <info>
-              <div slot="infoAbove"><span class="fa fa-music"></span>
+              <div slot="infoAbove" class="ellipsis"><span class="fa fa-music"></span>
               <span class="songName">{{item.name}}</span></div>
-              <div slot="infoBetween"><span class="fa fa-user"></span>
+              <div slot="infoBetween" class="ellipsis"><span class="fa fa-user"></span>
               <span class="singerName">{{item.singer}}</span></div>
-              <div slot="infoBelow"><span class="fa fa-dot-circle-o"></span>
+              <div slot="infoBelow" class="ellipsis"><span class="fa fa-dot-circle-o"></span>
               <span class="albumName">{{item.album}}</span></div>
             </info>
           </div>
@@ -120,5 +120,10 @@
 }
 .singerName,.albumName{
   color:var(--color-high-text);
+}
+.ellipsis{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

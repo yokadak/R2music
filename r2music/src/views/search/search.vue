@@ -1,17 +1,19 @@
 <template>
   <div class="searchHot">
-    <searchNav @onInputChange= "inputChange"></searchNav>
+    <searchNav @onInputChange= "inputChange" path = '/home' ref="searchNav"></searchNav>
     <div class="searchEnterBox" v-if="keywords">
-      <span class="searchEnterLabel">搜索&nbsp;&nbsp;</span>
-      <span class="searchEnterLabel">{{keywords}}</span>
-      <div class="resultSongBox">
+      <div v-show="isShowSuggestionList">
+        <span class="searchEnterLabel">搜索&nbsp;&nbsp;</span>
+        <span class="searchEnterLabel">{{keywords}}</span>
+      </div>
+      <div class="resultSongBox" v-show="isShowSuggestionList">
         <div class="resultlistItem" v-for="(item,index) of searchSuggestion" :key="index" v-show="keywords">
           <span class="fa fa-search resultlistIcon"></span> 
           <span>{{item}}</span>
         </div>
       </div>
     </div>
-    <div class="hotSearchBox" v-if="isShow">
+    <div class="hotSearchBox" v-if="isShowHotList">
       <span class="hotSearchLabel">热搜</span>
       <div class="hotSongBox">
         <div class="hotsongList">
@@ -39,17 +41,29 @@ export default {
     return {
       hotSearch: [],
       searchSuggestion: [],
-      keywords:''
+      keywords:'',
+      isShowHotList:true,
+      isShowSuggestionList:false,
     }
   },
-  computed:{
-    isShow:function(){
-      return this.keywords === ''
+  watch:{
+    keywords(val,oldval){
+      if(val.length === 0){
+        this.isShowHotList = true
+        console.log("search")
+        this.isShowSuggestionList = true
+      }
+      else{
+        this.isShowHotList = false
+      }
     }
   },
   created() {
     //获取热搜列表
     this._getHotSearch()
+  },
+  mounted() {
+  
   },
   methods: {
     getHotList(obj){
@@ -77,7 +91,7 @@ export default {
       })
     },
     inputChange(keywords){
-      console.log(keywords);
+      // console.log(keywords);
       this.keywords = keywords
        //获取搜索建议列表
       this._getSearchSuggestion(this.keywords,'mobile');
@@ -111,6 +125,9 @@ export default {
   .hotlistItem{
     margin-top: 35px;
     margin-left: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .hotlistItem:nth-child(1) .hotNum,
   .hotlistItem:nth-child(2) .hotNum,
@@ -125,6 +142,7 @@ export default {
     width: 90%;
     margin:auto;
     margin-top:10px;
+    /* background-color: red; */
   }
   .searchEnterLabel{
     color:var(--color-high-text);

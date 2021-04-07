@@ -5,6 +5,7 @@
   <homeBgBox class="homeBgBox" :songs = "recommendSongs" path ='/player'></homeBgBox>
   <playControl class="homePlayControl"></playControl>
   <!-- <swiper :songs = "recommendSongs"></swiper> -->
+  <!-- <search v-show="isShow"></search> -->
 </div>
 </template>
 
@@ -15,10 +16,10 @@
   import homeBgBox from './childComponents/homeBgBox'
   import playControl from 'components/content/base/playControl'
   import swiper from 'components/common/swiper/swiper'
-
+  import search from '../search/search'
   //网络请求导入
   import {getRecommendSong} from "network/home"
-  //处理数据的js导入
+  //处理数据的js导入（抽取歌曲有用信息)
   import {getWantedSongInfo} from "common/js/handleSongData"
   
   export default {
@@ -28,13 +29,16 @@
      homeLabel,
      homeBgBox,
      playControl,
-     swiper 
+     swiper,
+     search 
    },
    data() {
      return {
-      recommendSongs:[]
+      recommendSongs:[],
+      isShow:true
      }
    },
+
    created() {
     //请求首页推荐歌曲数据（新歌速递）
      this._getRecommendSong(0)//type = 0 请求全部地区类型的歌曲

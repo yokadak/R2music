@@ -4,6 +4,7 @@ const home = () => import("../views/home/home.vue")
 const menu = () => import("../views/menu/appMenu.vue") 
 const userCenter = () => import("../views/userCenter/userCenter.vue") 
 const player = () => import("../views/player/player.vue") 
+const search = () => import("../views/search/search.vue") 
 //解决报错
 const originalPush = VueRouter.prototype.push
    VueRouter.prototype.push = function push(location) {
@@ -33,7 +34,12 @@ const routes = [
   {
     path:"/player",
     component:player
-  }
+  },
+  {
+    path:"/search",
+    component:search
+  },
+  
 
 
 

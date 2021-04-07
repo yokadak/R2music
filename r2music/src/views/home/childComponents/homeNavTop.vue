@@ -1,7 +1,8 @@
 <template>
     <div class="homeNav">
        <div class = "homeNavLeft" @click="itemClick"><span class="fa fa-user"></span></div>
-       <div class = "homeNavCenter"> <input type="text" class = "searchInput" >
+       <div class = "homeNavCenter"> 
+         <input type="text" class = "searchInput" @focus="showSearchPage">
        <span class="fa fa-search homeSearch"></span></div>
        <div class = "homeNavRight"><span class="fa fa-navicon"></span></div>
     </div>
@@ -15,11 +16,15 @@ export default {
   },
   data() {
     return {
+    
     }
   },
   methods: {
     itemClick(){
       this.$router.push(this.path);
+    },
+    showSearchPage(){
+      this.$router.push('/search');
     }
   },
 

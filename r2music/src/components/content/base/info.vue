@@ -22,7 +22,7 @@ export default {
     height: 100%;
     display:flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: center; 
   }
   .infoAbove{
     order:1;

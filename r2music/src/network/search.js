@@ -15,3 +15,13 @@ export function getSearchSuggestion(keywords,type){
     }
   })
 }
+//获取搜索结果
+export function getSearchResult(keywords,type){
+  return request({
+    url:'/search',
+    params:{
+      keywords,
+      type
+    }
+  })
+}
