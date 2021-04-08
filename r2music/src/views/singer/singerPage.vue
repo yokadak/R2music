@@ -1,15 +1,15 @@
 <template>
   <div class="singerPage">
      <navTop class="singerNav">
-       <div slot="center"><span class="nameOfSinger">王菲</span></div>
+       <div slot="center"><span class="nameOfSinger">{{singerInfo.name}}</span></div>
     </navTop>
 
     <div class="singerBox">
       <div class="coverSingerPic"></div>
-      <div class="singerPic"><img src="~assets/img/cover/wf.jpg" alt=""></div>
+      <div class="singerPic"><img :src="singerInfo.image" alt=""></div>
       <div class="singerInfo">
         <info>
-          <div slot="infoAbove" class="nameOfSinger">王菲</div>
+          <div slot="infoAbove" class="nameOfSinger">{{singerInfo.name}}</div>
           <div slot="infoBelow">300.07万粉丝</div>
         </info>
         <div class="followButton"><i class="fa fa-plus"></i><button>关注</button></div>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="worksSwitch"><switchPageBlock><div slot="switchRight">专辑</div></switchPageBlock></div>
-    <songBox class="singerSongBox"></songBox>  
+    <songBox class="singerSongBox" :songs= "singerSongs"></songBox>  
     <playControl class="singerPagePlayControl"></playControl>
   </div>
   
@@ -31,9 +31,11 @@
   import playControl from 'components/content/base/playControl'
   //网络请求
   import {getSingerInfo} from "network/singer"
-  import {getSingerSongs} from "network/singer"
+  import {getSingerAlbums} from "network/singer"
   //处理数据的js导入（抽取歌曲有用信息)
   import {getWantedSingerSongs} from "common/js/handleSongData"
+  import {getWantedSingerInfo} from "common/js/handleSongData"
+  import {getWantedAlbumInfo} from "common/js/handleSongData"
 
 
 export default {
@@ -45,23 +47,40 @@ export default {
     songBox,
     info
   },
+  data() {
+    return {
+      singerInfo: [],
+      singerSongs: []
+    }
+  },
   created() {
-    this._getSingerInfo(11972054)
+    this._getSingerInfo(6452)
     this._getSingerSongs(6452)
+    this._getSingerAlbums(6452)
   },
   methods: {
     _getSingerInfo(id){
       getSingerInfo(id).then(res =>{
-        let singerInfo = res.artist;
-        console.log(singerInfo)
+        let info = getWantedSingerInfo(res.artist)
+        console.log(info)
+        this.singerInfo = info
       })
     },
     _getSingerSongs(id){
-      getSingerSongs(id).then(res =>{
-        let singerSongs = res.hotSongs.map((item) =>{
+      getSingerInfo(id).then(res =>{
+        let songs = res.hotSongs.map((item) =>{
           return getWantedSingerSongs(item)
         });
-        console.log(singerSongs)
+        this.singerSongs = songs
+        console.log(this.singerSongs)
+      })
+    },
+    _getSingerAlbums(id){
+      getSingerAlbums(id).then(res =>{
+        let albums = res.hotAlbums.map((item) =>{
+          return getWantedAlbumInfo(item)
+        })
+        console.log(albums)
       })
     },
   },
