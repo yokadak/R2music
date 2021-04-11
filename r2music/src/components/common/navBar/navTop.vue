@@ -1,6 +1,6 @@
 <template>
   <div class="navTop">
-    <div class="left" @click="itemClick"><slot name = "left"><span class="fa fa-chevron-left"></span></slot></div>
+    <div class="left"><slot name = "left"><span class="fa fa-chevron-left" @click="toBack"></span></slot></div>
     <div class="center"><slot name = "center"></slot></div>
     <div class="right"><slot name = "right"><span class="fa fa-navicon"></span></slot></div>
   </div>
@@ -10,7 +10,7 @@
 export default {
   name:"navTop",
   methods: {
-    itemClick(){
+    toBack(){
       this.$router.back();
     }
   },

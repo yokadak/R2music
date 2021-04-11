@@ -33,9 +33,9 @@
   import {getSingerInfo} from "network/singer"
   import {getSingerAlbums} from "network/singer"
   //处理数据的js导入（抽取歌曲有用信息)
-  import {getWantedSingerSongs} from "common/js/handleSongData"
-  import {getWantedSingerInfo} from "common/js/handleSongData"
-  import {getWantedAlbumInfo} from "common/js/handleSongData"
+  import {getWantedSingerSongs} from "common/js/handleApiData"
+  import {getWantedSingerInfo} from "common/js/handleApiData"
+  import {getWantedAlbumInfo} from "common/js/handleApiData"
 
 
 export default {

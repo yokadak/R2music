@@ -23,6 +23,8 @@ export default {
 <style>
   .userBgBox{
    padding-top: 25px;
+   height: calc(100vh - 170px);
+   overflow: auto;
 }
   .userCollect{
     margin-top: 20px;

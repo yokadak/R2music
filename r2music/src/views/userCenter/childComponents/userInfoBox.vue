@@ -1,9 +1,9 @@
 <template>
    <infoBox class="userInfoBox">
-      <div slot="pic" class="userPic"><img src="~assets/img/logo/R2logoBlack.png" alt=""></div>
-      <div slot="charAbove" class="userName"><span>R2music</span></div>
-      <div slot="charBelow" class="userFollow"><span>768关注</span></div>
-    </infoBox>
+      <div slot="pic" class="userPic"><img :src="userInfo.avatarUrl" alt=""></div>
+      <div slot="charAbove" class="userName"><span>{{userInfo.nickname}}</span></div>
+      <div slot="charBelow" class="userFollow"><span>{{userInfo.follows}}关注</span></div>
+  </infoBox>
 </template>
 
 <script>
@@ -12,7 +12,18 @@ export default {
   name:"userInfoBox",
    components:{
     infoBox,
-  }
+  },
+  data() {
+    return {
+      userInfo:this.$store.state.profile
+    }
+  },
+  created() {
+    console.log(this.$store.state)
+  },
+  methods: {
+    
+  },
   }
   
 </script>
@@ -33,6 +44,7 @@ export default {
   }
   .userName{
     font-size: 18px;
+    font-weight: bold;
     color:var(--color-high-text);
     margin-top: 3px;
   }

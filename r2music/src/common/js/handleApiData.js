@@ -10,7 +10,6 @@ export default class Asong{
     // this.publishTime = publishTime || null
   }
 }
-//做这一步是为了从复杂的数据中提取出我们想要的信息
 export class Album{
   constructor({id,name,size,image,publishTime,singer}){
     this.id = id
@@ -32,6 +31,19 @@ export class Singer{
     this.songsCount = songsCount
     this.image = image
     this.briefDesc = briefDesc
+  }
+}
+export class PlayList{
+  constructor({id,name,creator,image,playCount,subscribedCount,subscribed,description, songsCount}){
+    this.id = id
+    this.name = name
+    this.creator = creator
+    this.image = image
+    this.subscribed = subscribed  
+    this.subscribedCount = subscribedCount
+    this.playCount = playCount
+    this.description = description
+    this.songsCount = songsCount
   }
 }
 //对歌手信息的处理，因为可能是多个歌手
@@ -92,5 +104,18 @@ export function getWantedSingerInfo(singer){
     isFollowed: singer.followed,
     image: singer.picUrl,
     briefDesc: singer.briefDesc
+  })
+}
+export function getPlayListData(playList){
+  return new PlayList({
+    id: playList.id,
+    creator: playList.creator.nickname,
+    name: playList.name,
+    image: playList.coverImgUrl,
+    playCount: playList.playCount,
+    subscribedCount: playList.subscribedCount,
+    subscribed: playList.subscribed,
+    description: playList.description,
+    songsCount:playList.trackCount
   })
 }

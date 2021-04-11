@@ -4,6 +4,7 @@ import {request} from "./request"
 export function getSingerInfo(id) {
   return request({
     url: '/artists/desc',
+    method:"PUT" ,
     params:{
       id
     }

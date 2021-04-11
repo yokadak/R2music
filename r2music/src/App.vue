@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
     <!-- <home></home> -->
     <!-- <swiperTestY></swiperTestY> -->
     <!-- <home></home> -->
     <!-- <slideY></slideY> -->
     <!-- <searchResult></searchResult> -->
     <!-- <search></search> -->
-    <singerPage></singerPage>
-
+    <!-- <singerPage></singerPage> -->
+    <!-- <userCenter></userCenter> -->
+    <!-- <login></login> -->
   </div>
 </template>
 
@@ -20,6 +21,8 @@
   import searchResult from './views/search/searchResult'
   import search from './views/search/search'
   import singerPage from './views/singer/singerPage'
+  import userCenter from './views/userCenter/userCenter'
+  import login from './views/login/login'
 export default {
   name:'app',
   components:{  
@@ -30,6 +33,8 @@ export default {
     searchResult,
     search,
     singerPage,
+    userCenter,
+    login
   }
 }
 </script>

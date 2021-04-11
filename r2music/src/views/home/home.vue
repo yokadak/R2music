@@ -20,7 +20,7 @@
   //网络请求导入
   import {getRecommendSong} from "network/home"
   //处理数据的js导入（抽取歌曲有用信息)
-  import {getWantedSongInfo} from "common/js/handleSongData"
+  import {getWantedSongInfo} from "common/js/handleApiData"
   
   export default {
    name:"home",
@@ -53,7 +53,7 @@
           //删除从索引9开始到原数组结尾的所有元素
           list.splice(29)
           this.recommendSongs = list
-          console.log( this.recommendSongs)      
+          // console.log( this.recommendSongs)      
         })
       }
    },

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+//事件总线
+Vue.prototype.$bus = new Vue()
 
 //图片懒加载
 import VueLazyLoad from 'vue-lazyload'

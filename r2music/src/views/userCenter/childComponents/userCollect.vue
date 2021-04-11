@@ -8,19 +8,19 @@
     <infoBox id="likedSong">
       <div slot="pic" class="liked"><img src="~assets/img/cover/ymo.jpg" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌曲</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>42首歌曲</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{likedSongsCount}}首歌曲</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
        <infoBox id="likedAlbum">
       <div slot="pic" class="liked"><img src="~assets/img/cover/yao.jpg" alt=""></div>
-      <div slot="charAbove" class="likedCharAbove"><span>歌曲</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>42首歌曲</span></div>
+      <div slot="charAbove" class="likedCharAbove"><span>专辑</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{likedAlbumsCount}}张专辑</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
        <infoBox id="likedSonglist">
       <div slot="pic" class="liked"><img src="~assets/img/cover/1.jpg" alt=""></div>
-      <div slot="charAbove" class="likedCharAbove"><span>歌曲</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>42首歌曲</span></div>
+      <div slot="charAbove" class="likedCharAbove"><span>歌单</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{likedPlayListCount}}歌单</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
   </div>
@@ -28,10 +28,55 @@
 
 <script>
   import infoBox from 'components/content/base/infoBox'
+    //网络请求导入
+  import {getUserInfo} from "network/user"
+  import {getSubCount} from "network/user"
+  import {getLikedMusic} from "network/user"
+  import {getLikedAlbums} from "network/user"
+  
 export default {
   name:"userCollect",
   components:{
     infoBox
+  },
+  data() {
+    return {
+      uid:this.$store.state.user.id,
+      likedSongsCount:0,
+      likedAlbumsCount:0,
+      likedPlayListCount:0,
+      ownPlayListCount:0
+    }
+  },
+  created() {
+    this._getUserInfo(this.uid)
+    this._getSubCount()
+    this._getLikedMusic(this.uid)
+    this._getLikedAlbums()
+  },
+  methods: {
+    _getUserInfo(uid){
+      getUserInfo(uid).then((res) => {
+        console.log(res)
+        // console.log(this.$store.state)
+      })
+    },
+    _getSubCount(){
+      getSubCount().then((res) => {
+        this.likedPlayListCount = res.subPlaylistCount
+        this.$store.commit('GET_OWN_PLAYLIST_COUNT', res.createdPlaylistCount)
+      })
+    },
+    _getLikedMusic(uid){
+      getLikedMusic(uid).then((res) => {
+        this.likedSongsCount = res.ids.length
+      })
+    },
+    _getLikedAlbums(){
+      getLikedAlbums().then((res) => {
+        this.likedAlbumsCount = res.count
+      })
+    },
   }
 }
 </script>

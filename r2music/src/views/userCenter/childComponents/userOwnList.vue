@@ -1,41 +1,58 @@
 <template>
   <div class="userOwnList">
-
      <div class="ownListLabel">
        <span class="fa fa-music ownListIcon"></span>
        <span class="myownList">我的歌单</span>
      </div>
-
-
-    <infoBox id="ownListSong">
-      <div slot="pic" class="ownList"><img src="~assets/img/cover/2.jpg" alt=""></div>
-      <div slot="charAbove" class="ownListCharAbove"><span>歌曲</span></div>
-      <div slot="charBelow" class="ownListCharBelow"><span>42首歌曲</span></div>
-      <div slot="rightIcon" class="ownListRightIcon"><span class="fa fa-angle-right"></span></div>
-    </infoBox>
-       <infoBox id="ownListAlbum">
-      <div slot="pic" class="ownList"><img src="~assets/img/cover/3.jpg" alt=""></div>
-      <div slot="charAbove" class="ownListCharAbove"><span>歌曲</span></div>
-      <div slot="charBelow" class="ownListCharBelow"><span>42首歌曲</span></div>
-      <div slot="rightIcon" class="ownListRightIcon"><span class="fa fa-angle-right"></span></div>
-    </infoBox>
-       <infoBox id="ownListSonglist">
-      <div slot="pic" class="ownList"><img src="~assets/img/cover/4.jpg" alt=""></div>
-      <div slot="charAbove" class="ownListCharAbove"><span>歌曲</span></div>
-      <div slot="charBelow" class="ownListCharBelow"><span>42首歌曲</span></div>
-      <div slot="rightIcon" class="ownListRightIcon"><span class="fa fa-angle-right"></span></div>
-    </infoBox>
+     <div class="playListWrapper">
+      <infoBox id="ownListSong" v-for="item of ownPlayList" :key="item.id">
+        <div slot="pic" class="ownList"><img :src="item.image" alt=""></div>
+        <div slot="charAbove" class="ownListCharAbove"><span>{{item.name}}</span></div>
+        <div slot="charBelow" class="ownListCharBelow"><span>{{item.songsCount}}首歌曲</span></div>
+        <div slot="rightIcon" class="ownListRightIcon"><span class="fa fa-angle-right"></span></div>
+      </infoBox>
+     </div>
   </div>
 </template>
 
 <script>
   import infoBox from 'components/content/base/infoBox'
+  //获取用户的所有歌单（包括自建歌单和收藏歌单）
+  import {getLikedPlayList} from "network/user"
+  import {getPlayListData} from "common/js/handleApiData"
+
+
 
 export default {
   name:"userOwnList",
   components:{
     infoBox,
-  }
+  },
+  watch:{
+
+  },
+  data() {
+    return {
+      uid:this.$store.state.user.id,
+      ownPlayList:[],
+      ownPlayListCount:this.$store.state.ownPlayListCount,
+    }
+  },
+  created() {
+    this._getlikedPlayList(this.uid)
+  },
+  methods: {
+    _getlikedPlayList(uid){
+      getLikedPlayList(uid).then((res) => {
+        const cutNum = this.ownPlayListCount 
+        this.ownPlayList = res.playlist.slice(0,cutNum)
+        .map((item)=>{
+          return getPlayListData(item)
+        })
+        console.log(this.ownPlayList)
+      })
+    }
+  },
 
 }
 </script>
@@ -46,7 +63,6 @@ export default {
      width:81%;
      margin:auto;
   }
-
   .ownList img{
     width:40px;
     border-radius:5px;

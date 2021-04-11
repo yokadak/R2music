@@ -5,9 +5,15 @@
     </navTop>
     <div class="loginBox">
       <div class="r2Logo"><img src="~assets/img/logo/R2logoWhite.png" alt=""></div>
-      <div class="account"><input type="text" placeholder="网易云账号"></div>
-      <div class="password"><input type="password" placeholder="密码" name="" id=""></div>
-      <button class="loginButton" type="sumbit">登录</button>
+      <div class="phone">
+        <input type="number" maxlength="13" 
+        placeholder="请输入手机号"
+        v-model="phone"></div>
+      <div class="password">
+        <input type="password" 
+      placeholder="请输入密码"
+       v-model="password"></div>
+      <button class="loginButton" type="sumbit" @click="_login(17394942136, 'yrh190701')">登录</button>
     </div>
     <div class="tipsText">请使用网易云音乐账号登录</div>
   </div>
@@ -15,11 +21,43 @@
 
 <script>
   import navTop from 'components/common/navBar/navTop'
+  //网络请求导入
+  import {login} from "network/login"
+  import {loginStatus} from "network/login"
 export default {
   name:"login",
   components:{
     navTop
-  }
+  },
+  data() {
+    return {
+      phone:'',
+      password:''
+    }
+  },
+  created() {
+    // this._login(17394942136,"yrh190701")
+    // console.log()
+    this._loginStatus()
+  },
+  methods: {
+    _loginStatus(){
+      
+    },
+    _login(phone,password){
+      login(phone,password).then(res =>{
+        console.log(res);
+        this.$store.commit('SET_TOKEN', res.token)
+        this.$store.commit('SET_COOKIE', res.cookie)
+        this.$store.commit('SET_USER', res.account)
+        this.$store.commit('SET_PROFILE', res.profile)
+        this.$router.push('/userCenter')
+      }).catch((err) =>{
+        console.log(err)
+      })
+      // console.log(this.phone,this.password)
+    },
+  },
 
 }
 </script>
@@ -45,13 +83,13 @@ export default {
   .r2Logo img{
     width: 100%;
   }
-  .account,.password{
+  .phone,.password{
     width: 90%;
     border-bottom: solid;
     border-color: var(--borderBottomColor);
     margin-top: 20px;
   }
-  .account{
+  .phone{
     order:2;
   }
   .password{

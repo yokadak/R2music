@@ -30,8 +30,8 @@
   //网络请求，搜索结果
   import {getSearchResult} from "network/search"
   //抽取歌曲信息
-  import {getSearchInfo} from "common/js/handleSongData"
-  import {getWantedSongInfo} from "common/js/handleSongData"
+  import {getSearchInfo} from "common/js/handleApiData"
+  import {getWantedSongInfo} from "common/js/handleApiData"
 
 
 

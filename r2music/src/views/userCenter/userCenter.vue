@@ -1,7 +1,8 @@
 <template>
   <div id="userCenter"> 
     <navTop class="userNav">
-       <div slot="center"><span class="user">R2music</span></div>
+       <div slot="left" class="userIcon"><span class="fa fa-chevron-left" @click="toHome"></span></div>
+       <div slot="center"><span class="user" @click="toLogin">个人主页</span></div>
     </navTop>
     <userBox></userBox>
      <playControl class="userCenterPlayControl"></playControl>
@@ -18,9 +19,23 @@ export default {
   components:{
     navTop,
     userBox,
-    playControl
+    playControl,
+  },
+  data() {
+    return {
+      // profile:this.$store.state.profile
+    }
+  },
+  methods: {
+    toLogin(){
+      // console.log(this.$store.state)
+      this.$router.push('/login');
+    },
+    toHome(){
+      this.$router.push('/home');  
+    },
 
-  }
+  },
 
 }
 </script>

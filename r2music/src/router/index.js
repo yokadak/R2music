@@ -5,6 +5,7 @@ const menu = () => import("../views/menu/appMenu.vue")
 const userCenter = () => import("../views/userCenter/userCenter.vue") 
 const player = () => import("../views/player/player.vue") 
 const search = () => import("../views/search/search.vue") 
+const login = () => import("../views/login/login.vue") 
 //解决报错
 const originalPush = VueRouter.prototype.push
    VueRouter.prototype.push = function push(location) {
@@ -29,7 +30,11 @@ const routes = [
   },
   {
     path:"/userCenter",
-    component:userCenter
+    component:userCenter,
+  },
+  {
+    path:"/login",
+    component:login,
   },
   {
     path:"/player",
@@ -39,10 +44,6 @@ const routes = [
     path:"/search",
     component:search
   },
-  
-
-
-
 
 ]
 const router = new VueRouter({
@@ -50,5 +51,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if(to.path === '/login') {
+    next();
+  } else {
+    let token = window.sessionStorage.token;
+    if(token === 'null' || token === '') {
+      next('/login');
+    }else {
+      next();
+    }
+  }
+});
+
 
 export default router
