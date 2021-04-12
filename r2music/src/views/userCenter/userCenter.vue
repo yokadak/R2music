@@ -21,11 +21,6 @@ export default {
     userBox,
     playControl,
   },
-  data() {
-    return {
-      // profile:this.$store.state.profile
-    }
-  },
   methods: {
     toLogin(){
       // console.log(this.$store.state)
@@ -34,9 +29,7 @@ export default {
     toHome(){
       this.$router.push('/home');  
     },
-
   },
-
 }
 </script>
 

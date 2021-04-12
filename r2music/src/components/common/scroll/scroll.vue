@@ -1,8 +1,9 @@
 <template>
   <div class="wrapper" ref="wrapper">
-        <!-- 默认插槽，使用该组件时用要滚动内容替换 -->
+      <!-- 默认插槽，使用该组件时用要滚动内容替换 -->
       <slot></slot>
-   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -21,13 +22,13 @@ export default {
       mouseWheel: true,//开启鼠标滚轮
       disableMouse: false,//启用鼠标拖动
       disableTouch: false,//启用手指触摸
-      // scrollX: true,  //X轴滚动启用
+      scrollX: true,  //X轴滚动启用  
       // eventPassthrough: 'vertical',设置该属性为vertical 则只会滚动设置为true的轴
-    
     })
   },
 }
 </script>
 
 <style scoped>
+
 </style>

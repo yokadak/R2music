@@ -17,48 +17,24 @@
 
 <script>
   import infoBox from 'components/content/base/infoBox'
-  //获取用户的所有歌单（包括自建歌单和收藏歌单）
-  import {getLikedPlayList} from "network/user"
-  import {getPlayListData} from "common/js/handleApiData"
-
-
 
 export default {
   name:"userOwnList",
   components:{
     infoBox,
   },
-  watch:{
-
-  },
-  data() {
-    return {
-      uid:this.$store.state.user.id,
-      ownPlayList:[],
-      ownPlayListCount:this.$store.state.ownPlayListCount,
+  props:{
+    ownPlayList:{
+      type:Array,
+      default(){
+        return[]
+      }
     }
-  },
-  created() {
-    this._getlikedPlayList(this.uid)
-  },
-  methods: {
-    _getlikedPlayList(uid){
-      getLikedPlayList(uid).then((res) => {
-        const cutNum = this.ownPlayListCount 
-        this.ownPlayList = res.playlist.slice(0,cutNum)
-        .map((item)=>{
-          return getPlayListData(item)
-        })
-        console.log(this.ownPlayList)
-      })
-    }
-  },
-
+  }
 }
 </script>
 
 <style>
-
   .userOwnList{
      width:81%;
      margin:auto;

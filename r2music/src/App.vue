@@ -4,7 +4,7 @@
     <!-- <home></home> -->
     <!-- <swiperTestY></swiperTestY> -->
     <!-- <home></home> -->
-    <!-- <slideY></slideY> -->
+    <!-- <scrollTest></scrollTest> -->
     <!-- <searchResult></searchResult> -->
     <!-- <search></search> -->
     <!-- <singerPage></singerPage> -->
@@ -15,6 +15,7 @@
 
 <script> 
   import slideY from './slideY'  
+  import scrollTest from './scrollTest'  
   import swiperTest from './swiperTest'
   import swiperTestY from './swiperTestY'
   import home from './views/home/home'
@@ -30,11 +31,12 @@ export default {
     swiperTestY,
     home,
     slideY,
+    scrollTest,
     searchResult,
     search,
     singerPage,
     userCenter,
-    login
+    login,
   }
 }
 </script>

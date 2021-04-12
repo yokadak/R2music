@@ -17,13 +17,7 @@ export default {
     return {
       userInfo:this.$store.state.profile
     }
-  },
-  created() {
-    console.log(this.$store.state)
-  },
-  methods: {
-    
-  },
+  }
   }
   
 </script>

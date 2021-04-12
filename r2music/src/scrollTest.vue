@@ -7,7 +7,7 @@
           <div class="scrollTest">我是要纵向和横向都滚动的内容</div>
           <div class="scrollTest scrollTest2">我也是要纵向和横向都滚动的内容</div>
        </div>
-       
+    
      </scroll>
   </div>
 </template>
