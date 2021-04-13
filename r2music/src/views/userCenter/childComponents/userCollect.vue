@@ -5,19 +5,19 @@
        <span class="myLiked">我的喜欢</span>
      </div>
 
-    <infoBox id="likedSong">
+    <infoBox id="likedSong" @click.native="toMyLikedSongs(likedSongs)">
       <div slot="pic" class="liked"><img :src="likedSongsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌曲</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedSongsCount}}首歌曲</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-    <infoBox id="likedAlbum">
+    <infoBox id="likedAlbum" @click.native="tomyLikedAlbums(likedAlbums)">
       <div slot="pic" class="liked"><img :src="likedAlbumsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>专辑</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>{{likedAlbumsCount}}张专辑</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{likedAlbums.length}}张专辑</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-    <infoBox id="likedSonglist">
+    <infoBox id="likedSonglist" @click.native="tomyLikedPlayLists(likedPlayLists)">
       <div slot="pic" class="liked"><img :src="likedPlayListCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌单</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedPlayListCount}}歌单</span></div>
@@ -36,12 +36,26 @@ export default {
   },
   props:{
     likedSongsCount:Number,
-    likedAlbumsCount:Number,
     likedPlayListCount:Number,
     likedSongsCover:String,
-    likedAlbumsCover:String,
     likedPlayListCover:String,
-  }
+    likedAlbumsCover:String,
+    likedSongs:Array,
+    likedAlbums:Array,
+    likedPlayLists:Array,
+  },
+  
+  methods: {
+    toMyLikedSongs(liked){
+      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:liked}})
+    },
+    tomyLikedAlbums(liked){
+      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:liked}})
+    },
+    tomyLikedPlayLists(liked){
+      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:liked}})
+    }
+  },
 }
 </script>
 

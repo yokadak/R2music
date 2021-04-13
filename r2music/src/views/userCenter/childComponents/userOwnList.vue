@@ -34,7 +34,7 @@ export default {
   methods: {
     toListDetail(id){
       this.$router.push({path:'/songList',query: {playListId:id}})
-      console.log(id)
+      // console.log(id)
     }
   },
 }

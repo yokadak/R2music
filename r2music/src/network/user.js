@@ -15,7 +15,7 @@ export function getSubCount(){
     url:'/user/subcount',
   })
 }
-export function getLikedMusic(uid){
+export function getLikedMusicIds(uid){
   return request({
     url:'/likelist',
     params:{

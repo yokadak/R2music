@@ -49,6 +49,12 @@ const routes = [
     path:"/songList",
     component:listDetail
   },
+  {
+    path:"/myLikedSongs",
+    name:'myLikedSongs',
+    component:listDetail
+  },
+
 
 ]
 const router = new VueRouter({

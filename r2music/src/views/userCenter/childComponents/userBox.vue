@@ -5,10 +5,10 @@
           <userInfoBox class="userInfoBox"></userInfoBox>
           <userCollect class="userCollect"
           :likedSongsCount = 'likedSongsCount'
-          :likedAlbumsCount = 'likedAlbumsCount'
+          :likedAlbums = 'likedAlbums'
+          :likedAlbumsCover = 'likedAlbumsCover'
           :likedPlayListCount = 'likedPlayListCount'
           :likedSongsCover = 'likedSongsCover'
-          :likedAlbumsCover = 'likedAlbumsCover'
           :likedPlayListCover = 'likedPlayListCover'
           ></userCollect>
           <userOwnList class="userOwnList"
@@ -27,11 +27,13 @@
     //网络请求，数据处理
     //获取用户的所有歌单（包括自建歌单和收藏歌单）
     import {getUserInfo} from "network/user"
-    import {getLikedMusic} from "network/user"
+    import {getLikedMusicIds} from "network/user"
     import {getLikedAlbums} from "network/user"
     import {getLikedPlayList} from "network/user"
     import {getPlayListData} from "common/js/handleApiData"
+    import {getPlayListSongInfo} from "common/js/handleApiData"
     import {getSubCount} from "network/user"
+    import {getSongsDetail} from "network/songs"
 
 export default {
   name:"userBox",
@@ -45,13 +47,15 @@ export default {
     return {
       uid:this.$store.state.user.id,
       likedSongsCount:0,
-      likedAlbumsCount:0,
+      likedSongsIds:[],
+      likedSongs:[],
       likedPlayListCount:0,
       ownPlayListCount:0,
       ownPlayList:[],
       likedPlayList:[],
-      likedSongsCover:'',
+      likedAlbums:[],
       likedAlbumsCover:'',
+      likedSongsCover:'',
       likedPlayListCover:'',
     }
   },
@@ -59,7 +63,7 @@ export default {
     this._getSubCount()
     this._getlikedPlayList(this.uid)
     this._getUserInfo(this.uid)
-    this._getLikedMusic(this.uid)
+    this._getLikedMusicIds(this.uid)
     this._getLikedAlbums()
   },
   methods: {
@@ -75,15 +79,24 @@ export default {
         // console.log(this.$store.state)
       })
     },
-    _getLikedMusic(uid){
-      getLikedMusic(uid).then((res) => {
+    _getLikedMusicIds(uid){
+      getLikedMusicIds(uid).then((res) => {
         this.likedSongsCount = res.ids.length
+        this.likedSongsIds = res.ids
+        res.ids.map((item)=>{
+          getSongsDetail(item).then((res) =>{
+            let song = getPlayListSongInfo(res.songs[0])
+            this.likedSongs.push(song)
+            console.log(this.likedSongs)
+          })
+        })
       })
     },
     _getLikedAlbums(){
       getLikedAlbums().then((res) => {
-        this.likedAlbumsCount = res.count
+        this.likedAlbums = res.data
         this.likedAlbumsCover = res.data[0].picUrl
+        // console.log(this.likedAlbums)
       })
     },
     _getlikedPlayList(uid){

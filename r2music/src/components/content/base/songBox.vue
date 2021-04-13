@@ -34,10 +34,6 @@ export default {
         isShowIndex: this.$route.path === '/songList'? true : false
       }
     },
-  mounted() {
-    console.log(this.songs)
-  },
-
 }
 </script>
 

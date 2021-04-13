@@ -6,7 +6,7 @@
     </navTop>
     <scroll class="wrapper">
       <div class="content">
-        <listInfo :playListDetail="playListDetail"></listInfo>
+        <listInfo :playListDetail="playListDetail" v-if="isShowInfoBox"></listInfo>
         <div class="listLabel">{{playListDetail.songsCount}} 首歌曲 上面空白为搜索功能占位</div>
         <songBox :songs="playListSongs"></songBox>
       </div>
@@ -23,7 +23,7 @@
   import scroll from 'components/common/scroll/scroll'
 
     //网络请求导入
-  import {getplayListDetail} from "network/songList"
+  import {getPlayListDetail} from "network/songList"
   import {getPlayListData} from "common/js/handleApiData"
   import {getPlayListSongInfo} from "common/js/handleApiData"
 
@@ -43,15 +43,27 @@ export default {
       playListId:this.$route.query.playListId,
       playListDetail:{},
       playListSongs:[],
-      playListSongsIds:[]
+      playListSongsIds:[],
+      likedAlbums:this.$route.params.likedAlbums,
+      isShowInfoBox:this.$route.path === '/songList' ? true : false,
+      path:this.$route.path,
     }
   },
   created() {
-    this._getplayListDetail(this.playListId)
+    // console.log
+    this.chooseFunc()
   },
   methods: {
+    chooseFunc(){
+      if(this.path === '/songList'){
+        this._getplayListDetail(this.playListId)
+      }
+      if(this.path === '/myLikedSongs'){
+        this.playListSongs = this.$route.params.liked
+      }
+    },
     _getplayListDetail(id){
-      getplayListDetail(id).then((res) =>{
+      getPlayListDetail(id).then((res) =>{
         this.playListDetail = getPlayListData(res.playlist)
         this.playListSongs = res.playlist.tracks.map((item) =>{
           return getPlayListSongInfo(item)
@@ -61,7 +73,7 @@ export default {
         })
         console.log(this.playListSongs)
       })
-    }
+    },
   },
 }
 </script>
