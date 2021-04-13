@@ -119,3 +119,12 @@ export function getPlayListData(playList){
     songsCount:playList.trackCount
   })
 }
+export function getPlayListSongInfo(theSong){
+  return new Asong({
+    id: theSong.id,
+    name: theSong.name,
+    singer: getSingerName(theSong.ar),
+    album: theSong.al.name,
+    image: theSong.al.picUrl
+  })
+}

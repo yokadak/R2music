@@ -57,12 +57,8 @@ a {
 .clear-fix {
   zoom: 1;
 }
-
-.left {
-  float: left;
+.ellipsis{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-
-.right {
-  float: right;
-}
-

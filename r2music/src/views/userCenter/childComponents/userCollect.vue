@@ -11,13 +11,13 @@
       <div slot="charBelow" class="likedCharBelow"><span>{{likedSongsCount}}首歌曲</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-       <infoBox id="likedAlbum">
+    <infoBox id="likedAlbum">
       <div slot="pic" class="liked"><img :src="likedAlbumsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>专辑</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedAlbumsCount}}张专辑</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-       <infoBox id="likedSonglist">
+    <infoBox id="likedSonglist">
       <div slot="pic" class="liked"><img :src="likedPlayListCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌单</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedPlayListCount}}歌单</span></div>

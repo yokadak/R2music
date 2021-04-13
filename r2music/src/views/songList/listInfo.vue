@@ -1,19 +1,30 @@
 <template>
 <div class="bgBox listBgBox">
   <div class="listInfoBox">
-    <div class="listCover"><img src="~assets/img/cover/pf.jpg" alt=""></div>
+    <div class="listCover">
+      <img :src="playListDetail.image" alt="">
+    </div>
     <info class="theListInfo">
-      <div slot="infoAbove" class="listName">Pink Floyd歌单</div>
+      <div slot="infoAbove" class="listName ellipsis">{{playListDetail.name}}</div>
       <div slot="infoBetween" class="listCreator">
-        <div class="listCreatorPic"><img src="~assets/img/cover/1.jpg" alt=""></div> 
-        <span class="listCreatorName">r2music</span></div>
-      <div slot="infoBelow"   class="listOperation">
-        <span class="listHeart"><i class="fa fa-heart-o"></i></span>
-        <span class="likedNum">280</span>
-        <span class="listShare"><i class="fa fa-share-square-o"></i></span>
-        <span class="fenxiang">分享</span>    
+        <div class="listCreatorPic"><img :src="userInfo.avatarUrl" alt=""></div> 
+        <div class="listCreatorName ellipsis">{{playListDetail.creator}}</div>
+      </div>
+      <div slot="infoBelow" class="listDescription ellipsis">
+        <span>{{playListDetail.description || "暂无简介"}}</span>
+        <span class="chevron-right"><i class="fa fa-chevron-right"></i></span>
       </div>
     </info>
+  </div>
+  <div class="opration">
+    <div>
+      <span class="listHeart"><i class="fa fa-heart-o"></i></span>
+      <span class="likedNum">{{playListDetail.subscribedCount}}</span>
+    </div>
+    <div>
+      <span class="shareButton"><i class="fa fa-share-square-o"></i></span>
+      <span class="shareButton">分享</span>   
+    </div>
   </div>
 </div>
 </template>
@@ -24,8 +35,20 @@ export default {
   name:"listInfo",
   components:{
     info,
+  },
+  props:{
+    playListDetail:{
+      type:Object,
+      default(){
+        return{}
+      }
+    }
+  },
+  data() {
+    return {
+      userInfo:this.$store.state.profile
+    }
   }
-
 }
 </script> 
 
@@ -42,9 +65,13 @@ export default {
     border-radius: 10px;
     margin-left: 20px;
   }
-  .listCover img,.listCreatorPic img{
+  .listCover img{
     width: 100%;
     border-radius: 5px;
+  }
+  .listCreatorPic img{
+    width: 100%;
+    border-radius: 50%;
   }
   .theListInfo{
     width: 150px;
@@ -59,21 +86,32 @@ export default {
     width: 30px;
   }
   .listCreatorName{
-    margin-left: 5px;
-    margin-top: 6px;
-    font-size:16px;
-  }
-  .listOperation{
-    margin-top: 22px;
+    margin-left: 8px;
+    font-size:11px;
+    display: flex;
+    align-items: center;
   }
   .listHeart{
     font-size: 20px;
+    color: var(--icon-color);
   }
-  .likedNum,.fenxiang{
-    margin-left: 4px;
+  .likedNum,.shareButton{
+    margin-left: 7px;
+    color: var(--icon-color);
+
   }
-  .listShare{
-    font-size: 20px;
-    margin-left: 15px;
+  .listDescription{
+    font-size: 10px;
+    margin-top: 28px;
+  }
+  .chevron-right{
+    margin-left: 5px;
+  }
+  .opration{
+    width: 80%;
+    display: flex;
+    margin-left: 20px;
+    margin-top: 15px;
+    justify-content: space-between;
   }
 </style>

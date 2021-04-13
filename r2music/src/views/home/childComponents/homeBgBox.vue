@@ -121,9 +121,5 @@
 .singerName,.albumName{
   color:var(--color-high-text);
 }
-.ellipsis{
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+
 </style>

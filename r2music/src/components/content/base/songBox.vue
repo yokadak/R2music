@@ -1,7 +1,8 @@
 <template>
 <div class="songBoxWrapper">
-  <div class="songBox" v-for="item of songs" :key="item.id">
+  <div class="songBox" v-for="(item,index) of songs" :key="index">
       <div class="aSong">
+        <div class="songIndex" v-if="isShowIndex"><slot name="songIndex">{{index + 1}}</slot></div>
         <info class="theSong">
           <div slot="infoAbove" class="theName ellipsis">{{item.name}}</div>
           <div slot="infoBelow" class="SingerAalbum ellipsis">{{item.singer}}&nbsp;·&nbsp;{{item.album}}</div>
@@ -26,6 +27,11 @@ export default {
         default(){
           return[]
         }
+      },
+    },
+    data() {
+      return {
+        isShowIndex: this.$route.path === '/songList'? true : false
       }
     },
   mounted() {
@@ -38,6 +44,7 @@ export default {
 <style>
 .songBoxWrapper{
   width: 100%;
+  padding-bottom: 20px;
 }
   .songBox{
     width: 90%;
@@ -48,6 +55,11 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 10px;
+  }
+  .songIndex{
+    margin-right: 18px;
+    font-size: 18px;
+    color: var(--color-high-text)
   }
   .theSong{
     flex:1;
@@ -74,10 +86,5 @@ export default {
     justify-content: center;
     font-size: 20px;
   }
-  .ellipsis{
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 
 </style>

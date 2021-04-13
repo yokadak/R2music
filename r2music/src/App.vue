@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view></router-view>
+    <!-- <listDetail></listDetail> -->
     <!-- <home></home> -->
     <!-- <swiperTestY></swiperTestY> -->
     <!-- <home></home> -->
@@ -24,6 +25,7 @@
   import singerPage from './views/singer/singerPage'
   import userCenter from './views/userCenter/userCenter'
   import login from './views/login/login'
+  import listDetail from './views/songList/listDetail'
 export default {
   name:'app',
   components:{  
@@ -37,6 +39,7 @@ export default {
     singerPage,
     userCenter,
     login,
+    listDetail,
   }
 }
 </script>
