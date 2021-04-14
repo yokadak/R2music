@@ -47,11 +47,27 @@ const routes = [
   },
   {
     path:"/songList",
+    name:'songList',
     component:listDetail
   },
   {
-    path:"/myLikedSongs",
+    path:"/myLiked/Songs",
     name:'myLikedSongs',
+    component:listDetail
+  },
+  {
+    path:"/myLiked/Albums",
+    name:'myLikedAlbums',
+    component:listDetail
+  },
+  {
+    path:"/myLiked/PlayLists",
+    name:'myLikedPlayLists',
+    component:listDetail
+  },
+  {
+    path:"/songList/albumDetail",
+    name:'albumDetail',
     component:listDetail
   },
 

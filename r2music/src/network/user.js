@@ -28,7 +28,7 @@ export function getLikedAlbums(){
     url:'/album/sublist',
   })
 }
-export function getLikedPlayList(uid){
+export function getlikedPlayLists(uid){
   return request({
     url:'/user/playlist',
     params:{

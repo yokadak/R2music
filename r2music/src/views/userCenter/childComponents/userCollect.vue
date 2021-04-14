@@ -8,19 +8,19 @@
     <infoBox id="likedSong" @click.native="toMyLikedSongs(likedSongs)">
       <div slot="pic" class="liked"><img :src="likedSongsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌曲</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>{{likedSongsCount}}首歌曲</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{likedSongs.length}}首歌曲</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-    <infoBox id="likedAlbum" @click.native="tomyLikedAlbums(likedAlbums)">
+    <infoBox id="likedAlbum" @click.native="toMyLikedAlbums(likedAlbums)">
       <div slot="pic" class="liked"><img :src="likedAlbumsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>专辑</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedAlbums.length}}张专辑</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-    <infoBox id="likedSonglist" @click.native="tomyLikedPlayLists(likedPlayLists)">
-      <div slot="pic" class="liked"><img :src="likedPlayListCover" alt=""></div>
+    <infoBox id="likedSonglist" @click.native="toMyLikedPlayLists(likedPlayLists)">
+      <div slot="pic" class="liked"><img :src="likedPlayListsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌单</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>{{likedPlayListCount}}歌单</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{likedPlayLists.length}}歌单</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
   </div>
@@ -35,10 +35,8 @@ export default {
     infoBox
   },
   props:{
-    likedSongsCount:Number,
-    likedPlayListCount:Number,
     likedSongsCover:String,
-    likedPlayListCover:String,
+    likedPlayListsCover:String,
     likedAlbumsCover:String,
     likedSongs:Array,
     likedAlbums:Array,
@@ -46,14 +44,17 @@ export default {
   },
   
   methods: {
-    toMyLikedSongs(liked){
-      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:liked}})
+    toMyLikedSongs(Songs){
+      // console.log(Songs)
+      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:Songs}})
     },
-    tomyLikedAlbums(liked){
-      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:liked}})
+    toMyLikedAlbums(Albums){
+      // console.log(Albums)
+      this.$router.push({name:'myLikedAlbums',params:{myLikedAlbums:Albums}})
     },
-    tomyLikedPlayLists(liked){
-      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:liked}})
+    toMyLikedPlayLists(PlayLists){
+      // console.log(PlayLists)
+      this.$router.push({name:'myLikedPlayLists',params:{myLikedPlayLists:PlayLists}})
     }
   },
 }

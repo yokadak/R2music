@@ -12,7 +12,7 @@
       </div>
       <div slot="infoBelow" class="listDescription ellipsis">
         <span>{{playListDetail.description || "暂无简介"}}</span>
-        <span class="chevron-right"><i class="fa fa-chevron-right"></i></span>
+        <span class="angle-right"><i class="fa fa-angle-right"></i></span>
       </div>
     </info>
   </div>
@@ -104,7 +104,7 @@ export default {
     font-size: 10px;
     margin-top: 28px;
   }
-  .chevron-right{
+  .angle-right{
     margin-left: 5px;
   }
   .opration{

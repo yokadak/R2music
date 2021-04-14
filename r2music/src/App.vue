@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- <keep-alive></keep-alive> -->
     <router-view></router-view>
     <!-- <listDetail></listDetail> -->
     <!-- <home></home> -->
@@ -11,6 +12,8 @@
     <!-- <singerPage></singerPage> -->
     <!-- <userCenter></userCenter> -->
     <!-- <login></login> -->
+    <!-- <infoBox></infoBox> -->
+    <!-- <info></info> -->
   </div>
 </template>
 
@@ -25,6 +28,8 @@
   import singerPage from './views/singer/singerPage'
   import userCenter from './views/userCenter/userCenter'
   import login from './views/login/login'
+  import infoBox from 'components/content/base/infoBox'
+  import info from 'components/content/base/info'
   import listDetail from './views/songList/listDetail'
 export default {
   name:'app',
@@ -40,6 +45,8 @@ export default {
     userCenter,
     login,
     listDetail,
+    infoBox,
+    info,
   }
 }
 </script>

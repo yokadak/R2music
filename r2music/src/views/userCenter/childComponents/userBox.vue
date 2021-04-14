@@ -4,12 +4,12 @@
         <div class="content">
           <userInfoBox class="userInfoBox"></userInfoBox>
           <userCollect class="userCollect"
-          :likedSongsCount = 'likedSongsCount'
           :likedAlbums = 'likedAlbums'
+          :likedSongs = 'likedSongs'
+          :likedPlayLists = 'likedPlayLists'
           :likedAlbumsCover = 'likedAlbumsCover'
-          :likedPlayListCount = 'likedPlayListCount'
           :likedSongsCover = 'likedSongsCover'
-          :likedPlayListCover = 'likedPlayListCover'
+          :likedPlayListsCover = 'likedPlayListsCover'
           ></userCollect>
           <userOwnList class="userOwnList"
           :ownPlayList = 'ownPlayList'
@@ -29,9 +29,10 @@
     import {getUserInfo} from "network/user"
     import {getLikedMusicIds} from "network/user"
     import {getLikedAlbums} from "network/user"
-    import {getLikedPlayList} from "network/user"
+    import {getlikedPlayLists} from "network/user"
     import {getPlayListData} from "common/js/handleApiData"
     import {getPlayListSongInfo} from "common/js/handleApiData"
+    import {getWantedAlbumInfo} from "common/js/handleApiData"
     import {getSubCount} from "network/user"
     import {getSongsDetail} from "network/songs"
 
@@ -46,22 +47,19 @@ export default {
   data() {
     return {
       uid:this.$store.state.user.id,
-      likedSongsCount:0,
-      likedSongsIds:[],
-      likedSongs:[],
-      likedPlayListCount:0,
       ownPlayListCount:0,
       ownPlayList:[],
-      likedPlayList:[],
+      likedSongs:[],
+      likedSongsCover:'',
       likedAlbums:[],
       likedAlbumsCover:'',
-      likedSongsCover:'',
-      likedPlayListCover:'',
+      likedPlayLists:[],
+      likedPlayListsCover:'',
     }
   },
   created() {
     this._getSubCount()
-    this._getlikedPlayList(this.uid)
+    this._getlikedPlayLists(this.uid)
     this._getUserInfo(this.uid)
     this._getLikedMusicIds(this.uid)
     this._getLikedAlbums()
@@ -69,7 +67,6 @@ export default {
   methods: {
     _getSubCount(){
       getSubCount().then((res) => {
-        this.likedPlayListCount = res.subPlaylistCount
         this.ownPlayListCount = res.createdPlaylistCount
       })
     },
@@ -81,38 +78,47 @@ export default {
     },
     _getLikedMusicIds(uid){
       getLikedMusicIds(uid).then((res) => {
-        this.likedSongsCount = res.ids.length
-        this.likedSongsIds = res.ids
-        res.ids.map((item)=>{
-          getSongsDetail(item).then((res) =>{
-            let song = getPlayListSongInfo(res.songs[0])
-            this.likedSongs.push(song)
-            console.log(this.likedSongs)
+        const likedSongsIds = res.ids.join()
+        getSongsDetail(likedSongsIds).then((res)=>{
+          this.likedSongs = res.songs.map((item) =>{
+            return getPlayListSongInfo(item)
           })
+          this.likedSongsCover = this.likedSongs[0].image
+          console.log (this.likedSongs)
         })
+        // console.log(...res.ids)
+        // this.likedSongs = 
+        // res.ids.map((item)=>{
+        //   getSongsDetail(item).then((res) =>{
+        //     let song = getPlayListSongInfo(res.songs[0])
+        //     this.likedSongs.push(song)
+        //     console.log(this.likedSongs)
+        //   })
+        // })
       })
     },
     _getLikedAlbums(){
       getLikedAlbums().then((res) => {
-        this.likedAlbums = res.data
+        this.likedAlbums = res.data.map((item) =>{
+          return getWantedAlbumInfo(item)
+        })
         this.likedAlbumsCover = res.data[0].picUrl
         // console.log(this.likedAlbums)
       })
     },
-    _getlikedPlayList(uid){
-      getLikedPlayList(uid).then((res) => {
+    _getlikedPlayLists(uid){
+      getlikedPlayLists(uid).then((res) => {
         const cutNum = this.ownPlayListCount 
         this.ownPlayList = res.playlist.slice(0,cutNum)
         .map((item)=>{
           return getPlayListData(item)
         })
-        this.likedPlayList = res.playlist.slice(cutNum)
+        this.likedPlayLists = res.playlist.slice(cutNum)
         .map((item)=>{
           return getPlayListData(item)
         })
-        this.likedSongsCover = this.ownPlayList[0].image
-        this.likedPlayListCover = this.likedPlayList[0].image
-        console.log(this.likedPlayList)
+        this.likedPlayListsCover = this.likedPlayLists[0].image
+        // console.log(this.likedPlayLists)
       })
     },
   },

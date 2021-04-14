@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     toListDetail(id){
-      this.$router.push({path:'/songList',query: {playListId:id}})
+      this.$router.push({name:'songList',params: {playListId:id}})
       // console.log(id)
     }
   },
@@ -53,7 +53,6 @@ export default {
     font-size: 11px;
     color:var(--color-high-text);
     margin-top: 3px;
-    font-weight: bold;
   }
   .ownListCharBelow{
     font-size: 11px;

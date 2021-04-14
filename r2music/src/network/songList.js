@@ -9,3 +9,12 @@ export function getPlayListDetail(id) {
     }
   })
 }
+//请求专辑歌曲
+export function getAlbumSongs(id) {
+  return request({
+    url: '/album',
+    params:{
+      id
+    }
+  })
+}

@@ -27,14 +27,23 @@ export default {
   .infoAbove{
     order:1;
     width: 100%;
+    /* background-color: red;
+    height: 100px; */
   }
   .infoBetween{
     order:2;
     width: 100%;
+    /* background-color: blue;
+    height: 100px; */
+
   }
   .infoBelow{
     order:3;
     width: 100%;
+    /* background-color: green;
+    height: 100px; */
+
+
   }
 
 </style>

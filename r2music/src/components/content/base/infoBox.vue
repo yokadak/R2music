@@ -27,7 +27,7 @@ export default {
     margin:auto;
     border-radius: 5px;
     overflow: hidden;
-    margin-top: 7px;
+    margin-top: 10px;
     align-items: center; 
   }
   .infoLeft{
