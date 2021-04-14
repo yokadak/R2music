@@ -67,9 +67,12 @@ export default {
       myLikedPlayLists:this.$route.params.myLikedPlayLists,
     }
   },
+
   created() {
-    // console.log
-    this.judgeRoute()
+    this.$nextTick(()=>{
+      this.judgeRoute()
+      console.log(this.routeName)
+    })
   },
   methods: {
     judgeRoute(){
@@ -78,9 +81,10 @@ export default {
         this.listItem = '首歌曲'
       }
       if(this.routeName === 'albumDetail'){
+        console.log('changed')
         // this._getAlbumDetail(this.albumId)
         // this.listItem = '首歌曲'
-        console.log("iiii")
+        // console.log("iiii")
       }
       if(this.routeName === 'myLikedSongs'){
         this.list = this.myLikedSongs
@@ -123,7 +127,6 @@ export default {
     toDetail(id){
       console.log('hh')
       this.$router.push({name:'albumDetail',params: {albumId:id}})
-      console.log('hh')
     },
   },
 }

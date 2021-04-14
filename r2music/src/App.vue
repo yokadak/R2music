@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <!-- <keep-alive></keep-alive> -->
-    <router-view></router-view>
+    <!-- <keep-alive include="listDetail">
+    </keep-alive> -->
+    <router-view :key="this.$route.path + new Date()"></router-view>
     <!-- <listDetail></listDetail> -->
     <!-- <home></home> -->
     <!-- <swiperTestY></swiperTestY> -->
@@ -47,7 +48,7 @@ export default {
     listDetail,
     infoBox,
     info,
-  }
+  },
 }
 </script>
 <style lang="less">
