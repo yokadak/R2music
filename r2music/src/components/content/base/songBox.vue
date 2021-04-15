@@ -5,7 +5,8 @@
         <div class="songIndex" v-if="isShowIndex"><slot name="songIndex">{{index + 1}}</slot></div>
         <info class="theSong">
           <div slot="infoAbove" class="theName ellipsis">{{item.name}}</div>
-          <div slot="infoBelow" class="SingerAalbum ellipsis">{{item.singer}}&nbsp;·&nbsp;{{item.album}}</div>
+          <div slot="infoBelow" class="SingerAalbum ellipsis">{{item.singer}}&nbsp;&nbsp;
+            <span v-if="isShowAlbum">·&nbsp;&nbsp;{{item.album}}</span></div>
         </info> 
         <div class="deletesong"><slot name="deletesong"></slot></div>
         <div class="songOperation"><span class="fa fa-ellipsis-h"></span></div>
@@ -31,7 +32,8 @@ export default {
     },
     data() {
       return {
-        isShowIndex: this.$route.path === '/songList'? true : false
+        isShowIndex: this.$route.name === 'songList' || 'albumDetail'? true : false,
+        isShowAlbum: this.$route.name === 'albumDetail'? false : true
       }
     },
 }

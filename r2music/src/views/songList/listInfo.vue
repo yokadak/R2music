@@ -7,8 +7,8 @@
     <info class="theListInfo">
       <div slot="infoAbove" class="listName ellipsis">{{playListDetail.name}}</div>
       <div slot="infoBetween" class="listCreator">
-        <div class="listCreatorPic"><img :src="userInfo.avatarUrl" alt=""></div> 
-        <div class="listCreatorName ellipsis">{{playListDetail.creator}}</div>
+        <div class="listCreatorPic"><img :src="pic" alt=""></div> 
+        <div class="listCreatorName ellipsis">{{playListDetail.creator || playListDetail.singer}}</div>
       </div>
       <div slot="infoBelow" class="listDescription ellipsis">
         <span>{{playListDetail.description || "暂无简介"}}</span>
@@ -43,6 +43,12 @@ export default {
         return{}
       }
     }
+  },
+  computed:{
+    pic:function(){
+      return this.$route.name === 'songList' ? this.playListDetail.creatorPic :this.userInfo.avatarUrl
+    }
+    
   },
   data() {
     return {

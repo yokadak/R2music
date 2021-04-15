@@ -11,14 +11,14 @@ export default class Asong{
   }
 }
 export class Album{
-  constructor({id,name,size,image,publishTime,singer}){
+  constructor({id,name,size,image,publishTime,singer,description}){
     this.id = id
     this.singer = singer
     this.name = name
     this.size = size  
     this.publishTime = publishTime
     this.image = image
-    // this.publishTime = publishTime || null
+    this.description = description || null
   }
 }
 export class Singer{
@@ -34,7 +34,7 @@ export class Singer{
   }
 }
 export class PlayList{
-  constructor({id,name,creator,image,playCount,subscribedCount,subscribed,description, songsCount}){
+  constructor({id,name,creator,image,playCount,subscribedCount,subscribed,description, songsCount, creatorPic}){
     this.id = id
     this.name = name
     this.creator = creator
@@ -44,6 +44,7 @@ export class PlayList{
     this.playCount = playCount
     this.description = description
     this.songsCount = songsCount
+    this.creatorPic = creatorPic
   }
 }
 //对歌手信息的处理，因为可能是多个歌手
@@ -74,7 +75,8 @@ export function getWantedAlbumInfo(album){
     singer: getSingerName(album.artists),
     size: album.size,
     image: album.picUrl,
-    publishTime: album.publishTime
+    publishTime: album.publishTime,
+    description: album.description
   })
 }
 export function getSearchInfo(theSong){
@@ -110,6 +112,7 @@ export function getPlayListData(playList){
   return new PlayList({
     id: playList.id,
     creator: playList.creator.nickname,
+    creatorPic: playList.creator.avatarUrl,
     name: playList.name,
     image: playList.coverImgUrl,
     playCount: playList.playCount,
