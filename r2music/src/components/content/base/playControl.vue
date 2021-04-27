@@ -36,7 +36,7 @@
     align-items: center;
   }
    .playOp3{
-    font-size: 40px;
+    font-size: 50px;
   }
     .playOp2,.playOp4{
     font-size: 28px;

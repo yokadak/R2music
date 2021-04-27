@@ -32,6 +32,9 @@ const routes = [
   {
     path:"/userCenter",
     component:userCenter,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
   },
   {
     path:"/login",
@@ -39,6 +42,7 @@ const routes = [
   },
   {
     path:"/player",
+    name:"player",
     component:player
   },
   {
@@ -48,27 +52,42 @@ const routes = [
   {
     path:"/songList",
     name:'songList',
-    component:listDetail
+    component:listDetail,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
   },
   {
     path:"/myLiked/Songs",
     name:'myLikedSongs',
-    component:listDetail
+    component:listDetail,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
   },
   {
     path:"/myLiked/Albums",
     name:'myLikedAlbums',
-    component:listDetail
+    component:listDetail,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
   },
   {
     path:"/myLiked/PlayLists",
     name:'myLikedPlayLists',
-    component:listDetail
+    component:listDetail,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
   },
   {
     path:"/songList/albumDetail",
     name:'albumDetail',
-    component:listDetail
+    component:listDetail,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
   },
 
 

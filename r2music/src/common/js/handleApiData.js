@@ -1,5 +1,6 @@
 //创建一个类用于保存歌曲的基本信息，
 //做这一步是为了从复杂的数据中提取出我们想要的信息
+//创建歌曲类
 export default class Asong{
   constructor({id,name,singer,album,image,publishTime}){
     this.id = id
@@ -59,6 +60,8 @@ function getSingerName(arr){
 
 //从复杂的数据中提取出我们想要的信息
 //传入的实际参数是data里的每一个对象（每一首歌）
+
+//过滤数据的方法中返回该类的实例
 export function getWantedSongInfo(theSong){
   return new Asong({
     id: theSong.id,

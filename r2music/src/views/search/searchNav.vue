@@ -18,13 +18,23 @@
       <div class="searchLabel-3"><slot name = "searchLabel-3">歌手</slot></div>
       <div class="searchLabel-4"><slot name = "searchLabel-4">歌单</slot></div>
     </div>
-    <songBox :songs = "songsResult" v-if="isShowRes"></songBox>  
+    <scroll class="resultWrapper"  v-if="isShowRes">
+      <div class="result">
+        <songBox :songs = "songsResult"></songBox> 
+      </div>
+    </scroll>
+    <playControl class="searchPlayControl"></playControl>
+
   </div>
 
 </template>
 
 <script>
   import songBox from 'components/content/base/songBox'
+  import playControl from 'components/content/base/playControl'
+  import scroll from 'components/common/scroll/scroll'
+
+
 
   import {debounce} from 'common/js/utils.js'
   //网络请求，搜索结果
@@ -39,6 +49,8 @@ export default {
   name:"searchNav",
   components:{
     songBox,
+    playControl,
+    scroll,
   },
   props: {
     placeholder: {
@@ -200,6 +212,18 @@ export default {
   .searchLabel-1, .searchLabel-2,.searchLabel-3,.searchLabel-4{
     flex:1;
     line-height: 30px;  
+  }
+  .resultWrapper{
+    overflow: hidden;
+    height: calc(100vh - 145px);
+    margin-top: 15px;
+  }
+  .searchPlayControl{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 55px;
   }
 
 </style>

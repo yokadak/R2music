@@ -1,19 +1,21 @@
 <template>
-   <div class="bgBox">
-    <img src="~assets/img/cover/ymo.jpg" alt="">
-    <div class="playerBoxCenter"><homeInfo></homeInfo></div>
-    <operationBar class="playerOperationBar">
-      <div slot="operation-1" class ="boxOp"><span class="fa fa-volume-down"></span></div>
-      <div slot="operation-3" class="biggerIcon"> <span class="fa fa-heart-o"></span></div>
-      <div slot="operation-5" class ="boxOp"><span class="fa fa-ellipsis-h"></span></div>
-    </operationBar>
-    <progressBar></progressBar>
-    <playControl class="playerPlayControl"></playControl>   
+   <div>
+    <img :src="song.image" alt="">
+    <div class="playerBoxCenter">
+      <div class="playerInfo">
+        <info>
+          <div slot="infoAbove" class="ellipsis">
+          <span class="songName">{{song.name}}</span></div>
+          <div slot="infoBetween" class="ellipsis">
+          <span class="singerName">{{song.singer}}</span></div>
+        </info>
+      </div>
+    </div> 
 </div> 
 </template>
 
 <script>
-  import homeInfo from 'views/home/childComponents/homeInfo'
+  import info from 'components/content/base/info'
   import operationBar from 'components/content/base/operationBar'
   import playControl from 'components/content/base/playControl'
   import progressBar from './progressBar'
@@ -21,11 +23,17 @@
   export default {
     name:"playerBgBox",
     components:{
-      homeInfo,
       operationBar,
       progressBar,
-      playControl
-  }
+      playControl,
+      info
+  },
+    props:{
+      song:{
+        type:Object,
+        default:{}
+      }
+    }
 
 }
 </script>
@@ -45,9 +53,28 @@
   }
   .playerBoxCenter{
     display: flex;
-    height:95px;
+    height:75px;
     margin-top: 10px;
     /* background-color:blue; */
+  }
+  .playerInfo{
+    width: 70%;
+    height:100%;
+    margin-left: 7px;
+  }
+  .fa-music,.fa-user,.fa-dot-circle-o{
+    font-size: 20px;
+    color:var(--icon-color);
+    margin-right: 10px;
+    margin-left: 5px;
+  }
+  .songName{
+  font-weight:bold;
+  color:var(--color-high-text);
+  }
+  .singerName,.albumName{
+    font-size: 14px;
+    color:var(--color-high-text);
   }
 
 </style>

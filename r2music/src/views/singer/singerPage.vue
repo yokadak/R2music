@@ -17,7 +17,11 @@
     </div>
 
     <div class="worksSwitch"><switchPageBlock><div slot="switchRight">专辑</div></switchPageBlock></div>
-    <songBox class="singerSongBox" :songs= "singerSongs"></songBox>  
+    <scroll class="singerSongs">
+      <div>
+        <songBox class="singerSongBox" :songs= "singerSongs"></songBox>  
+      </div>
+    </scroll>
     <playControl class="singerPagePlayControl"></playControl>
   </div>
   
@@ -27,6 +31,7 @@
   import navTop from 'components/common/navBar/navTop'
   import info from 'components/content/base/info'
   import switchPageBlock from 'components/content/base/switchPageBlock'
+  import scroll from 'components/common/scroll/scroll'
   import songBox from 'components/content/base/songBox'
   import playControl from 'components/content/base/playControl'
   //网络请求
@@ -45,7 +50,8 @@ export default {
     playControl,
     switchPageBlock,
     songBox,
-    info
+    info,
+    scroll,
   },
   data() {
     return {
@@ -106,6 +112,10 @@ export default {
     position: fixed;
     z-index: 1;
     background-color:rgba(29,23,23,0.10);
+  }
+  .singerSongs{
+    overflow: hidden;
+    height: calc(100vh - 415px);
   }
   .singerBox{
     width:100%;

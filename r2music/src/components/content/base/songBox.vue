@@ -1,7 +1,7 @@
 <template>
 <div class="songBoxWrapper">
-  <div class="songBox" v-for="(item,index) of songs" :key="index">
-      <div class="aSong">
+  <div class="songBox" v-for="(item,index) of songs" :key="item.id">
+      <div class="aSong" @click="toPlayer(item)">
         <div class="songIndex" v-if="isShowIndex"><slot name="songIndex">{{index + 1}}</slot></div>
         <info class="theSong">
           <div slot="infoAbove" class="theName ellipsis">{{item.name}}</div>
@@ -34,6 +34,11 @@ export default {
       return {
         isShowIndex: this.$route.name === 'songList' || 'albumDetail'? true : false,
         isShowAlbum: this.$route.name === 'albumDetail'? false : true
+      }
+    },
+    methods: {
+      toPlayer(item){
+        this.$router.push({name:'player',params: {song:item}})
       }
     },
 }
