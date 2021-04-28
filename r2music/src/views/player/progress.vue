@@ -24,9 +24,14 @@ export default {
     progress: {
       type: Number,
       default: 50,
-      validator: function(value) {
-        return value >= 0 && value <= 100;
-      }
+    },
+    timeNow: {
+      type: String,
+      default: "00:00",
+    },
+    timeEnd: {
+      type: String,
+      default: "00:00",
     },
   },
   data: function() {
