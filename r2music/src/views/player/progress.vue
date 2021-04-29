@@ -1,5 +1,5 @@
 <template>
-  <div class="progressBar" ref="progressBar">
+  <div class="progressBar" ref="track">
     <div class="progress" 
     @click="setProgress" 
     :style="{width:innerProgress+'%'}"
@@ -64,6 +64,7 @@ export default {
           ((e.clientX - this.draggingOriginPoint) / parseInt(width)) * 100;
         this.innerProgress < 0 && (this.innerProgress = 0);
         this.innerProgress > 100 && (this.innerProgress = 100);
+        this.timeNow = 
         this.$emit("progressChanging", this.innerProgress);
       }
     },

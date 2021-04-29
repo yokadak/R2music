@@ -12,8 +12,11 @@
       <div slot="operation-3" class="biggerIcon"> <span class="fa fa-heart-o"></span></div>
       <div slot="operation-5" class ="boxOp"><span class="fa fa-ellipsis-h"></span></div>
     </operationBar>
-    <progressBar :timeEnd= "songTime" :timeNow= "currentTime"
-    :progress = "progress"></progressBar>
+    <progressBar
+    :progress = "progress"
+    :duration = "duration"
+    :currentTime = "currentTime"
+    @progressChanged="changeCurrentTime"></progressBar>
     <playControl class="playerPlayControl"></playControl>
   </div>
 </div>
@@ -28,6 +31,7 @@
   import progressBar from './progressBar'
   //网络请求导入
   import {getSongUrl} from "network/songs"
+  //工具函数
   import {getSongTime} from "common/js/utils"
   import {debounce} from 'common/js/utils.js'
 
@@ -46,12 +50,12 @@
    data() {
      return {
        song:this.$route.params.song,
-       songUrl:'',
-       songTime:'',
-       currentTime:'',
-       progress:0,
-       playing:false,
-       volume: 100,
+       songUrl:'',//歌曲音源链接
+       duration:0,//歌曲持续时间，单位秒
+       currentTime:0,//歌曲当前时间，单位秒
+       progress:0,//当前歌曲进度
+       playing:false,//是否播放
+       volume: 100,//音量
      }
    },
    watch:{
@@ -65,11 +69,11 @@
    mounted() {
      let music = this.$refs.music
      music.addEventListener("durationchange",e =>{
-       this.songTime = getSongTime(e.target.duration)
+       this.duration = e.target.duration
      })
      music.addEventListener("timeupdate",e =>{
-       this.currentTime = getSongTime(e.target.currentTime)
-       this.progress = (e.target.currentTime / e.target.duration) * 100
+       this.currentTime = e.target.currentTime
+       this.progress = (this.currentTime / this.duration) * 100
       //  console.log(this.progress)
      })
      music.addEventListener("playing", e => {
@@ -102,8 +106,9 @@
        this.volume = newVolume
      },
      changeCurrentTime(newProgress) {
-       this.progress = newProgress;
-       this.currentTime = (newProgress / 100) * this.duration;
+       this.progress = newProgress
+       this.progress >= 0 && this.progress < 100 && (this.startPlay())
+       this.currentTime = (newProgress / 100) * this.duration
        this.$refs.music.currentTime = this.currentTime;
     },
    },

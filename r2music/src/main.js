@@ -2,18 +2,22 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-//事件总线
-Vue.prototype.$bus = new Vue()
-
-//图片懒加载
 import VueLazyLoad from 'vue-lazyload'
-Vue.use(VueLazyLoad,{loading:require("./assets/img/cover/loadingbg.png")})
 //引入swiper
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/swiper-bundle.css'
-Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 //引入font-awesome
 import 'font-awesome/css/font-awesome.css';
+//引入FastClick
+import FastClick from 'fastclick'
+
+//初始化FastClick实例。在页面的DOM文档加载完成后
+FastClick.attach(document.body)
+//事件总线
+Vue.prototype.$bus = new Vue()
+//图片懒加载
+Vue.use(VueLazyLoad,{loading:require("./assets/img/cover/loadingbg.png")})
+Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 
 Vue.config.productionTip = false
 Vue.prototype.$bus = new Vue()

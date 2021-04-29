@@ -1,43 +1,48 @@
 <template>
   <div class="progressBar">
-    <div class="backgroundTrack">
+    <div class="backgroundTrack" ref="backgroundTrack" @click="jumpProgress">
     </div>
     <div class="progress" ref="track"
     :style="progressStyle"
+    @click="jumpProgress"
     >
     </div>
     <div class="progressControl"
-    @mousedown="startDragging"
+    @touchstart="startDragging"
     :style="progressControlStyle"
     >
     </div>
     <div class="songTime">
-      <span>{{timeNow}}</span>
-      <span>{{timeEnd}}</span>
+      <span>{{ timeNow || getTimeNow()}}</span>
+      <span>{{getTimeEnd()}}</span>
     </div>
   </div>
 </template>
 
 <script>
+  import {getSongTime} from "common/js/utils"
+
 export default {
   name:"progressBar",
   props:{
     progress: {
       type: Number,
      },
-    timeNow: {
-      type: String,
-      default: "00:00",
+    duration: {
+      type: Number,
+      default:0,
     },
-    timeEnd: {
-      type: String,
-      default: "00:00",
+    currentTime:{
+      type:Number,
+      default:0,
     },
   },
 
   data() {
     return {
+      timeNow:null,//实现拖动进度条，数组跟着改变
       startPlay:false,
+      playing:true,
       progressControlStyle:'',
       progressStyle:'',
       trackProgress: this.progress,//HTML进度条(div)进度，progress是歌曲进度
@@ -47,40 +52,62 @@ export default {
   },
   mounted() {
     setInterval(()=>{
-      this.progressControlStyle = `left:${this.progress}%`
-      this.progressStyle = `width:${this.progress}%`
-      // console.log(this.progressControlStyle)
+      if(!this.isDragging){
+        this.progressStyle = `width:${this.progress}%`
+        this.progressControlStyle = `left:${this.progress}%;`
+      }
     },1000)
   },
   methods: {
+    getTimeNow(){
+      return getSongTime(this.currentTime)
+    },
+    getTimeEnd(){
+      return getSongTime(this.duration)
+    },
     progressChange(){
       console.log(this.$refs.progress.value)
     },
     startDragging(e){
-      console.log("strat")
       this.$emit("startDragging");
       this.isDragging = true;
-      this. draggingStartPoint = e.clientX;
-      this. draggingStartProgress = this.trackProgress;
-      document.addEventListener("mousemove", this.dragging);
-      document.addEventListener("mouseup", this.endDragging);
+      this.draggingStartPoint = e.touches[0].clientX;
+      this.draggingStartProgress = this.trackProgress;
+      document.addEventListener("touchmove", this.dragging);
+      document.addEventListener("touchend", this.endDragging);
     },
     dragging(e){
-
-        console.log(e.clientX)
-        // this.trackProgress =this.draggingStartProgress +
-        //   ((e.clientX - this.draggingStartPoint) / parseInt(width)) * 100;
-        // this.trackProgress < 0 && (this.trackProgress = 0);
-        // this.trackProgress > 100 && (this.trackProgress = 100);
-        // this.$emit("progressChanging", this.trackProgress);
-      
-
+      if(this.isDragging){
+        let backgroundTrack = this.$refs.backgroundTrack
+        const totalWidth = 297.25
+        // parseFloat(window.getComputedStyle(backgroundTrack).width)
+        this.trackProgress = this.draggingStartProgress +
+        ((e.touches[0].clientX -  this. draggingStartPoint) / totalWidth)*100
+        this.timeNow = getSongTime((this.trackProgress / 100) * this.duration)
+        this.trackProgress < 0 && (this.trackProgress = 0);
+        this.trackProgress > 100 && (this.trackProgress = 100);
+        this.progressControlStyle = `left:${this.trackProgress}%;
+           margin-top: -9px;
+          height: 15px;
+          width: 15px;`
+        this.progressStyle = `width:${this.trackProgress}%`
+      }
     },
     endDragging(e){
-
+      this.isDragging = false
+      this.timeNow = null
+      this.$emit("progressChanged", this.trackProgress);
+      document.removeEventListener("touchmove", this.dragging);
+      document.removeEventListener("touchend", this.endDragging);
+    },
+    jumpProgress(e){
+      const progressWidth = 297.25
+      this.trackProgress = (e.offsetX / progressWidth) * 100
+      this.progressStyle = `width:${this.trackProgress}%`
+      this.progressControlStyle = `left:${this.trackProgress}%;`
+      this.$emit("progressChanged", this.trackProgress);
     }
   },
- 
 }
 </script>
 
