@@ -57,6 +57,14 @@ function getSingerName(arr){
   // console.log(singerName.join('/'))
   return singerName.join('/')
 }
+//获取歌手的Id
+function getSingerId(arr){
+  let singerId = []
+  singerId = arr.map((item) =>{
+    return item.id
+  })
+  return singerId.join()
+}
 
 //从复杂的数据中提取出我们想要的信息
 //传入的实际参数是data里的每一个对象（每一首歌）
@@ -130,7 +138,9 @@ export function getPlayListSongInfo(theSong){
     id: theSong.id,
     name: theSong.name,
     singer: getSingerName(theSong.ar),
+    singerId: getSingerId(theSong.ar),
     album: theSong.al.name,
+    albumId: theSong.al.id,
     image: theSong.al.picUrl
   })
 }

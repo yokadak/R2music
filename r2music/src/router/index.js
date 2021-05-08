@@ -7,6 +7,7 @@ const player = () => import("../views/player/player.vue")
 const search = () => import("../views/search/search.vue") 
 const login = () => import("../views/login/login.vue") 
 const listDetail = () => import("../views/songList/listDetail.vue") 
+const singerPage = () => import("../views/singer/singerPage.vue") 
 //解决报错
 const originalPush = VueRouter.prototype.push
    VueRouter.prototype.push = function push(location) {
@@ -85,6 +86,14 @@ const routes = [
     path:"/songList/albumDetail",
     name:'albumDetail',
     component:listDetail,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
+  },
+  {
+    path:"/singer",
+    name:'singerPage',
+    component:singerPage,
     meta:{
       keepAlive: true //需要被缓存
     }

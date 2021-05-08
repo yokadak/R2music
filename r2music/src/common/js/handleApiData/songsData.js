@@ -1,25 +1,5 @@
-import {request} from "./request"
-//获取歌曲详情
-export function getSongsDetail(ids){
-  return request({
-    url:'/song/detail',
-    params:{
-      ids
-    }
-  })
-}
-//获取歌曲url
-export function getSongUrl(id){
-  return request({
-    url:'/song/url',
-    params:{
-      id
-    }
-  })
-}
 //处理歌曲信息
-//创建一个类用于保存歌曲的基本信息，
-//做这一步是为了从复杂的数据中提取出我们想要的信息
+//创建一个类用于保存歌曲的基本信息，做这一步是为了从复杂的数据中提取出我们想要的信息
 //创建歌曲类
 export default class Asong{
   constructor({id,name,singer,singerId,album,albumId,image,publishTime}){
@@ -61,17 +41,5 @@ export function getWantedSongInfo(theSong){
     album: theSong.album.name,
     albumId: theSong.album.id,
     image: theSong.album.picUrl
-  })
-}
-//过滤歌单歌曲的详情信息
-export function getPlayListSongInfo(theSong){
-  return new Asong({
-    id: theSong.id,
-    name: theSong.name,
-    singer: getSingerName(theSong.ar),
-    singerId: getSingerId(theSong.ar),
-    album: theSong.al.name,
-    albumId: theSong.al.id,
-    image: theSong.al.picUrl
   })
 }

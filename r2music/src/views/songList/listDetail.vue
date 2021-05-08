@@ -8,8 +8,10 @@
     <scroll class="wrapper">
       <div class="content">
         <listInfo :playListDetail="playListDetail" v-if="isSongList || isAlbumDetail"></listInfo>
-        <div class="listCount">{{count}} {{listItem}} 上面空白为搜索功能占位</div>
-        <songBox :songs="list" v-if="isItemSongs"></songBox>
+        <div class="listCount">{{count}} {{listItem}}</div>
+        <songBox v-if="isItemSongs"
+        :songs="list"
+        ></songBox>
         <div class="LikedList" v-else>
           <infoBox v-for="item of list" :key="item.id" @click.native ="toDetail(item.id)">
             <div slot="pic" class="likedListPic"><img :src="item.image" alt=""></div>
@@ -37,7 +39,7 @@
   import {getPlayListDetail} from "network/songList"
   import {getAlbumDetail} from "network/songList"
   import {getPlayListData} from "common/js/handleApiData"
-  import {getPlayListSongInfo} from "common/js/handleApiData"
+  import {getPlayListSongInfo} from "network/songs"
   import {getWantedAlbumInfo} from "common/js/handleApiData"
  
 export default {
@@ -53,15 +55,15 @@ export default {
   },
   data() {
     return {
-      playListId:this.$route.params.playListId,
-      albumId:this.$route.params.albumId,
-      count:0,
-      listItem:'',
+      playListId:this.$route.params.playListId,//歌单Id
+      albumId:this.$route.params.albumId,//专辑Id
+      count:0,//列表项计数
+      listItem:'',//判断列表的内容是歌单专辑还是歌曲
       playListDetail:{},
-      list:[],
-      listIds:[],
+      list:[],//歌曲列表，未登录只能获取20首
+      listIds:[],//完整歌曲Id列表
       routeName:this.$route.name,
-      isItemSongs:true,
+      isItemSongs:true,//判断列表的内容是歌单专辑还是歌曲，默认是歌曲
       isSongList:this.$route.name === 'songList' ? true : false,
       isAlbumDetail:this.$route.name === 'albumDetail' ? true : false,
       title:this.$route.name === 'songList' ? "歌单" : "我喜欢",
@@ -77,6 +79,8 @@ export default {
       console.log(this.routeName)
     })
   },
+  //TODO:if判断改为Switch语句
+  //TODO:未登录获取完整歌单、专辑信息
   methods: {
     judgeRoute(){
       if(this.routeName === 'songList'){
@@ -89,6 +93,9 @@ export default {
       }
       if(this.routeName === 'myLikedSongs'){
         this.list = this.myLikedSongs
+        // this.listIds = this.list.map((item)=>{
+        //   return item.id
+        // })//已经登录可以获取到完整歌曲列表
         this.count = this.myLikedSongs.length
         this.listItem = '首歌曲'
       }
@@ -109,26 +116,30 @@ export default {
     _getplayListDetail(id){
       getPlayListDetail(id).then((res) =>{
         this.playListDetail = getPlayListData(res.playlist)
-        console.log(this.playListDetail)
+        // console.log(this.playListDetail)
         this.count = this.playListDetail.songsCount
         this.list = res.playlist.tracks.map((item) =>{
           return getPlayListSongInfo(item)
         })
+        // console.log(this.list)
         //未登录获取完整歌单音乐
         this.listIds = res.playlist.trackIds.map((item)=>{
           return item.id
         })
+        // console.log(this.listIds)
       })
     },
     _getAlbumDetail(id){
       getAlbumDetail(id).then((res) =>{
         const albumSongs = res.songs.map((item)=>{
+          this.listIds.push(item.id)//未登录获取完整专辑歌曲列表
           return getPlayListSongInfo(item)
         })
         const album = getWantedAlbumInfo(res.album)
         this.playListDetail = album
         this.list = albumSongs 
         this.count = albumSongs.length  
+        // console.log(this.list)
       })
     },
     toDetail(id){
@@ -152,7 +163,7 @@ export default {
     font-size: 16px;
     width: 85%;
     margin:auto;
-    margin-top: 65px;
+    margin-top: 15px;
   }
   .likedCount{
     font-size: 16px;

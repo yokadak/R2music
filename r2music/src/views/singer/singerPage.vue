@@ -10,7 +10,7 @@
       <div class="singerInfo">
         <info>
           <div slot="infoAbove" class="nameOfSinger">{{singerInfo.name}}</div>
-          <div slot="infoBelow">300.07万粉丝</div>
+          <div slot="infoBelow">暂时无法获取粉丝数</div>
         </info>
         <div class="followButton"><i class="fa fa-plus"></i><button>关注</button></div>
       </div>
@@ -35,13 +35,14 @@
   import songBox from 'components/content/base/songBox'
   import playControl from 'components/content/base/playControl'
   //网络请求
-  import {getSingerInfo} from "network/singer"
+  import {getSingerSongsAndInfo} from "network/singer"
   import {getSingerAlbums} from "network/singer"
+  import {getSingerDetail} from "network/singer"
   //处理数据的js导入（抽取歌曲有用信息)
   import {getWantedSingerSongs} from "common/js/handleApiData"
   import {getWantedSingerInfo} from "common/js/handleApiData"
   import {getWantedAlbumInfo} from "common/js/handleApiData"
-
+ //TODO:是否将处理搜索数据的函数提取出来
 
 export default {
   name:"singerPage",
@@ -56,24 +57,26 @@ export default {
   data() {
     return {
       singerInfo: [],
-      singerSongs: []
+      singerSongs: [],
+      singerId:this.$route.params.singerId,
     }
   },
   created() {
-    this._getSingerInfo(6452)
-    this._getSingerSongs(6452)
-    this._getSingerAlbums(6452)
+    this._getSingerSongs(this.singerId)
+    this._getSingerInfo(this.singerId)
+    this._getSingerAlbums(this.singerId)
+    this. _getSingerDetail(this.singerId)
   },
   methods: {
     _getSingerInfo(id){
-      getSingerInfo(id).then(res =>{
+      getSingerSongsAndInfo(id).then(res =>{
         let info = getWantedSingerInfo(res.artist)
         console.log(info)
         this.singerInfo = info
       })
     },
     _getSingerSongs(id){
-      getSingerInfo(id).then(res =>{
+      getSingerSongsAndInfo(id).then(res =>{
         let songs = res.hotSongs.map((item) =>{
           return getWantedSingerSongs(item)
         });
@@ -89,6 +92,11 @@ export default {
         console.log(albums)
       })
     },
+    _getSingerDetail(id){
+      getSingerDetail(id).then(res=>{
+      console.log(res);
+    })
+    }
   },
 
 }

@@ -1,8 +1,8 @@
 <template>
 <div id="player">
    <navTop>
-       <div slot="left"><span class="fa fa-angle-left"></span></div>
-       <div slot="center"> <switchPageBlock></switchPageBlock></div>
+       <div slot="left" @click="playPrevSong"><span class="fa fa-angle-left"></span></div>
+       <div slot="center" @click="playNextSong"><switchPageBlock></switchPageBlock></div>
   </navTop>
   <div class="bgBox">
     <playerBgBox :song ="song"></playerBgBox>
@@ -50,12 +50,17 @@
    data() {
      return {
        song:this.$route.params.song,
+       songIndex:this.$route.params.songIndex,
+       songs:this.$route.params.songs,//未登录只能获取歌单/专辑20首歌曲
        songUrl:'',//歌曲音源链接
        duration:0,//歌曲持续时间，单位秒
        currentTime:0,//歌曲当前时间，单位秒
        progress:0,//当前歌曲进度
        playing:false,//是否播放
        volume: 100,//音量
+       playList:[],//播放列表
+       playMode:'random',//播放模式，默认顺序播放
+       randomOrder:[],//随机播放是支持有序的，可返回上下曲，需要用数组保存顺序
      }
    },
    watch:{
@@ -111,6 +116,62 @@
        this.currentTime = (newProgress / 100) * this.duration
        this.$refs.music.currentTime = this.currentTime;
     },
+    //播放下一首
+    playNextSong(){
+      //判断播放列表是否只有一首歌
+      if(this.songs.length === 1){
+        this._getSongUrl(this.song.id)
+      }
+      else if(this.playMode === 'inOrder' || this.playMode === 'singleCycle'){
+        //顺序播放或者单曲循环
+        if(this.songIndex === this.songs.length - 1){
+          this.songIndex = -1
+        }
+        this._getSongUrl(this.songs[this.songIndex + 1].id)
+        this.song = this.songs[this.songIndex + 1 ]
+        this.songIndex += 1
+      }else{
+        //随机播放 取0至length-1索引,不允许和当前索引相同
+        const randomIndex = Math.floor(Math.random()*(this.songs.length))
+        if(this.songIndex === randomIndex){
+          this.playNextSong()
+        }else{
+          this.songIndex = randomIndex
+          this._getSongUrl(this.songs[this.songIndex].id)
+          this.song = this.songs[this.songIndex]
+          console.log(this.songIndex)
+          //记录随机播放的顺序，为了返回上一曲
+          // this.randomOrder.push(this.songIndex)
+          // console.log(this.randomOrder)
+        }
+      }
+
+    },
+    //播放上一首
+    playPrevSong(){
+      if(this.songs.length === 1){
+        this._getSongUrl(this.song.id)
+      }//顺序播放
+      else if(this.playMode === 'inOrder' || this.playMode === 'singleCycle'){
+        if(this.songIndex === 0){
+          this.songIndex = this.songs.length
+        }
+        this._getSongUrl(this.songs[this.songIndex - 1].id)
+        this.song = this.songs[this.songIndex - 1 ]
+        this.songIndex -= 1
+      }else{
+        //随机播放,如果随机播放列队不为空，记录上一首index
+        const randomIndex = Math.floor(Math.random()*(this.songs.length))
+        if(this.songIndex === randomIndex){
+          this.playNextSong()
+        }else{
+          this.songIndex = randomIndex
+          this._getSongUrl(this.songs[this.songIndex].id)
+          this.song = this.songs[this.songIndex]
+          console.log(this.songIndex)
+        }
+      }
+    }
    },
 }
 </script>

@@ -28,20 +28,19 @@
   </div>
 
 </template>
+  TODO:是否将处理搜索数据的函数提取出来
+  TODO:根据专辑id获取歌曲封面
 
 <script>
   import songBox from 'components/content/base/songBox'
   import playControl from 'components/content/base/playControl'
   import scroll from 'components/common/scroll/scroll'
-
-
-
   import {debounce} from 'common/js/utils.js'
   //网络请求，搜索结果
   import {getSearchResult} from "network/search"
   //抽取歌曲信息
-  import {getSearchInfo} from "common/js/handleApiData"
-  import {getWantedSongInfo} from "common/js/handleApiData"
+  import {getSearchInfo} from "common/js/handleApiData" 
+  import {getWantedSongInfo} from "network/songs"
 
 
 
@@ -69,7 +68,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.isShowRes)
+    // console.log(this.isShowRes)
   },
   computed:{
   },
@@ -77,7 +76,7 @@ export default {
     keywords(val,oldval){
       if(!val){
         this.isShowRes = false
-        console.log("nav")
+        // console.log("nav")
       }
     }
   },
@@ -107,7 +106,7 @@ export default {
          return getWantedSongInfo(item)
        })
        this.songsResult = songsList
-       console.log(songsList)
+      //  console.log(this.songsResult)
      })
     },
     getSongsResult(){
