@@ -17,6 +17,15 @@ export function getSongUrl(id){
     }
   })
 }
+//获取歌曲歌词
+export function getSongLyrics(id){
+  return request({
+    url:'/lyric',
+    params:{
+      id
+    }
+  })
+}
 //处理歌曲信息
 //创建一个类用于保存歌曲的基本信息，
 //做这一步是为了从复杂的数据中提取出我们想要的信息

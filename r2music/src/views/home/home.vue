@@ -3,7 +3,7 @@
   <homeNavTop path ='/userCenter'></homeNavTop>
   <homeLabel class="homeLabel"></homeLabel>
   <homeBgBox class="homeBgBox" :songs = "recommendSongs" path ='/player'></homeBgBox>
-  <playControl class="homePlayControl"></playControl>
+  <miniPlayer class="homePlayControl"></miniPlayer>
   <!-- <swiper :songs = "recommendSongs"></swiper> -->
   <!-- <search v-show="isShow"></search> -->
 </div>
@@ -14,7 +14,7 @@
   import homeNavTop from './childComponents/homeNavTop'
   import homeLabel from './childComponents/homeLabel'
   import homeBgBox from './childComponents/homeBgBox'
-  import playControl from 'components/content/base/playControl'
+  import miniPlayer from 'components/content/base/miniPlayer'
   import swiper from 'components/common/swiper/swiper'
   import search from '../search/search'
   //网络请求导入
@@ -28,7 +28,7 @@
      homeNavTop,
      homeLabel,
      homeBgBox,
-     playControl,
+     miniPlayer,
      swiper,
      search 
    },
@@ -69,8 +69,8 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
-    height: 55px;
+    bottom: 10px;
+    height: 45px;
   }
 
 
