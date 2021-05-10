@@ -4,6 +4,10 @@
        <div slot="left"><span class="fa fa-angle-down"></span></div>
        <div slot="center"><switchPageBlock></switchPageBlock></div>
   </navTop>
+  <lyricsPage v-if="gotLyrics"
+    :lyrics= "songLyrics" 
+    :transLyrics= "tansLyrics"
+  ></lyricsPage>
   <div class="bgBox">
     <playerBgBox :song ="song"></playerBgBox>
     <audio :src="songUrl" autoplay ref="music"></audio>
@@ -26,6 +30,7 @@
     :playStateIcon= "playStateIcon"
     :playModeIcon= "playModeIcon"
     ></playControl>
+ 
   </div>
 </div>
 </template>
@@ -34,9 +39,12 @@
   import navTop from 'components/common/navBar/navTop'
   import switchPageBlock from 'components/content/base/switchPageBlock'
   import playerBgBox from './playerBgBox'
+  import progressBar from './progressBar'
+  import lyricsPage from './lyricsPage'
+  import info from 'components/content/base/info'
   import operationBar from 'components/content/base/operationBar'
   import playControl from 'components/content/base/playControl'
-  import progressBar from './progressBar'
+
   //网络请求导入
   import {getSongUrl} from "network/songs"
   import {getSongLyrics} from "network/songs"
@@ -54,6 +62,8 @@
      playerBgBox,
      operationBar,
      progressBar,
+     lyricsPage,
+     info,
      playControl,
    },
    data()
@@ -65,6 +75,8 @@
        songUrl:'',//歌曲音源链接
        songLyrics:'',//歌曲歌词
        tansLyrics:undefined,//歌词翻译
+       gotLyrics:false,//是否获取到歌词
+       showLyrics:false,//是否显示歌词
        duration:0,//歌曲持续时间，单位秒
        currentTime:0,//歌曲当前时间，单位秒
        progress:0,//当前歌曲进度
@@ -126,20 +138,21 @@
      },
     _getSongLyrics(id){
       getSongLyrics(id).then(res =>{
-        console.log(res)
         if(!res.nolyric){
           // console.log(res.klyric.lyric)
           if(res.lrc.lyric === ''){
             this.songLyrics = '暂无歌词'
           }else{
+            this.gotLyrics = true;
             this.songLyrics = res.lrc.lyric
             this.tansLyrics = res.tlyric.lyric
+
           }
         }else if(res.nolyric){
           this.songLyrics = "此歌曲为没有填词的纯音乐，请您欣赏"
         }
-        console.log(this.songLyrics)
-        console.log(this.tansLyrics)
+        // console.log(this.songLyrics)
+        // console.log(this.tansLyrics)
        })
      },
      startPlay(){

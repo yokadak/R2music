@@ -72,7 +72,7 @@ export default {
     },
     _getUserInfo(uid){
       getUserInfo(uid).then((res) => {
-        console.log(res)
+        // console.log(res)
         // console.log(this.$store.state)
       })
     },
@@ -84,7 +84,7 @@ export default {
             return getPlayListSongInfo(item)
           })
           this.likedSongsCover = this.likedSongs[0].image
-          console.log (this.likedSongs)
+          // console.log (this.likedSongs)
         })
         // console.log(...res.ids)
         // this.likedSongs = 

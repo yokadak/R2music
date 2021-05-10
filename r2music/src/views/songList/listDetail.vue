@@ -76,7 +76,7 @@ export default {
   created() {
     this.$nextTick(()=>{
       this.judgeRoute()
-      console.log(this.routeName)
+      // console.log(this.routeName)
     })
   },
   //TODO:if判断改为Switch语句

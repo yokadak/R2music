@@ -35,6 +35,12 @@ export default {
     navTop,
     switchPageBlock,
     info
+  },
+  props:{
+    lyrics:{
+      type:String,
+      default:''
+    }
   }
 }
 </script>
