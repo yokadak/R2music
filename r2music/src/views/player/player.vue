@@ -7,6 +7,7 @@
   <lyricsPage v-if="gotLyrics"
     :lyrics= "songLyrics" 
     :transLyrics= "tansLyrics"
+    :showPrompt= "showPrompt"
   ></lyricsPage>
   <div class="bgBox">
     <playerBgBox :song ="song"></playerBgBox>
@@ -76,6 +77,7 @@
        songLyrics:'',//歌曲歌词
        tansLyrics:undefined,//歌词翻译
        gotLyrics:false,//是否获取到歌词
+       showPrompt:false,//是否提示没有歌词
        showLyrics:false,//是否显示歌词
        duration:0,//歌曲持续时间，单位秒
        currentTime:0,//歌曲当前时间，单位秒
@@ -141,7 +143,10 @@
         if(!res.nolyric){
           // console.log(res.klyric.lyric)
           if(res.lrc.lyric === ''){
+            this.showPrompt = true
             this.songLyrics = '暂无歌词'
+            this.gotLyrics = true;
+            
           }else{
             this.gotLyrics = true;
             this.songLyrics = res.lrc.lyric
@@ -149,7 +154,10 @@
 
           }
         }else if(res.nolyric){
+          this.showPrompt = true
+          this.gotLyrics = true;
           this.songLyrics = "此歌曲为没有填词的纯音乐，请您欣赏"
+
         }
         // console.log(this.songLyrics)
         // console.log(this.tansLyrics)

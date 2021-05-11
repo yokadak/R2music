@@ -18,6 +18,7 @@ export function getSongTime(time){
   totalTime = `${minutes}:${seconds}`
   return totalTime
 }
+
 //数值不满10前面补0
 export function add0Head(num){
   if(num < 10 && num >= 0){

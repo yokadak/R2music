@@ -7,10 +7,13 @@
     <div class="bgBox">
       <scroll class="lyricsWrapper">
         <div class="lyricsBox">
-        <info class="lyrics" v-for="(item,index) of lyricsObjArray" :key="index">
-          <div slot="infoAbove" class="songLyrics">{{item.lyric}}</div>
-          <div slot="infoBelow" class="translation">{{item.tranLyric}}</div>
-        </info>
+          <info class="lyrics" v-for="(item,index) of lyricsObjArray" :key="index">
+            <div slot="infoAbove" class="songLyrics">{{item.lyric}}</div>
+            <div slot="infoBelow" class="translation">{{item.tranLyric}}</div>
+          </info>
+          <div v-if="showPrompt">
+            {{lyrics}}
+          </div>
         </div>
       </scroll>
     </div>
@@ -23,6 +26,7 @@
   import switchPageBlock from 'components/content/base/switchPageBlock'
   import info from 'components/content/base/info'
   import scroll from 'components/common/scroll/scroll'
+
 
 export default {
   name:"lyricsPage",
@@ -38,75 +42,104 @@ export default {
     },
     transLyrics:{
       default:''
+    },
+    showPrompt:{
+      default:false
     }
   },
   data() {
     return {
       lyricsArray:[],//保存未经处理过的歌词
       lyricsObjArray:[],//保存了歌曲原歌词，歌词对应时间，（歌词翻译）
-      // isTranslated:false,//是否有歌词翻译
       OriginalLastIndex:0,//原词的最后一行""作为原词和翻译的分割项
-      transIndex:0,//需要翻译的歌词项
+      transIndex:0,//需要翻译的歌词项索引
       translator:'',//歌词翻译者
-      
     }
   },
   created() {
-    this.getLyrics()
+    this.showPrompt !== true && this.getLyrics()
+    this.getLyricTime("03:34.399")
   },
   mounted() {
   },
   methods: {
+    getLyricTime(time){
+      //将歌词时间转换为秒
+      let minutes = time.slice(0,2)
+      let seconds = parseFloat(time.slice(3))
+      if(minutes.slice(0,1) === "0"){
+        minutes = parseInt(minutes.slice(1))
+      }else{
+        minutes = parseInt(minutes)
+      }
+      return (minutes * 60 + seconds).toFixed(2) //得到的是字符串
+    },
+    //该方法获取到每一句歌词及其对应的时间
+    getLyric(lyric){
+      let lyricObj = {} //每句歌词，用对象保存每句歌词及其所对应的时间
+      let line = lyric.split(']')[1].trim() //每一行歌词
+      lyricObj.lyric = line === ''?'':line //有些行占据时间，但是没有歌词
+      let lyricTime = lyric.match(/\[\d{2}\:\d{2}\.\d{2,}\]/)[0] //获取歌词时间
+      lyricObj.lyricTime = this.getLyricTime(lyricTime.slice(1,lyricTime.length-1))
+      return lyricObj
+    },
+    //该方法获取到每一句歌词及其对应的时间和翻译
+    getTransLyric(transLyric){
+      //赋值是引用传递，修改变量，数组中对应的值也会改变
+      let lyricObj = this.lyricsObjArray[this.transIndex]
+      let line = transLyric.split(']')[1].trim() //每一行翻译歌词
+      let transLyricTime = transLyric.match(/\[\d{2}\:\d{2}\.\d{2,}\]/)[0] //翻译对应的时间
+      transLyricTime = this.getLyricTime(transLyricTime.slice(1,transLyricTime.length-1))
+      while(lyricObj.lyricTime !== transLyricTime){
+      //判断当前取出的原词时间是否对应翻译的时间，不对应则取下一段原词
+        this.transIndex += 1 
+        lyricObj = this.lyricsObjArray[this.transIndex]
+      }
+      lyricObj.tranLyric = line === ''?'':line
+      this.transIndex += 1
+      return lyricObj
+    },
+    getOriginalLyrics(lyrics){
+      lyrics.forEach((item,index)=>{
+        if(item === ""){
+          return
+        }else{
+          this.lyricsObjArray.push(this.getLyric(item))
+        }
+      })
+    },
+    getLyricsWithTrans(lyrics){
+      lyrics.forEach((item,index)=>{
+        if(item === ""){
+          return
+        }else if(index < this.OriginalLastIndex){
+          //该行是原词
+          this.lyricsObjArray.push(this.getLyric(item))
+
+        }else if(index === this.OriginalLastIndex +1){
+          //该行是歌词翻译者
+          this.translator = item.replace('\[','').replace('\]','')//去掉[]
+
+        }else if(index > this.OriginalLastIndex +1){
+          //改行是翻译的歌词
+          this.getTransLyric(item)
+        
+        }
+      })
+    },
     getLyrics(){
       const originalLyrics = this.lyrics.split(/\n/) //根据换行符分割字符串,将每句歌词保存到数组
       const transLyricsArray = this.transLyrics.split(/\n/) //根据换行符分割字符串
       this.OriginalLastIndex = originalLyrics.length - 1//记录原词的最后一项索引值
       if(transLyricsArray[0] !== ''){
-        // this.isTranslated = true
         //有歌词翻译，将原词和翻译歌词拼接
         this.lyricsArray = originalLyrics.concat(transLyricsArray)
+        this.getLyricsWithTrans(this.lyricsArray)
       }else{
+        //没有歌词翻译
         this.lyricsArray = originalLyrics
+        this.getOriginalLyrics(this.lyricsArray)
       }
-      console.log(this.lyricsArray)
-      // console.log(lyricsArray)
-      // console.log(transLyricsArray)
-      this.lyricsArray.forEach((item,index)=>{
-        if(item === ''){
-          // console.log(this.OriginalLastIndex)
-          return
-        }else if(index < this.OriginalLastIndex){
-          //处理原词
-          let lyricObj = {} //每句歌词，用对象保存每句歌词及其所对应的时间
-          let line = item.split(']')[1].trim() //每一行歌词
-          lyricObj.lyric = line === ''?'':line //有些行占据时间，但是没有歌词
-          lyricObj.lyricTime = item.match(/\[\d{2}\:\d{2}\.\d{2,}\]/)[0]
-          if(lyricObj.lyric === ''){
-            //没有歌词的行，将翻译歌词设为空串
-            lyricObj.transLyric = ''
-          }
-          // console.log(lyricObj.lyric)
-          // console.log(lyricObj.lyricTime)
-          this.lyricsObjArray.push(lyricObj)
-        }else if(index === this.OriginalLastIndex +1){ 
-          //该行是歌词翻译者
-          this.translator = item.replace('\[','').replace('\]','')//去掉[]
-          // console.log(this.translator)
-        }else if(index > this.OriginalLastIndex +1){
-          //处理翻译
-          //判断当前取出的项是否将tranLyric设置为空串，是则取下一项,从0开始取
-          let lyricObj = this.lyricsObjArray[this.transIndex]
-          while(lyricObj.transLyric === ''){
-            console.log(this.transIndex)
-            this.transIndex += 1 
-            lyricObj = this.lyricsObjArray[this.transIndex]
-          }
-          let line = item.split(']')[1].trim() //每一行歌词
-          lyricObj.tranLyric = line === ''?'':line //有些行占据时间，但是没有歌词
-          this.lyricsObjArray[this.transIndex] = lyricObj
-          this.transIndex += 1
-        }
-      })
       console.log(this.lyricsObjArray)
     }
   },
