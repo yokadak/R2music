@@ -28,6 +28,18 @@ export default {
       // eventPassthrough: 'vertical',设置该属性为vertical 则只会滚动设置为true的轴
     })
   },
+    methods: {
+    scrollTo(){
+      this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+    },
+    scrollBy(){
+      this.scroll && this.scroll.scrollBy.apply(this.scroll, arguments)
+    },
+    scrollToElement() {
+      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
+    }
+
+  },
 }
 </script>
 

@@ -2,7 +2,7 @@
 //做这一步是为了从复杂的数据中提取出我们想要的信息
 //创建歌曲类
 export default class Asong{
-  constructor({id,name,singer,album,image,publishTime}){
+  constructor({id,name,singer,album,image,publishTime,copyRight,paid,vipSong}){
     this.id = id
     this.name = name
     this.singer = singer  

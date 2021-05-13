@@ -3,9 +3,7 @@
   <homeNavTop path ='/userCenter'></homeNavTop>
   <homeLabel class="homeLabel"></homeLabel>
   <homeBgBox class="homeBgBox" :songs = "recommendSongs" path ='/player'></homeBgBox>
-  <miniPlayer class="homePlayControl"></miniPlayer>
-  <!-- <swiper :songs = "recommendSongs"></swiper> -->
-  <!-- <search v-show="isShow"></search> -->
+  <miniPlayer></miniPlayer>
 </div>
 </template>
 
@@ -65,14 +63,6 @@
     height: 667px;
     position: relative;
   }
-  .homePlayControl{
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 10px;
-    height: 45px;
-  }
-
 
   
   

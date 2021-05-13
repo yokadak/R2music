@@ -7,6 +7,7 @@ const player = () => import("../views/player/player.vue")
 const search = () => import("../views/search/search.vue") 
 const login = () => import("../views/login/login.vue") 
 const listDetail = () => import("../views/songList/listDetail.vue") 
+const alOrPlList = () => import("../views/songList/alOrPlList.vue") 
 const singerPage = () => import("../views/singer/singerPage.vue") 
 //解决报错
 const originalPush = VueRouter.prototype.push
@@ -69,7 +70,7 @@ const routes = [
   {
     path:"/myLiked/Albums",
     name:'myLikedAlbums',
-    component:listDetail,
+    component:alOrPlList,
     meta:{
       keepAlive: true //需要被缓存
     }
@@ -77,13 +78,13 @@ const routes = [
   {
     path:"/myLiked/PlayLists",
     name:'myLikedPlayLists',
-    component:listDetail,
+    component:alOrPlList,
     meta:{
       keepAlive: true //需要被缓存
     }
   },
   {
-    path:"/songList/albumDetail",
+    path:"/albumDetail",
     name:'albumDetail',
     component:listDetail,
     meta:{

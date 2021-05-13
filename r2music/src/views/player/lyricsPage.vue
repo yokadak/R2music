@@ -1,19 +1,25 @@
 <template>
   <div class="lyricsPage">
-    <navTop>
-       <div slot="left" class="lyricsTopLeft"><span class="fa fa-angle-left"></span></div>
-       <div slot="center"> <switchPageBlock></switchPageBlock></div>
-    </navTop>
     <div class="bgBox">
-      <scroll class="lyricsWrapper">
-        <div class="lyricsBox">
-          <info class="lyrics" v-for="(item,index) of lyricsObjArray" :key="index">
-            <div slot="infoAbove" class="songLyrics">{{item.lyric}}</div>
-            <div slot="infoBelow" class="translation">{{item.tranLyric}}</div>
-          </info>
-          <div v-if="showPrompt">
-            {{lyrics}}
-          </div>
+      <scroll class="lyricsWrapper" ref="lyricList">
+        <ul class="lyricsBox">
+          <li class="lyrics" v-for="(item,index) of lyricsObjArray" 
+              :key="index"
+              ref="lyricLine"> 
+            <info>
+              <div slot="infoAbove" class="songLyrics"
+              v-if="item.lyric"
+              :style="index === scrollIndex -1 ? playingLyricStyle: ''"
+              >{{item.lyric}}</div>
+              <div slot="infoBelow" class="translation"
+              v-if="item.tranLyric"
+              :style="index === scrollIndex -1 ? transLyricStyle: ''"
+              >{{item.tranLyric}}</div>
+            </info>
+          </li>
+        </ul>
+        <div v-if="showPrompt">
+          {{lyrics}}
         </div>
       </scroll>
     </div>
@@ -54,13 +60,21 @@ export default {
       OriginalLastIndex:0,//原词的最后一行""作为原词和翻译的分割项
       transIndex:0,//需要翻译的歌词项索引
       translator:'',//歌词翻译者
+      scrollIndex:0,//歌词滚动索引
+      playingLyricStyle:"color:white;font-size:18px;font-weight:bold;",//正在播放的歌词的样式
+      transLyricStyle:"color:white;"
     }
   },
   created() {
-    this.showPrompt !== true && this.getLyrics()
-    this.getLyricTime("03:34.399")
+    //  this.getLyrics()
   },
   mounted() {
+    this.$bus.$on("durationchanged",this.getLyrics)
+    this.$bus.$on("timeUpdated",this.scrollLyrics)
+  },
+  beforeDestroy() {
+    this.$bus.$off("timeUpdated")
+    this.$bus.$off("durationchanged")
   },
   methods: {
     getLyricTime(time){
@@ -72,7 +86,7 @@ export default {
       }else{
         minutes = parseInt(minutes)
       }
-      return (minutes * 60 + seconds).toFixed(2) //得到的是字符串
+      return minutes * 60 + seconds //得到的是字符串
     },
     //该方法获取到每一句歌词及其对应的时间
     getLyric(lyric){
@@ -104,7 +118,11 @@ export default {
         if(item === ""){
           return
         }else{
-          this.lyricsObjArray.push(this.getLyric(item))
+          let OriginalLyric = this.getLyric(item)
+          //占时间但是没歌词的行不加入歌词数组
+          if( OriginalLyric.lyric !== ''){
+            this.lyricsObjArray.push(OriginalLyric)
+          }
         }
       })
     },
@@ -114,7 +132,10 @@ export default {
           return
         }else if(index < this.OriginalLastIndex){
           //该行是原词
-          this.lyricsObjArray.push(this.getLyric(item))
+          let OriginalLyric = this.getLyric(item)
+          if( OriginalLyric.lyric !== ''){
+            this.lyricsObjArray.push(OriginalLyric)
+          }
 
         }else if(index === this.OriginalLastIndex +1){
           //该行是歌词翻译者
@@ -128,20 +149,43 @@ export default {
       })
     },
     getLyrics(){
-      const originalLyrics = this.lyrics.split(/\n/) //根据换行符分割字符串,将每句歌词保存到数组
-      const transLyricsArray = this.transLyrics.split(/\n/) //根据换行符分割字符串
-      this.OriginalLastIndex = originalLyrics.length - 1//记录原词的最后一项索引值
-      if(transLyricsArray[0] !== ''){
-        //有歌词翻译，将原词和翻译歌词拼接
-        this.lyricsArray = originalLyrics.concat(transLyricsArray)
-        this.getLyricsWithTrans(this.lyricsArray)
-      }else{
-        //没有歌词翻译
-        this.lyricsArray = originalLyrics
-        this.getOriginalLyrics(this.lyricsArray)
+      console.log(this.showPrompt)
+      if(this.showPrompt !== true){
+        console.log("即将获取歌词")
+        //切换歌曲先进行重置
+        this.lyricsObjArray = [];
+        this.scrollIndex = 0;
+        this.OriginalLastIndex = 0;
+        this.transIndex = 0;
+        const originalLyrics = this.lyrics.split(/\n/) //根据换行符分割字符串,将每句歌词保存到数组
+        const transLyricsArray = this.transLyrics.split(/\n/) //根据换行符分割字符串
+        this.OriginalLastIndex = originalLyrics.length - 1//记录原词的最后一项索引值
+        if(transLyricsArray[0] !== ''){
+          //有歌词翻译，将原词和翻译歌词拼接
+          this.lyricsArray = originalLyrics.concat(transLyricsArray)
+          this.getLyricsWithTrans(this.lyricsArray)
+        }else{
+          //没有歌词翻译
+          this.lyricsArray = originalLyrics
+          this.getOriginalLyrics(this.lyricsArray)
+        }
+        console.log(this.lyricsObjArray)
       }
-      console.log(this.lyricsObjArray)
-    }
+    },
+    scrollLyrics(currentTime){
+      if(this.showPrompt !== true && 
+         this.lyricsObjArray[this.scrollIndex].lyricTime !== undefined){
+           if(currentTime > this.lyricsObjArray[this.scrollIndex].lyricTime){
+             //从第3行开始滚动
+             if(this.scrollIndex > 1){
+               //调用better-scroll提供的API实现歌词滚动
+               let scrollLine = this.$refs.lyricLine[this.scrollIndex -1 ]
+               this.$refs.lyricList.scrollToElement(scrollLine,1000)
+             }
+             this.scrollIndex ++
+           }
+      }
+    },
   },
 }
 </script>
@@ -152,7 +196,8 @@ export default {
   }
   .lyricsWrapper{
     overflow: hidden;
-    height: calc(100vh - 415px);
+    height: calc(100vh - 405px);
+    position: relative;
   }
  .lyricsBox{
    width: 90%;
@@ -164,7 +209,7 @@ export default {
  .lyrics{
    /* height: 45px; */
    width: 100%;
-   margin-top: 5px;
+   margin-top: 15px;
  }
  .translation{
    margin-top: 7px;

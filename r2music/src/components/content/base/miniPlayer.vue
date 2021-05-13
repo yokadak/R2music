@@ -34,6 +34,11 @@ export default {
   border-radius: 15px;
   background-color: black;
   margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  height: 45px;
 }
 .songWrapper{
   display: flex;

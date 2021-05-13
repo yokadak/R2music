@@ -20,6 +20,7 @@
     </div>
     <scroll class="resultWrapper"  v-if="isShowRes">
       <div class="result">
+        //TODO:修改songs
         <songBox :songs = "songsResult"></songBox> 
       </div>
     </scroll>
@@ -38,6 +39,7 @@
   import {debounce} from 'common/js/utils.js'
   //网络请求，搜索结果
   import {getSearchResult} from "network/search"
+  //检查歌曲是否可用
   //抽取歌曲信息
   import {getSearchInfo} from "common/js/handleApiData" 
   import {getWantedSongInfo} from "network/songs"
@@ -102,6 +104,7 @@ export default {
     },
     _getSearchResult(keywords,type){
      getSearchResult(keywords,type).then(res =>{
+       console.log(res.result.songs)
        const songsList = res.result.songs.map((item) =>{
          return getWantedSongInfo(item)
        })

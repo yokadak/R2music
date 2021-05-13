@@ -19,6 +19,7 @@
     <div class="worksSwitch"><switchPageBlock><div slot="switchRight">专辑</div></switchPageBlock></div>
     <scroll class="singerSongs">
       <div>
+        //TODO:修改songs
         <songBox class="singerSongBox" :songs= "singerSongs"></songBox>  
       </div>
     </scroll>

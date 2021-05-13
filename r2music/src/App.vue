@@ -15,6 +15,7 @@
     <!-- <login></login> -->
     <!-- <infoBox></infoBox> -->
     <!-- <info></info> -->
+    <!-- <listItem></listItem> -->
   </div>
 </template>
 
@@ -54,3 +55,4 @@ export default {
 <style lang="less">
   @import "assets/css/base.css";
 </style>
+

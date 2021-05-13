@@ -8,6 +8,7 @@ export function getSongsDetail(ids){
     }
   })
 }
+
 //获取歌曲url
 export function getSongUrl(id){
   return request({
@@ -31,7 +32,8 @@ export function getSongLyrics(id){
 //做这一步是为了从复杂的数据中提取出我们想要的信息
 //创建歌曲类
 export default class Asong{
-  constructor({id,name,singer,singerId,album,albumId,image,publishTime}){
+  constructor({id,name,singer,singerId,album,
+    albumId,image,publishTime,copyRight,paid,vipSong}){
     this.id = id
     this.name = name
     this.singer = singer  

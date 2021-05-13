@@ -2,9 +2,9 @@
   <div class="infoBox">
     <div class="infoLeft"><slot name="pic"></slot></div>    
     <info class="infoCenter">
-      <div slot="infoAbove"><div class="charAbove"><slot name="charAbove"></slot></div></div>
-      <div slot="infoBetween"><div class="charBetween"><slot name="charBetween"></slot></div></div>
-      <div slot="infoBelow"><div class="charBelow"><slot name="charBelow"></slot></div></div>
+      <div slot="infoAbove"><slot name="charAbove"></slot></div>
+      <div slot="infoBetween"><slot name="charBetween"></slot></div>
+      <div slot="infoBelow"><slot name="charBelow"></slot></div>
     </info>
     <div  class="infoRight"><slot name="rightIcon"></slot></div>
   </div>
@@ -39,7 +39,7 @@ export default {
     display: flex;
     flex:1;
     order:2;
-    margin-left: 20px; 
+    margin-left: 15px; 
     height: 100%;
   }
   .infoRight{

@@ -2,7 +2,7 @@
     <div class="bgBox userBgBox">
       <scroll  class="wrapper">
         <div class="content">
-          <userInfoBox class="userInfoBox"></userInfoBox>
+          <userInfo class="userInfo"></userInfo>
           <userCollect class="userCollect"
           :likedAlbums = 'likedAlbums'
           :likedSongs = 'likedSongs'
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import userInfoBox from './userInfoBox'
+    import userInfo from './userInfo'
     import userCollect from './userCollect'
     import userOwnList from './userOwnList'
     import scroll from 'components/common/scroll/scroll'
@@ -39,7 +39,7 @@
 export default {
   name:"userBox",
   components:{
-     userInfoBox,
+     userInfo,
      userCollect,
      userOwnList,
      scroll,
@@ -128,7 +128,7 @@ export default {
 <style scoped>
   .wrapper{
     overflow: hidden;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 180px);
   }
   .userBgBox{
    padding-top: 25px;
