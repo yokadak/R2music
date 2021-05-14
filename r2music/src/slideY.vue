@@ -1,7 +1,6 @@
 <template>
       <div class="slide-vertical-wrapper" ref="slide">
         <div class="slide-vertical-content">
-          <slot></slot>
           <div class="slide-page page1">page1</div>
           <div class="slide-page page2">page2</div>
           <div class="slide-page page3">page3</div>
@@ -28,12 +27,12 @@
     },
     methods: {
       init() {
-        new BScroll(this.$refs.slide, {
+        this.slide = new BScroll(this.$refs.slide, {
           mouseWheel: true,   
           scrollX: false,
           scrollY: true,
           slide: {
-            threshold: 0.1,
+             threshold: 0.1,
              autoplay:false,
              loop:false,
           },

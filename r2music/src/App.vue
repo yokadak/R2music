@@ -16,11 +16,18 @@
     <!-- <infoBox></infoBox> -->
     <!-- <info></info> -->
     <!-- <listItem></listItem> -->
+    <!-- <userLiked></userLiked> -->
+    <!-- <slideY></slideY> -->
+    <!-- <slideYTest></slideYTest> -->
+    <!-- <slideXTest></slideXTest> -->
+    <!-- <scrollTest></scrollTest> -->
   </div>
 </template>
 
 <script> 
   import slideY from './slideY'  
+  import slideYTest from './slideYTest'  
+  import slideXTest from './slideXTest'  
   import scrollTest from './scrollTest'  
   import swiperTest from './swiperTest'
   import swiperTestY from './swiperTestY'
@@ -33,6 +40,7 @@
   import infoBox from 'components/content/base/infoBox'
   import info from 'components/content/base/info'
   import listDetail from './views/songList/listDetail'
+  import userLiked from './views/user/userLiked/userLiked.vue'
 export default {
   name:'app',
   components:{  
@@ -41,6 +49,8 @@ export default {
     home,
     slideY,
     scrollTest,
+    slideYTest,
+    slideXTest,
     searchResult,
     search,
     singerPage,
@@ -49,6 +59,7 @@ export default {
     listDetail,
     infoBox,
     info,
+    userLiked,
   },
 }
 </script>

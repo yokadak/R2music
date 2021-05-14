@@ -4,7 +4,7 @@
        <div class = "homeNavCenter"> 
          <input type="text" class = "searchInput" @focus="showSearchPage">
        <span class="fa fa-search homeSearch"></span></div>
-       <div class = "homeNavRight"><span class="fa fa-navicon"></span></div>
+       <div class = "homeNavRight" @click="toLogin"><span class="fa fa-navicon"></span></div>
     </div>
 </template>
 
@@ -22,6 +22,9 @@ export default {
   methods: {
     toUserCenter(){
       this.$router.push(this.path);
+    },
+    toLogin(){
+      this.$router.push('/login');
     },
     showSearchPage(){
       this.$router.push('/search');

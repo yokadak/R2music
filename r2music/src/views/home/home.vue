@@ -1,8 +1,7 @@
 <template>
 <div id="home">
   <homeNavTop path ='/userCenter'></homeNavTop>
-  <homeLabel class="homeLabel"></homeLabel>
-  <homeBgBox class="homeBgBox" :songs = "recommendSongs" path ='/player'></homeBgBox>
+  <homeBgBox :songs = "recommendSongs" path ='/player'></homeBgBox>
   <miniPlayer></miniPlayer>
 </div>
 </template>
@@ -13,7 +12,6 @@
   import homeLabel from './childComponents/homeLabel'
   import homeBgBox from './childComponents/homeBgBox'
   import miniPlayer from 'components/content/base/miniPlayer'
-  import swiper from 'components/common/swiper/swiper'
   import search from '../search/search'
   //网络请求导入
   import {getRecommendSong} from "network/home"
@@ -27,7 +25,6 @@
      homeLabel,
      homeBgBox,
      miniPlayer,
-     swiper,
      search 
    },
    data() {

@@ -1,27 +1,27 @@
 <template>
-<!-- 该组件显示的是歌单列表或专辑列表 -->
+<!-- 该组件显示用户喜欢的歌曲、歌单、专辑列表 -->
 <div>
-  <scroll class="wrapper">
-    <div>
-      <div class="listCount" v-if="count">{{count}} {{listItem}}</div>
-      <ul class="list">
-        <li v-for="item of list" :key="item.id" @click="toDetail(item.id)">
-          <infoBox>
-            <div slot="pic" class="picture"><img :src="item.image" alt=""></div>
-            <div slot="charAbove" class="charAbove ellipsis">{{item.name}}</div>
-            <div slot="charBelow" class="charBelow ellipsis">{{item.size || item.songsCount}}首 来自{{item.singer || item.creator}}</div>
-            <div slot="rightIcon"><span class="fa fa-angle-right"></span></div>
-          </infoBox>
-        </li>
-      </ul>
-    </div>
-  </scroll>
+  <navTop>
+    <div slot="center"><span >我喜欢</span></div>
+    <div slot="right"><span class="fa fa-ellipsis-h"></span></div>
+  </navTop>
+  <div class = "tab">
+    <div>歌曲 <span>1{{}}</span></div>
+    <div>专辑 <span>22{{}}</span></div>
+    <div>歌单 <span>444{{}}</span></div>
+  </div>
+  <!-- 这里根据路由携带的参数决定渲染歌曲，专辑，还是歌单 -->
+  <!-- <router-view :name="name"></router-view> -->
+
+  <miniPlayer></miniPlayer>
 </div>
 </template>
 
 <script>
+  import navTop from 'components/common/navBar/navTop'
   import scroll from 'components/common/scroll/scroll'
   import infoBox from 'components/content/base/infoBox'
+  import miniPlayer from 'components/content/base/miniPlayer'
  
 export default {
   name:"list",
@@ -33,17 +33,7 @@ export default {
   },
   data() {
     return {
-      playListId:this.$route.params.playListId,//歌单Id
-      albumId:this.$route.params.albumId,//专辑Id
-      count:0,//列表项计数
-      listItem:'',//判断列表的内容是歌单专辑还是歌曲
-      listDetail:{},
-      list:[],//歌曲列表，未登录只能获取20首
-      listIds:[],//完整歌曲Id列表
-      routeName:this.$route.name,
-      myLikedSongs:this.$route.params.myLikedSongs,
-      myLikedAlbums:this.$route.params.myLikedAlbums,
-      myLikedPlayLists:this.$route.params.myLikedPlayLists,
+      name:"name"
     }
   },
 
@@ -51,6 +41,7 @@ export default {
     this.$nextTick(()=>{
       this.judgeRoute()
     })
+    console.log(this.$route.params)
   },
   methods: {
     judgeRoute(){
@@ -80,6 +71,21 @@ export default {
 </script>
 
 <style scoped>
+/* TODO:点击滑块，tab底部的滑动效果 */
+  .tab{
+    width: 90%;
+    color: var(--color-text);
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: auto;
+  }
+  /* .tab div:active{
+    color: white;
+  } */
+  .tab span{
+    font-size: 12px;
+  }
   .wrapper{
     overflow: hidden;
     height: calc(100vh - 125px);
@@ -113,7 +119,5 @@ export default {
     font-size: 11px;
     margin-top: 6px;
   }
-
-
 
 </style>

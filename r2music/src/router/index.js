@@ -2,13 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 const home = () => import("../views/home/home.vue") 
 const menu = () => import("../views/menu/appMenu.vue") 
-const userCenter = () => import("../views/userCenter/userCenter.vue") 
+const userCenter = () => import("../views/user/userCenter/userCenter.vue") 
 const player = () => import("../views/player/player.vue") 
 const search = () => import("../views/search/search.vue") 
 const login = () => import("../views/login/login.vue") 
 const listDetail = () => import("../views/songList/listDetail.vue") 
 const alOrPlList = () => import("../views/songList/alOrPlList.vue") 
 const singerPage = () => import("../views/singer/singerPage.vue") 
+const userLiked = () => import("../views/user/userLiked/userLiked.vue") 
+const scrollTest = () => import("../scrollTest.vue") 
 //解决报错
 const originalPush = VueRouter.prototype.push
    VueRouter.prototype.push = function push(location) {
@@ -32,7 +34,7 @@ const routes = [
     component:menu
   },
   {
-    path:"/userCenter",
+    path:"/userCenter/:userName",
     component:userCenter,
     meta:{
       keepAlive: true //需要被缓存
@@ -59,14 +61,27 @@ const routes = [
       keepAlive: true //需要被缓存
     }
   },
-  {
-    path:"/myLiked/Songs",
-    name:'myLikedSongs',
-    component:listDetail,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
-  },
+  // {
+  //   path:"/myliked"
+  //   component:
+  // },
+
+  // {
+  //   path:"/myLiked",
+  //   name:'myLiked',
+  //   component:userLiked,
+  //   children:[
+  //     {
+  //       path:"",
+  //       components:{
+  //         name:scrollTest,
+  //       }
+  //     },
+  //   ],
+  //   meta:{
+  //     keepAlive: true //需要被缓存
+  //   }
+  // },
   {
     path:"/myLiked/Albums",
     name:'myLikedAlbums',

@@ -1,34 +1,41 @@
 <template>
-<div class="bgBox">
-  <slideY class="wrapper" ref="homeSlideY" >
-    <div v-for="item of songs" :key="item.id" class="aSongBox"> 
-        <img v-lazy="item.image">
-        <div class="homeBoxCenter">
-          <div class="homeInfo">
-            <info>
-              <div slot="infoAbove" class="ellipsis"><span class="fa fa-music"></span>
-              <span class="songName">{{item.name}}</span></div>
-              <div slot="infoBetween" class="ellipsis"><span class="fa fa-user"></span>
-              <span class="singerName">{{item.singer}}</span></div>
-              <div slot="infoBelow" class="ellipsis"><span class="fa fa-dot-circle-o"></span>
-              <span class="albumName">{{item.album}}</span></div>
-            </info>
+  <div >
+    <slideX class="slideX-wrapper bgBox">
+      <div class="recommended-music">
+        <slideY class="slideY-wrapper" ref="homeSlideY" >
+          <div v-for="item of songs" :key="item.id" class="aSongBox"> 
+            <img :src="item.image">
+            <div class="homeBoxCenter">
+              <div class="homeInfo">
+                <info>
+                  <div slot="infoAbove" class="ellipsis"><span class="fa fa-music"></span>
+                  <span class="songName">{{item.name}}</span></div>
+                  <div slot="infoBetween" class="ellipsis"><span class="fa fa-user"></span>
+                  <span class="singerName">{{item.singer}}</span></div>
+                  <div slot="infoBelow" class="ellipsis"><span class="fa fa-dot-circle-o"></span>
+                  <span class="albumName">{{item.album}}</span></div>
+                </info>
+              </div>
+              <div class="playIcon"><span class="fa fa-play-circle" @click="play"></span></div>
+            </div> 
           </div>
-          <div class="playIcon"><span class="fa fa-play-circle" @click="play"></span></div>
-        </div> 
-    </div>
-  </slideY>  
-  <operationBar class="homeOperationBar">
-    <div slot="operation-3" class="biggerIcon"><span class="fa fa-heart-o" @click="like"></span></div>
-  </operationBar>
-</div>
+        </slideY> 
+        <operationBar class="homeOperationBar">
+          <div slot="operation-3" class="biggerIcon"><span class="fa fa-heart-o" @click="like"></span></div>
+        </operationBar>
+      </div>
+      <div class="page page1">page1</div>
+      <div class="page page2">page2</div>
+      <div class="page page3">page3</div>
+      <div class="page page4">page4</div>
+    </slideX>
+  </div>
 </template>
 
 <script>
   //better-scroll滚动组件导入
-  import scroll from 'components/common/scroll/scroll'
+  import slideX from 'components/common/scroll/slideX.vue'
   import slideY from 'components/common/scroll/slideY'
-  import swiper from 'components/common/swiper/swiper'
   import info from 'components/content/base/info'
   import operationBar from 'components/content/base/operationBar'
   import {debounce} from 'common/js/utils.js'
@@ -36,10 +43,9 @@
     name:"homeBgBox",
     components:{
       info,
-      scroll,
+      slideX,
       slideY,
-      swiper,
-      operationBar
+      operationBar,
   },
     props:{
       path: String,
@@ -66,19 +72,22 @@
 </script>
 
 <style scoped>
-  
-  .bgBox img{
+.slideX-wrapper{
+  overflow: hidden;
+  height: 525px;
+}
+  .recommended-music{
+      width: 100%;
+      flex-shrink: 0;
+  }
+  .recommended-music img{
     width: 100%;
     border-radius: 5px;
   }
-  .wrapper{
+  .slideY-wrapper{
     overflow: hidden;
     height: 445px;
   }
-  /* .content{
-  display: inline-flex;
-  overflow: hidden;
-  } */
   .homeOperationBar{
     width: 100%;
     font-size: 20px;
@@ -121,5 +130,27 @@
 .singerName,.albumName{
   color:var(--color-high-text);
 }
+.page{
+      height: 200px;
+      width: 100%;
+      text-align: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+      .page1{
+        background-color:#95B8D1;
+      }
+      .page2{
+
+        background-color:#DDA789;
+      }
+      .page3{
+
+        background-color:#C3D899;
+      }
+      .page4{
+
+        background-color:#F2D4A7;
+      }
 
 </style>

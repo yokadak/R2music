@@ -1,10 +1,9 @@
 <template>
-      <div class="slide-vertical-wrapper" ref="slide">
+      <div class="slide-vertical-wrapper" ref="slideY">
         <div class="slide-vertical-content">
-          <slot>
-            <div></div>
-          </slot>
-        </div>       
+          <!-- 设置插槽默认有元素，避免slide初始化内部无元素报错 -->
+          <slot><div></div></slot>
+        </div>
       </div>
 </template>
 
@@ -12,46 +11,39 @@
   import BScroll from '@better-scroll/core'
   import Slide from '@better-scroll/slide'
   import MouseWheel from '@better-scroll/mouse-wheel'
-  import ObserveDOM from '@better-scroll/observe-dom'
-  BScroll.use(Slide)
   BScroll.use(MouseWheel)
-  BScroll.use(ObserveDOM)
+  BScroll.use(Slide)
+
   export default {
     name:"slideY",
-    data() {
-      return {
-      }
-    },
+
     mounted() {
       this.init()
     },
     beforeDestroy() {
+      // this.slideY.destroy()
     },
     methods: {
       init() {
-        this.bs = new BScroll(this.$refs.slide, { 
-          mouseWheel: true,
-          click: true, 
-          observeDOM: true,  
+        this.slideY = new BScroll(this.$refs.slideY, {
+          mouseWheel: true,   
           scrollX: false,
           scrollY: true,
           slide: {
-            threshold: 100,
+             threshold: 0.1,
              autoplay:false,
              loop:false,
           },
           useTransition: true,
           momentum: false,
           bounce: true,
-          stopPropagation: true,
+          stopPropagation: false,
         })
-      },
-       refresh() {
-        this.bs && this.bs.refresh()
       },
     }
   }
 </script>
 
-<style scoped>    
+<style scoped>
+       
 </style>

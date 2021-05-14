@@ -51,7 +51,7 @@ export default {
         this.$store.commit('SET_COOKIE', res.cookie)
         this.$store.commit('SET_USER', res.account)
         this.$store.commit('SET_PROFILE', res.profile)
-        this.$router.push('/userCenter')
+        this.$router.push(`/userCenter/${res.profile.nickname}`)
       }).catch((err) =>{
         console.log(err)
       })

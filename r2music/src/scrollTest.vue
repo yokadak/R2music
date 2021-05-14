@@ -4,17 +4,17 @@
      <scroll class="wrapper" ref="lyricList">
        <!-- 下面的内容替换了默认插槽 -->
        <div class="content">
-         <ul>
+         <!-- <ul>
            <li v-for="(item,index) of list" 
            :key="index"
            class="list"
            ref="lyricLine"
            :style="index === scrollIndex  ? playingLyricStyle: ''"
            >{{item}}</li>
-         </ul>
-          <!-- <div class="scrollTest">我是要纵向和横向都滚动的内容</div>
+         </ul> -->
+          <div class="scrollTest">我是要纵向和横向都滚动的内容</div>
           <div class="scrollTest scrollTest2"
-          >我也是要纵向和横向都滚动的内容</div> -->
+          >我也是要纵向和横向都滚动的内容</div>
        </div>
      </scroll>
   </div>
@@ -38,14 +38,14 @@ export default {
     }
   },
   mounted() {
-    setInterval(()=>{
-     let div2 = this.$refs.lyricLine[this.scrollIndex]
-      if(this.scrollIndex < 10){
-        this.$refs.lyricList.scrollToElement(div2,1000)
-        console.log(this.scrollIndex)
-      }
-      this.scrollIndex ++
-    },2000)
+    // setInterval(()=>{
+    //  let div2 = this.$refs.lyricLine[this.scrollIndex]
+    //   if(this.scrollIndex < 10){
+    //     this.$refs.lyricList.scrollToElement(div2,1000)
+    //     console.log(this.scrollIndex)
+    //   }
+    //   this.scrollIndex ++
+    // },2000)
   },
 }
 </script>
@@ -71,7 +71,7 @@ export default {
      height: 600px;
      font-size: 30px;
      font-weight: bold;
-      margin-top: 200px;
+      /* margin-top: 200px; */
   }
   .list{
     background-color: aquamarine;
