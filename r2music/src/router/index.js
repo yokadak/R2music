@@ -83,6 +83,14 @@ const routes = [
   //   }
   // },
   {
+    path:"/myLiked/Songs",
+    name:'myLikedSongs',
+    component:listDetail,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
+  },
+  {
     path:"/myLiked/Albums",
     name:'myLikedAlbums',
     component:alOrPlList,

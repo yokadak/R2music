@@ -26,10 +26,8 @@
 export default {
   name:"list",
   components:{
-    navTop,
     scroll,
     infoBox,
-    miniPlayer,
   },
   data() {
     return {

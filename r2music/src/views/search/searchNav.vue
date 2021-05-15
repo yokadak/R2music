@@ -42,7 +42,8 @@
   //检查歌曲是否可用
   //抽取歌曲信息
   import {getSearchInfo} from "common/js/handleApiData" 
-  import {getWantedSongInfo} from "network/songs"
+  import {getWantedSongInfo} from "common/js/handleApiData/home.js"
+
 
 
 
@@ -109,7 +110,7 @@ export default {
          return getWantedSongInfo(item)
        })
        this.songsResult = songsList
-      //  console.log(this.songsResult)
+       console.log(this.songsResult)
      })
     },
     getSongsResult(){

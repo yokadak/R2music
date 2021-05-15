@@ -28,7 +28,7 @@
   import {getPlayListDetail} from "network/songList"
   import {getAlbumDetail} from "network/songList"
   import {getPlayListData} from "common/js/handleApiData"
-  import {getPlayListSongInfo} from "network/songs"
+  import {getPlayListSongInfo} from "common/js/handleApiData/list.js"
   import {getWantedAlbumInfo} from "common/js/handleApiData"
  
 export default {
@@ -72,7 +72,6 @@ export default {
         this.count = this.myLikedSongs.length
         this.title = '我喜欢'
       }
-      console.log(this.list)
     },
     _getplayListDetail(id){
       getPlayListDetail(id).then((res) =>{
@@ -80,9 +79,12 @@ export default {
         // console.log(this.playListDetail)
         this.count = this.playListDetail.songsCount
         this.title = '歌单'
+        //TODO:查看歌单内无版权歌曲信息
+        console.log(res.playlist.tracks)
         this.list = res.playlist.tracks.map((item) =>{
           return getPlayListSongInfo(item)
         })
+        console.log(this.list)
   //TODO:未登录获取完整歌单、专辑信息
         this.listIds = res.playlist.trackIds.map((item)=>{
           return item.id
@@ -93,7 +95,7 @@ export default {
     _getAlbumDetail(id){
       // console.log(id)
       getAlbumDetail(id).then((res) =>{
-        // console.log(res.songs)
+        console.log(res.songs)
         const albumSongs = res.songs.map((item)=>{
           this.listIds.push(item.id)//未登录获取完整专辑歌曲列表
           return getPlayListSongInfo(item)
@@ -103,6 +105,7 @@ export default {
         // this.title = this.playListDetail.name
         this.title = '专辑'
         this.list = albumSongs 
+        console.log(this.list)
         this.count = albumSongs.length  
       })
     },

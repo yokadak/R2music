@@ -13,6 +13,11 @@ import FastClick from 'fastclick'
 
 //初始化FastClick实例。在页面的DOM文档加载完成后
 FastClick.attach(document.body)
+//解决fastclick导致输入框无法立刻聚焦的问题
+FastClick.prototype.focus =function(targetElement){
+  'use strict';
+  targetElement.focus();
+}
 //事件总线
 Vue.prototype.$bus = new Vue()
 //图片懒加载

@@ -6,21 +6,21 @@
      </div>
 
     <infoBox 
-    @click.native="toUserLiked('songs',likedSongs,likedAlbums,likedPlayLists)">
+    @click.native="toMyLikedSongs(likedSongs)">
       <div slot="pic" class="liked"><img :src="likedSongsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌曲</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedSongs.length}}首歌曲</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
     <infoBox 
-    @click.native="toUserLiked('albums',likedSongs,likedAlbums,likedPlayLists)">
+    @click.native="toMyLikedAlbums(likedAlbums)">
       <div slot="pic" class="liked"><img :src="likedAlbumsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>专辑</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedAlbums.length}}张专辑</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
     <infoBox 
-    @click.native="toUserLiked('playLists',likedSongs,likedAlbums,likedPlayLists)">
+    @click.native="toMyLikedPlayLists(likedPlayLists)">
       <div slot="pic" class="liked"><img :src="likedPlayListsCover" alt=""></div>
       <div slot="charAbove" class="likedCharAbove"><span>歌单</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedPlayLists.length}}歌单</span></div>
@@ -55,6 +55,18 @@ export default {
         myLikedPlayLists:playLists
       }
       })
+    },
+    toMyLikedSongs(Songs){
+      // console.log(Songs)
+      this.$router.push({name:'myLikedSongs',params:{myLikedSongs:Songs}})
+    },
+    toMyLikedAlbums(Albums){
+      // console.log(Albums)
+      this.$router.push({name:'myLikedAlbums',params:{myLikedAlbums:Albums}})
+    },
+    toMyLikedPlayLists(PlayLists){
+      // console.log(PlayLists)
+      this.$router.push({name:'myLikedPlayLists',params:{myLikedPlayLists:PlayLists}})
     },
   },
 }

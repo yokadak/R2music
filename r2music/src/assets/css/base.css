@@ -3,6 +3,7 @@
 /*:root -> 获取根元素html*/
 :root {
   --color-text:rgba(255,255,255,0.74);
+  --search-text:#706b6b;
   --color-transparent:rgba(255, 255, 255, 0.5);
   --color-high-text: white;
   --color-tint: #333;
@@ -22,6 +23,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+* { touch-action: pan-y; }
 .bgBox{
   background-color:var(--color-tint);
   width: 90%;

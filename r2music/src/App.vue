@@ -21,6 +21,7 @@
     <!-- <slideYTest></slideYTest> -->
     <!-- <slideXTest></slideXTest> -->
     <!-- <scrollTest></scrollTest> -->
+    <!-- <navTest></navTest> -->
   </div>
 </template>
 
@@ -41,6 +42,7 @@
   import info from 'components/content/base/info'
   import listDetail from './views/songList/listDetail'
   import userLiked from './views/user/userLiked/userLiked.vue'
+  import navTest from './navTest.vue'
 export default {
   name:'app',
   components:{  
@@ -60,9 +62,11 @@ export default {
     infoBox,
     info,
     userLiked,
+    navTest
   },
 }
 </script>
+    NavTestript>
 <style lang="less">
   @import "assets/css/base.css";
 </style>

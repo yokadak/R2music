@@ -2,12 +2,16 @@
 //做这一步是为了从复杂的数据中提取出我们想要的信息
 //创建歌曲类
 export default class Asong{
-  constructor({id,name,singer,album,image,publishTime,copyRight,paid,vipSong}){
+  constructor({id,name,singer,album,image,publishTime,copyRight,needPaid,paid,vipSong}){
     this.id = id
     this.name = name
     this.singer = singer  
     this.album = album
     this.image = image
+    this.copyRight = copyRight
+    this.needPaid = needPaid
+    this.paid = paid
+    this.vipSong = vipSong
     // this.publishTime = publishTime || null
   }
 }
@@ -54,7 +58,6 @@ function getSingerName(arr){
   singerName = arr.map((item) =>{
     return item.name
   })
-  // console.log(singerName.join('/'))
   return singerName.join('/')
 }
 //获取歌手的Id
@@ -70,13 +73,22 @@ function getSingerId(arr){
 //传入的实际参数是data里的每一个对象（每一首歌）
 
 //过滤数据的方法中返回该类的实例
+//用于处理推荐歌曲的数据，因为接口返回的数据名称不一样，比如有些是artists，有些是简写ar
+//TODO：也用于处理搜索结果，（搜索结果的api没有privilege属性）
+//但是获取推荐和搜索结果的接口无法判断是否有版权，推荐的应该都有版权，
+//搜索结果显示的一般都是有版权的靠前显示，没有版权的靠后。
 export function getWantedSongInfo(theSong){
+  let privilege = theSong.privilege
   return new Asong({
     id: theSong.id,
     name: theSong.name,
     singer: getSingerName(theSong.artists),
     album: theSong.album.name,
-    image: theSong.album.picUrl
+    image: theSong.album.picUrl,
+    // copyRight: privilege.st === -200?false:true,
+    needPaid: privilege.fee === 4?true:false,
+    paid: privilege.payed === 0?false:true,
+    vipSong: privilege.fee === 1?true:false,
   })
 }
 export function getWantedAlbumInfo(album){

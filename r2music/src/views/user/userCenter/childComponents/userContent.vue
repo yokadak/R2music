@@ -31,7 +31,7 @@
     import {getLikedAlbums} from "network/user"
     import {getlikedPlayLists} from "network/user"
     import {getPlayListData} from "common/js/handleApiData"
-    import {getPlayListSongInfo} from "common/js/handleApiData"
+    import {getPlayListSongInfo} from "common/js/handleApiData/list.js"
     import {getWantedAlbumInfo} from "common/js/handleApiData"
     import {getSubCount} from "network/user"
     import {getSongsDetail} from "network/songs"
@@ -83,6 +83,8 @@ export default {
           this.likedSongs = res.songs.map((item) =>{
             return getPlayListSongInfo(item)
           })
+          console.log(res.songs)
+          console.log(this.likedSongs)
           this.likedSongsCover = this.likedSongs[0].image
           // console.log (this.likedSongs)
         })
@@ -118,7 +120,7 @@ export default {
           return getPlayListData(item)
         })
         this.likedPlayListsCover = this.likedPlayLists[0].image
-        // console.log(this.likedPlayLists)
+        console.log(this.likedPlayLists)
       })
     },
   },

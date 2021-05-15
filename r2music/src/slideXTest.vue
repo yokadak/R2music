@@ -1,8 +1,7 @@
 <template>
       <div class="slide-banner-wrapper" ref="slide">
-        <div class="slide-banner-content">
+        <div class="slide-banner-content" ref="content">
           <!-- 设置插槽默认有元素，避免slide初始化内部无元素报错 -->
-          <div class="recommended-music">
       <!-- <slideY class="slideY-wrapper" ref="homeSlideY" >
         <div v-for="item of songs" :key="item.id" class="aSongBox"> 
           <img :src="item.image">
@@ -24,7 +23,6 @@
       <operationBar class="homeOperationBar">
         <div slot="operation-3" class="biggerIcon"><span class="fa fa-heart-o" @click="like"></span></div>
       </operationBar> -->
-    </div>
           <div class="page page1">page1</div>
           <div class="page page2">page2</div>
           <div class="page page3">page3</div>
@@ -53,6 +51,8 @@
           scrollX: true,
           scrollY: false,
           slide: {
+            //设置一开始显示的页面
+            startPageXIndex:2,
             threshold: 0.1,
             autoplay:false,
             loop:false,
