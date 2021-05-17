@@ -26,6 +26,7 @@
     methods: {
       init() {
         this.slideY = new BScroll(this.$refs.slideY, {
+          click:true,
           mouseWheel: true,   
           scrollX: false,
           scrollY: true,

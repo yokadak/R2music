@@ -40,7 +40,7 @@
   import {getSingerAlbums} from "network/singer"
   import {getSingerDetail} from "network/singer"
   //处理数据的js导入（抽取歌曲有用信息)
-  import {getWantedSingerSongs} from "common/js/handleApiData"
+  import {getPlayListSongInfo} from "common/js/handleApiData/list.js"
   import {getWantedSingerInfo} from "common/js/handleApiData"
   import {getWantedAlbumInfo} from "common/js/handleApiData"
  //TODO:是否将处理搜索数据的函数提取出来
@@ -79,7 +79,7 @@ export default {
     _getSingerSongs(id){
       getSingerSongsAndInfo(id).then(res =>{
         let songs = res.hotSongs.map((item) =>{
-          return getWantedSingerSongs(item)
+          return getPlayListSongInfo(item)
         });
         this.singerSongs = songs
         console.log(this.singerSongs)

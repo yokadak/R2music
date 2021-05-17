@@ -39,10 +39,11 @@
   import {debounce} from 'common/js/utils.js'
   //网络请求，搜索结果
   import {getSearchResult} from "network/search"
-  //检查歌曲是否可用
+  import {getSongsDetail} from "network/songs"
   //抽取歌曲信息
   import {getSearchInfo} from "common/js/handleApiData" 
-  import {getWantedSongInfo} from "common/js/handleApiData/home.js"
+  import {getPlayListSongInfo} from "common/js/handleApiData/list.js"
+
 
 
 
@@ -105,12 +106,23 @@ export default {
     },
     _getSearchResult(keywords,type){
      getSearchResult(keywords,type).then(res =>{
-       console.log(res.result.songs)
-       const songsList = res.result.songs.map((item) =>{
-         return getWantedSongInfo(item)
+       //搜索结果Api数据，无payed属性,专辑属性无图片
+       //拿到歌曲Id再进行歌曲详情网络请求，获取到权限信息和专辑图片
+       let songIds = [];
+       res.result.songs.forEach((item) =>{
+         songIds.push(item.id);
        })
-       this.songsResult = songsList
-       console.log(this.songsResult)
+       songIds = songIds.join();
+       getSongsDetail(songIds).then(res =>{
+         let index = 0;
+         const songsList = res.songs.map((item)=>{
+           item.privilege = res.privileges[index]
+           index++
+           return getPlayListSongInfo(item)
+         })
+         this.songsResult = songsList
+         console.log(this.songsResult)
+       })
      })
     },
     getSongsResult(){

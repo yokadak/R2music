@@ -76,12 +76,13 @@ export default {
     _getplayListDetail(id){
       getPlayListDetail(id).then((res) =>{
         this.playListDetail = getPlayListData(res.playlist)
-        // console.log(this.playListDetail)
         this.count = this.playListDetail.songsCount
         this.title = '歌单'
-        //TODO:查看歌单内无版权歌曲信息
-        console.log(res.playlist.tracks)
+        let index = 0;
         this.list = res.playlist.tracks.map((item) =>{
+          //通过res.privileges获取到权限信息
+          item.privilege = res.privileges[index]
+          index++
           return getPlayListSongInfo(item)
         })
         console.log(this.list)
@@ -93,18 +94,15 @@ export default {
       })
     },
     _getAlbumDetail(id){
-      // console.log(id)
       getAlbumDetail(id).then((res) =>{
-        console.log(res.songs)
         const albumSongs = res.songs.map((item)=>{
           this.listIds.push(item.id)//未登录获取完整专辑歌曲列表
           return getPlayListSongInfo(item)
         })
         const album = getWantedAlbumInfo(res.album)
         this.playListDetail = album
-        // this.title = this.playListDetail.name
         this.title = '专辑'
-        this.list = albumSongs 
+        this.list = albumSongs
         console.log(this.list)
         this.count = albumSongs.length  
       })

@@ -1,7 +1,7 @@
 <template>
   <div class="recommended-music">
     <slideY class="slideY-wrapper" ref="homeSlideY" >
-      <div v-for="item of songs" :key="item.id" class="aSongBox"> 
+      <div v-for="(item,index) of songs" :key="item.id" class="aSongBox"> 
         <img :src="item.image">
         <div class="homeBoxCenter">
           <div class="homeInfo">
@@ -14,7 +14,7 @@
               <span class="albumName">{{item.album}}</span></div>
             </info>
           </div>
-          <div class="playIcon"><span class="fa fa-play-circle" @click="play(songs)"></span></div>
+          <div class="playIcon"><span class="fa fa-play-circle" @click="toPlayer(item,songs,index)"></span></div>
         </div> 
       </div>
     </slideY> 
@@ -47,9 +47,10 @@
     mounted() {
     },
     methods: {
-      play(recommendedSongs){
-        // this.$router.push(name:'');
-        // console.log("play")
+     toPlayer(thisSong,recommendedSongs,index){
+       //歌曲都是可以播放的
+        this.$bus.$emit("songPlay")
+        this.$router.push({name:'player',params: {song:thisSong,songs:recommendedSongs,songIndex:index}})
       },
       like(){
         console.log("i like");

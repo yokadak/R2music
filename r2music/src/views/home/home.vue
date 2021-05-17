@@ -40,7 +40,7 @@
      }
    },
    created() {
-    //请求首页推荐歌曲数据（新歌速递）
+    //请求首页推荐歌曲数据（未登录显示新歌速递）
      this._getRecommendSong(0)//type = 0 请求全部地区类型的歌曲
    },
 
@@ -56,13 +56,16 @@
      },
      _getRecommendSong(type){
         getRecommendSong(type).then(res => {
-          let list = res.data.map((item) => {
-            return getWantedSongInfo(item)
-          })
-          //删除从索引9开始到原数组结尾的所有元素
-          list.splice(29)
-          this.recommendSongs = list;
-          // console.log(res.data)
+          for( let item of res.data){
+            let song = getWantedSongInfo(item)
+            //如果歌曲需要付费或者没有资源（版权），不显示在推荐列表
+            //home的歌曲权限信息正常
+            //TODO:用户登录后，有可能购买了该歌曲，不过那也是另一个Api请求的数据了
+            if(!song.needToBuy && song.copyRight ){
+              this.recommendSongs.push(song) ;
+            }
+          }
+          this.recommendSongs.splice(29)
           console.log(this.recommendSongs)
         })
       },

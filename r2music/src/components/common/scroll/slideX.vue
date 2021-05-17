@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2021-05-14 20:40:04
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-16 14:07:16
+-->
 <template>
       <div class="slide-banner-wrapper" ref="slideX">
         <div class="slide-banner-content">
@@ -24,6 +32,7 @@
     methods: {
       init() {
         this.slideX = new BScroll(this.$refs.slideX, {
+          click:true,
           scrollX: true,
           scrollY: false,
           slide: {

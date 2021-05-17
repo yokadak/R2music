@@ -4,40 +4,42 @@
        <div slot="left"><span class="fa fa-angle-down"></span></div>
        <div slot="center"><switchPageBlock></switchPageBlock></div>
   </navTop>
-  <lyricsPage v-if="gotLyrics"
-    :lyrics= "songLyrics" 
-    :transLyrics= "tansLyrics"
-    :showPrompt= "showPrompt"
-  ></lyricsPage>
-  <div class="bgBox">
-    <playerBgBox :song ="song"></playerBgBox>
-    <audio :src="songUrl" autoplay ref="music"></audio>
-    <operationBar class="playerOperationBar">
-      <div slot="operation-1" class ="boxOp"><span class="fa fa-volume-down"></span></div>
-      <div slot="operation-3" class="biggerIcon"> <span class="fa fa-heart-o"></span></div>
-      <div slot="operation-5" class ="boxOp"><span class="fa fa-ellipsis-h"></span></div>
-    </operationBar>
-    <progressBar
-    :progress = "progress"
-    :duration = "duration"
-    :currentTime = "currentTime"
-    @progressChanged="changeCurrentTime"></progressBar>
-    <playControl class="playerPlayControl"
-    @playModeChange="changePlayMode"
-    @playPrevSongClicked="playPrevSong"
-    @playStateChange="changePlayState"
-    @playNextSongClicked="playNextSong"
-    @playListOpen="openPlayList"
-    :playStateIcon= "playStateIcon"
-    :playModeIcon= "playModeIcon"
-    ></playControl>
- 
-  </div>
+  <slideX class="slideX-wrapper bgBox">
+    <div class="player">
+      <playerBgBox :song ="song"></playerBgBox>
+      <audio :src="songUrl" autoplay ref="music"></audio>
+      <operationBar class="playerOperationBar">
+        <div slot="operation-1" class ="boxOp"><span class="fa fa-volume-down"></span></div>
+        <div slot="operation-3" class="biggerIcon"> <span class="fa fa-heart-o"></span></div>
+        <div slot="operation-5" class ="boxOp"><span class="fa fa-ellipsis-h"></span></div>
+      </operationBar>
+      <progressBar
+      :progress = "progress"
+      :duration = "duration"
+      :currentTime = "currentTime"
+      @progressChanged="changeCurrentTime"></progressBar>
+      <playControl class="playerPlayControl"
+      @playModeChange="changePlayMode"
+      @playPrevSongClicked="playPrevSong"
+      @playStateChange="changePlayState"
+      @playNextSongClicked="playNextSong"
+      @playListOpen="openPlayList"
+      :playStateIcon= "playStateIcon"
+      :playModeIcon= "playModeIcon"
+      ></playControl>
+    </div>
+    <lyricsPage v-if="gotLyrics"
+      :lyrics= "songLyrics" 
+      :transLyrics= "tansLyrics"
+      :showPrompt= "showPrompt"
+    ></lyricsPage>
+  </slideX>
 </div>
 </template>
 
 <script>
   import navTop from 'components/common/navBar/navTop'
+  import slideX from 'components/common/scroll/slideX.vue'
   import switchPageBlock from 'components/content/base/switchPageBlock'
   import playerBgBox from './playerBgBox'
   import progressBar from './progressBar'
@@ -59,6 +61,7 @@
    name:"player",
    components:{
      navTop,
+     slideX,
      switchPageBlock,
      playerBgBox,
      operationBar,
@@ -67,7 +70,7 @@
      info,
      playControl,
    },
-   data()
+  data()
    {
      return {
        song:this.$route.params.song,
@@ -103,6 +106,7 @@
      this._getSongLyrics(this.song.id)
    },
    mounted() {
+     console.log(this.$route.params.songs)
      let music = this.$refs.music
      music.addEventListener("durationchange",e =>{
        this.duration = e.target.duration
@@ -139,74 +143,26 @@
     _getSongUrl(id){
       getSongUrl(id).then(res =>{
         this.songUrl = res.data[0].url
-        // if(this.songUrl === null){
-        //     this.copyRight = false
-        //     console.log("没有音源")
-        //     switch(from){
-        //       case "playNextSong":
-        //         //请求下一首的歌词
-        //         this.playNextSong();
-        //         console.log("下一首")
-        //         console.log(res)
-        //         break;
-        //       case "playPrevSong":
-        //         this.playPrevSong();
-        //         break;
-        //       default:
-        //         console.log("暂时没有音源")
-        //         break;
-        //     }
-        // }else{
-        //   //有资源的情况下才请求歌词和歌曲信息
-        //   switch(from){
-        //       case "playNextSong":
-        //         this.songIndex++
-        //         this.playNextSong();
-        //         console.log("下一首")
-        //         console.log(res)
-        //         break;
-        //       case "playPrevSong":
-        //         this.playPrevSong();
-        //         break;
-        //       default:
-        //         this._getSongLyrics(id)
-        //         this.song = this.songs[this.songIndex]
-        //         break;
-        //     }
-
-        //   // if(from = ""){
-        //   //   //如果是点击进入，请求当前歌曲x
-        //     this._getSongLyrics(id)
-        //     this.song = this.songs[this.songIndex]
-        //   // }
-        // }
        })
      },
     _getSongLyrics(id){
       getSongLyrics(id).then(res =>{
         if(!res.nolyric){
-          // console.log(res.klyric.lyric)
           if(res.lrc.lyric === ''){
             this.showPrompt = true
             this.songLyrics = '暂无歌词'
             this.gotLyrics = true;
-            
           }else{
             this.gotLyrics = true;
             this.showPrompt = false
             this.songLyrics = res.lrc.lyric
             this.tansLyrics = res.tlyric.lyric
-            console.log(this.songLyrics)
-
           }
         }else if(res.nolyric){
           this.showPrompt = true
           this.gotLyrics = true;
           this.songLyrics = "此歌曲为没有填词的纯音乐，请您欣赏"
-
         }
-        // console.log(this.songLyrics)
-        // console.log(this.tansLyrics)
        })
      },
      startPlay(){
@@ -312,6 +268,15 @@
 </script>
 
 <style scoped>
+  .slideX-wrapper{
+    overflow: hidden;
+    height: calc(100vh - 95px);
+    background-color:red;
+  }
+  .player{
+    width: 100%;
+    flex-shrink: 0;
+  }
   .fa-angle-down{
     font-size: 25px;
   }

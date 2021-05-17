@@ -1,8 +1,11 @@
 <template>
   <div class="lyricsPage">
-    <div class="bgBox">
+    <div>
       <scroll class="lyricsWrapper" ref="lyricList">
-        <ul class="lyricsBox">
+        <div v-if="showPrompt">
+          {{lyrics}}
+        </div>
+        <ul class="lyricsBox" v-else>
           <li class="lyrics" v-for="(item,index) of lyricsObjArray" 
               :key="index"
               ref="lyricLine"> 
@@ -18,9 +21,6 @@
             </info>
           </li>
         </ul>
-        <div v-if="showPrompt">
-          {{lyrics}}
-        </div>
       </scroll>
     </div>
   </div>
@@ -65,12 +65,8 @@ export default {
       transLyricStyle:"color:white;"
     }
   },
-  created() {
-    //  this.getLyrics()
-  },
   mounted() {
     this.$bus.$on("durationchanged",this.getLyrics)
-    this.$bus.$on("timeUpdated",this.scrollLyrics)
   },
   beforeDestroy() {
     this.$bus.$off("timeUpdated")
@@ -90,15 +86,22 @@ export default {
     },
     //该方法获取到每一句歌词及其对应的时间
     getLyric(lyric){
-      let lyricObj = {} //每句歌词，用对象保存每句歌词及其所对应的时间
-      let line = lyric.split(']')[1].trim() //每一行歌词
+      let lyricObj = {} //每句歌词，用对象保存每句歌词及其所对应的时间 
+      let line = lyric.split(']') 
+      line = line[line.length - 1].trim()//每一行歌词
       lyricObj.lyric = line === ''?'':line //有些行占据时间，但是没有歌词
-      let lyricTime = lyric.match(/\[\d{2}\:\d{2}\.\d{2,}\]/)[0] //获取歌词时间
+      let lyricTime = lyric.match(/\[\d{2}\:\d{2}\.\d{2,}\]/g)
+      lyricTime = lyricTime[lyricTime.length - 1] //获取歌词时间
       lyricObj.lyricTime = this.getLyricTime(lyricTime.slice(1,lyricTime.length-1))
       return lyricObj
     },
     //该方法获取到每一句歌词及其对应的时间和翻译
     getTransLyric(transLyric){
+      //没有时间的行，舍去（应该是作为上一行额的补充的翻译用）
+      if(transLyric.split(']').length < 2){
+        // console.log(`[${transLyric}]这行没时间`)
+        return
+      }
       //赋值是引用传递，修改变量，数组中对应的值也会改变
       let lyricObj = this.lyricsObjArray[this.transIndex]
       let line = transLyric.split(']')[1].trim() //每一行翻译歌词
@@ -113,6 +116,7 @@ export default {
       this.transIndex += 1
       return lyricObj
     },
+
     getOriginalLyrics(lyrics){
       lyrics.forEach((item,index)=>{
         if(item === ""){
@@ -140,23 +144,22 @@ export default {
         }else if(index === this.OriginalLastIndex +1){
           //该行是歌词翻译者
           this.translator = item.replace('\[','').replace('\]','')//去掉[]
-
+          
         }else if(index > this.OriginalLastIndex +1){
-          //改行是翻译的歌词
+          //该行是翻译的歌词
           this.getTransLyric(item)
         
         }
       })
     },
     getLyrics(){
-      console.log(this.showPrompt)
       if(this.showPrompt !== true){
-        console.log("即将获取歌词")
         //切换歌曲先进行重置
         this.lyricsObjArray = [];
         this.scrollIndex = 0;
         this.OriginalLastIndex = 0;
         this.transIndex = 0;
+        // this.showPrompt = false
         const originalLyrics = this.lyrics.split(/\n/) //根据换行符分割字符串,将每句歌词保存到数组
         const transLyricsArray = this.transLyrics.split(/\n/) //根据换行符分割字符串
         this.OriginalLastIndex = originalLyrics.length - 1//记录原词的最后一项索引值
@@ -170,6 +173,8 @@ export default {
           this.getOriginalLyrics(this.lyricsArray)
         }
         console.log(this.lyricsObjArray)
+        //获取到歌词后再滚动
+        this.$bus.$on("timeUpdated",this.scrollLyrics)
       }
     },
     scrollLyrics(currentTime){
@@ -191,13 +196,18 @@ export default {
 </script>
 
 <style scoped>
- .lyricsTopLeft{
+  .lyricsPage{
+    width: 100%;
+    flex-shrink: 0;
+  }
+  .lyricsTopLeft{
     font-size: 25px;
   }
   .lyricsWrapper{
     overflow: hidden;
-    height: calc(100vh - 405px);
+    height: calc(100vh - 95px);
     position: relative;
+    border-radius: 10px;
   }
  .lyricsBox{
    width: 90%;

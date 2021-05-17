@@ -76,18 +76,23 @@ export default {
         // console.log(this.$store.state)
       })
     },
+    //因为不能直接获取到用户喜欢的音乐（获取到歌单也要用歌单id进行网络请求）
+    //API只提供了获取喜欢音乐id的接口，所以要通过id获取歌曲详情
     _getLikedMusicIds(uid){
       getLikedMusicIds(uid).then((res) => {
+        console.log(res)
         const likedSongsIds = res.ids.join()
         getSongsDetail(likedSongsIds).then((res)=>{
+          let index = 0
           this.likedSongs = res.songs.map((item) =>{
+            item.privilege = res.privileges[index]
+            index++;
             return getPlayListSongInfo(item)
           })
-          console.log(res.songs)
-          console.log(this.likedSongs)
           this.likedSongsCover = this.likedSongs[0].image
-          // console.log (this.likedSongs)
+          console.log (this.likedSongs)
         })
+
         // console.log(...res.ids)
         // this.likedSongs = 
         // res.ids.map((item)=>{
@@ -120,6 +125,7 @@ export default {
           return getPlayListData(item)
         })
         this.likedPlayListsCover = this.likedPlayLists[0].image
+        // console.log(res.playlist)
         console.log(this.likedPlayLists)
       })
     },

@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2020-10-16 21:48:20
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-17 16:11:08
+-->
 <template>
   <div id="app">
     <!-- <keep-alive include="listDetail">
@@ -36,7 +44,6 @@
   import searchResult from './views/search/searchResult'
   import search from './views/search/search'
   import singerPage from './views/singer/singerPage'
-  import userCenter from './views/userCenter/userCenter'
   import login from './views/login/login'
   import infoBox from 'components/content/base/infoBox'
   import info from 'components/content/base/info'
@@ -56,7 +63,6 @@ export default {
     searchResult,
     search,
     singerPage,
-    userCenter,
     login,
     listDetail,
     infoBox,

@@ -37,14 +37,15 @@ export default {
       return {
         isShowIndex: this.$route.name === 'songList' || 'albumDetail'? true : false,
         isShowAlbum: this.$route.name === 'albumDetail'? false : true,
-        songsIds:[]
+        songsIds:[],
+        songsQueue:[],//播放队列
       }
     },
     mounted() {
       this.getSongsIds()
+      // this.getSongsQueue()
       // console.log(this.songs)
       // this._getSongUrl(this.song.id)
-
     },
     methods: {
       getSongsIds(){
@@ -53,11 +54,33 @@ export default {
           return item.id
         })
       },
+      getSongsQueue(songs){
+         for(let item of songs){
+          if(item.copyRight === false){
+            //没有版权的歌曲
+            console.log(item.name,"没版权")
+            continue
+          }else if(item.needToBuy === true && item.bought === false){
+            //没有购买的歌曲
+            console.log(item.name,"没购买")
+            continue
+          }else{
+            //vip歌曲和普通歌曲加入播放队列
+            this.songsQueue.push(item)
+          }
+        }
+      },
       toPlayer(item,songs,index){
-        console.log(item)
-        console.log(songs)
-        // console.log(this.songs)
-        // this.$router.push({name:'player',params: {song:item,songs:songs,songIndex:index}})
+        //跳之前先判断当前歌曲是否有版权
+        if(item.copyRight === false){
+          console.log("没有版权")
+        }else if(item.needToBuy === true && item.bought === false){
+          //TODO:需要付费的歌曲是否已购买（需要购买一张进行测试）
+          console.log("还未购买该歌曲哦")
+        }else{
+          this.getSongsQueue(songs)
+          this.$router.push({name:'player',params: {song:item,songs:this.songsQueue,songIndex:index}})
+        }
       },
       toSingerPage(id){
         this.$router.push({name:'singerPage',params: {singerId:id}})
