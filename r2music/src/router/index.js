@@ -66,22 +66,14 @@ const routes = [
   //   component:
   // },
 
-  // {
-  //   path:"/myLiked",
-  //   name:'myLiked',
-  //   component:userLiked,
-  //   children:[
-  //     {
-  //       path:"",
-  //       components:{
-  //         name:scrollTest,
-  //       }
-  //     },
-  //   ],
-  //   meta:{
-  //     keepAlive: true //需要被缓存
-  //   }
-  // },
+  {
+    path:"/myLiked",
+    name:'myLiked',
+    component:userLiked,
+    meta:{
+      keepAlive: true //需要被缓存
+    }
+  },
   {
     path:"/myLiked/Songs",
     name:'myLikedSongs',

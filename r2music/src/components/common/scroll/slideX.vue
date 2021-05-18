@@ -4,7 +4,7 @@
  * @Author: yrh
  * @Date: 2021-05-14 20:40:04
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-16 14:07:16
+ * @LastEditTime: 2021-05-18 19:49:29
 -->
 <template>
       <div class="slide-banner-wrapper" ref="slideX">
@@ -27,7 +27,7 @@
       this.init()
     },
     beforeDestroy() {
-      // this.slide.destroy()
+      this.slideX.destroy()
     },
     methods: {
       init() {
@@ -40,6 +40,7 @@
             autoplay:false,
             loop:false,
           },
+          disableTouch: false,//启用手指触摸
           momentum: false,
           probeType: 3,
           useTransition: true,
@@ -47,6 +48,12 @@
           stopPropagation: true,
         })
       },
+      goToPage(){
+        this.slideX && this.slideX.goToPage.apply(this.slideX, arguments)
+      },
+      getCurrentPage(){
+        this.slideX && this.slideX.getCurrentPage.apply(this.slideX, arguments)
+      }
     }
   }
 </script>

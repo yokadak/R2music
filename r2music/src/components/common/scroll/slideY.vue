@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2020-10-29 09:58:58
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-18 19:49:08
+-->
 <template>
       <div class="slide-vertical-wrapper" ref="slideY">
         <div class="slide-vertical-content">
@@ -35,6 +43,7 @@
              autoplay:false,
              loop:false,
           },
+          disableTouch: false,//启用手指触摸
           useTransition: true,
           momentum: false,
           bounce: true,

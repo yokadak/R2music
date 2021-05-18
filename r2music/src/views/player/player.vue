@@ -2,9 +2,15 @@
 <div id="player">
    <navTop>
        <div slot="left"><span class="fa fa-angle-down"></span></div>
-       <div slot="center"><switchPageBlock></switchPageBlock></div>
+       <div slot="center">
+         <div class="tab">
+           <span :class="{'active': currentPageIndex === 0}">歌曲</span>
+           <span class="divider">I</span>
+           <span :class="{'active': currentPageIndex === 1}">歌词</span>
+          </div>
+       </div>
   </navTop>
-  <slideX class="slideX-wrapper bgBox">
+  <slideX class="slideX-wrapper bgBox" ref="playerSlideX">
     <div class="player">
       <playerBgBox :song ="song"></playerBgBox>
       <audio :src="songUrl" autoplay ref="music"></audio>
@@ -75,6 +81,7 @@
      return {
        song:this.$route.params.song,
        songIndex:this.$route.params.songIndex,
+       currentPageIndex:0,//当前slide页面的索引值
        songs:this.$route.params.songs,//未登录只能获取歌单/专辑20首歌曲
        songUrl:'',//歌曲音源链接
        copyRight:true,//是否有音源
@@ -106,7 +113,8 @@
      this._getSongLyrics(this.song.id)
    },
    mounted() {
-     console.log(this.$route.params.songs)
+     this.init();
+
      let music = this.$refs.music
      music.addEventListener("durationchange",e =>{
        this.duration = e.target.duration
@@ -140,6 +148,16 @@
     });
    },
    methods: {
+     init(){
+      const slideX = this.$refs.playerSlideX
+      // slideX.goToPage(0,0,0)
+      slideX.slideX.on("slideWillChange",(page)=>{
+      this.slideWillChange(page)
+    })
+    },
+    slideWillChange(page){
+      this.currentPageIndex = page.pageX
+    },
     _getSongUrl(id){
       getSongUrl(id).then(res =>{
         this.songUrl = res.data[0].url
@@ -276,6 +294,16 @@
   .player{
     width: 100%;
     flex-shrink: 0;
+  }
+  .tab span{
+    font-size:13px;
+  }
+  .divider{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .active{
+    color:white;
   }
   .fa-angle-down{
     font-size: 25px;

@@ -80,7 +80,6 @@ export default {
     //API只提供了获取喜欢音乐id的接口，所以要通过id获取歌曲详情
     _getLikedMusicIds(uid){
       getLikedMusicIds(uid).then((res) => {
-        console.log(res)
         const likedSongsIds = res.ids.join()
         getSongsDetail(likedSongsIds).then((res)=>{
           let index = 0
@@ -90,7 +89,7 @@ export default {
             return getPlayListSongInfo(item)
           })
           this.likedSongsCover = this.likedSongs[0].image
-          console.log (this.likedSongs)
+          // console.log (this.likedSongs)
         })
 
         // console.log(...res.ids)
@@ -126,7 +125,7 @@ export default {
         })
         this.likedPlayListsCover = this.likedPlayLists[0].image
         // console.log(res.playlist)
-        console.log(this.likedPlayLists)
+        // console.log(this.likedPlayLists)
       })
     },
   },

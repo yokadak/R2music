@@ -1,11 +1,10 @@
 <template>
 <!-- 该组件显示的是歌单列表或专辑列表 -->
-<div>
   <scroll class="wrapper">
-    <div>
-      <div class="listCount" v-if="count">{{count}} {{listItem}}</div>
-      <ul class="list">
-        <li v-for="item of list" :key="item.id" @click="toDetail(item.id)">
+    <div class="content">
+      <div class="listCount" v-if="list">{{list.collection.length}} {{list.category}}</div>
+      <ul class="list" v-if="list">
+        <li v-for="item of list.collection" :key="item.id" @click="toDetail(item.id)">
           <infoBox>
             <div slot="pic" class="picture"><img :src="item.image" alt=""></div>
             <div slot="charAbove" class="charAbove ellipsis">{{item.name}}</div>
@@ -16,7 +15,6 @@
       </ul>
     </div>
   </scroll>
-</div>
 </template>
 
 <script>
@@ -29,41 +27,46 @@ export default {
     scroll,
     infoBox,
   },
-  data() {
-    return {
-      playListId:this.$route.params.playListId,//歌单Id
-      albumId:this.$route.params.albumId,//专辑Id
-      count:0,//列表项计数
-      listItem:'',//判断列表的内容是歌单专辑还是歌曲
-      listDetail:{},
-      list:[],//歌曲列表，未登录只能获取20首
-      listIds:[],//完整歌曲Id列表
-      routeName:this.$route.name,
-      myLikedSongs:this.$route.params.myLikedSongs,
-      myLikedAlbums:this.$route.params.myLikedAlbums,
-      myLikedPlayLists:this.$route.params.myLikedPlayLists,
+  props:{
+    list:{
+      default:[]
     }
   },
+  // data() {
+  //   return {
+  //     playListId:this.$route.params.playListId,//歌单Id
+  //     albumId:this.$route.params.albumId,//专辑Id
+  //     count:0,//列表项计数
+  //     listItem:'',//判断列表的内容是歌单专辑还是歌曲
+  //     listDetail:{},
+  //     list:[],//歌曲列表，未登录只能获取20首
+  //     listIds:[],//完整歌曲Id列表
+  //     routeName:this.$route.name,
+  //     myLikedSongs:this.$route.params.myLikedSongs,
+  //     myLikedAlbums:this.$route.params.myLikedAlbums,
+  //     myLikedPlayLists:this.$route.params.myLikedPlayLists,
+  //   }
+  // },
 
-  created() {
-    this.$nextTick(()=>{
-      this.judgeRoute()
-    })
-  },
+  // created() {
+  //   this.$nextTick(()=>{
+  //     this.judgeRoute()
+  //   })
+  // },
   methods: {
-    judgeRoute(){
-      if(this.routeName === 'myLikedAlbums'){
-        this.list = this.myLikedAlbums
-        this.count = this.myLikedAlbums.length
-        this.listItem = '张专辑'
-      }
-      if(this.routeName === 'myLikedPlayLists'){
-        this.list = this.myLikedPlayLists
-        this.count = this.myLikedPlayLists.length
-        this.listItem = '张歌单'
-      }
-      // console.log(this.list)
-    },
+    // judgeRoute(){
+    //   if(this.routeName === 'myLikedAlbums'){
+    //     this.list = this.myLikedAlbums
+    //     this.count = this.myLikedAlbums.length
+    //     this.listItem = '张专辑'
+    //   }
+    //   if(this.routeName === 'myLikedPlayLists'){
+    //     this.list = this.myLikedPlayLists
+    //     this.count = this.myLikedPlayLists.length
+    //     this.listItem = '张歌单'
+    //   }
+    //   // console.log(this.list)
+    // },
     toDetail(id){
       if(this.$route.name === "myLikedAlbums"){
         this.$router.push({name:'albumDetail',params: {albumId:id}})
@@ -80,12 +83,13 @@ export default {
 <style scoped>
   .wrapper{
     overflow: hidden;
-    height: calc(100vh - 125px);
+    height: calc(100vh - 155px);
+    background-color: green;
   }
-  /*TODO: 即使内容未溢出也可以滚动 */
+  /*即使内容未溢出也可以滚动 */
   .content{
-    padding-top: 20px;
-    height: calc(100vh - 5px);
+    background-color: red;
+    min-height:800px
   }
   .listCount{
     font-size: 16px;

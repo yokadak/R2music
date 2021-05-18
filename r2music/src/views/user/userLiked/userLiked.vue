@@ -1,61 +1,92 @@
 <template>
 <!-- 该组件显示用户喜欢的歌曲、歌单、专辑列表 -->
 <div>
-  <navTop>
-    <div slot="center"><span >我喜欢</span></div>
-    <div slot="right"><span class="fa fa-ellipsis-h"></span></div>
-  </navTop>
-  <div class = "tab">
-    <div>歌曲 <span>1{{}}</span></div>
-    <div>专辑 <span>22{{}}</span></div>
-    <div>歌单 <span>444{{}}</span></div>
+  
+  <div class="top">
+    <navTop class="">
+      <div slot="center"><span >我喜欢</span></div>
+      <div slot="right"><span class="fa fa-ellipsis-h"></span></div>
+    </navTop>
+    <div class = "tab" v-if="collections">
+      <div v-for="(item,index) of collections" 
+        :key="index"
+        :class="{'active': currentPageIndex === index}"
+        @click="goToPage(index)">
+        <span>{{item.category}} </span>
+        <span class="count">{{item.collection.length}}</span>
+      </div>
+      <div class="tabHighLight" ref='tabHighLight'></div>
+    </div>
   </div>
-  <!-- 这里根据路由携带的参数决定渲染歌曲，专辑，还是歌单 -->
-  <!-- <router-view :name="name"></router-view> -->
+
+  <slideX class="slideX-wrapper" ref="userLikedSlideX" v-if="collections">
+    <!-- TODO:这里要加个滚动 滚动报错,滚动有些问题-->
+    <scroll class="scrollYwrapper likedSongs">
+      <div class="content">
+        <songBox :songs= "collections[0].collection"></songBox>
+      </div>
+    </scroll>
+    <div class="likedAlbums">
+      <alOrPlList :list= "collections[1]"></alOrPlList>
+    </div>
+    <div class="likedPlayLists">
+      <alOrPlList :list= "collections[2]"></alOrPlList>
+    </div>
+  </slideX>
 
   <miniPlayer></miniPlayer>
+
 </div>
 </template>
 
 <script>
   import navTop from 'components/common/navBar/navTop'
+  import slideX from 'components/common/scroll/slideX.vue'
   import scroll from 'components/common/scroll/scroll'
-  import infoBox from 'components/content/base/infoBox'
+  import songBox from 'components/content/base/songBox'
   import miniPlayer from 'components/content/base/miniPlayer'
+  import alOrPlList from '../../songList/alOrPlList'
  
 export default {
   name:"list",
   components:{
     navTop,
+    slideX,
     scroll,
-    infoBox,
+    songBox,
     miniPlayer,
+    alOrPlList
   },
   data() {
     return {
-      name:"name"
+      name:"name",
+      collections:this.$route.params.collections,
+      currentPageIndex:this.$route.params.fromIndex,//当前slide页面的索引值
     }
   },
-
-  created() {
-    this.$nextTick(()=>{
-      this.judgeRoute()
-    })
-    console.log(this.$route.params)
+  mounted() {
+    this.init()
+    // const slideX = this.$refs.userLikedSlideX
+    // slideX.slideX.on("slideWillChange",(page)=>{
+    //   this.slideWillChange(page)
+    // })
   },
   methods: {
-    judgeRoute(){
-      if(this.routeName === 'myLikedAlbums'){
-        this.list = this.myLikedAlbums
-        this.count = this.myLikedAlbums.length
-        this.listItem = '张专辑'
-      }
-      if(this.routeName === 'myLikedPlayLists'){
-        this.list = this.myLikedPlayLists
-        this.count = this.myLikedPlayLists.length
-        this.listItem = '张歌单'
-      }
-      // console.log(this.list)
+    init(){
+      const slideX = this.$refs.userLikedSlideX
+      slideX.goToPage(this.currentPageIndex,0,0)
+      this.$refs.tabHighLight.style = `left:${this.currentPageIndex * 44}%;transition:left 0s`
+      slideX.slideX.on("slideWillChange",(page)=>{
+      this.slideWillChange(page)
+    })
+    },
+    slideWillChange(page){
+      this.currentPageIndex = page.pageX
+      this.$refs.tabHighLight.style = `left:${page.pageX * 44}%;`
+    },
+    goToPage(index){
+      // this.currentPageIndex = index
+      this.$refs.userLikedSlideX.goToPage(index,0,0.3)
     },
     toDetail(id){
       if(this.$route.name === "myLikedAlbums"){
@@ -63,7 +94,6 @@ export default {
       }
       else{
         this.$router.push({name:'songList',params: {playListId:id}})
-        // console.log("songList")
       }
     },
   },
@@ -71,53 +101,50 @@ export default {
 </script>
 
 <style scoped>
-/* TODO:点击滑块，tab底部的滑动效果 */
+  .top{
+    background-color: var(--color-tint);
+  }
+  .slideX-wrapper{
+    overflow: hidden;
+    height: calc(100vh - 150px);
+  }
+  .scrollYwrapper{
+    overflow: hidden;
+    height: calc(100vh - 155px);
+    /* background-color: green; */
+  }
+  .content{
+    /* background-color: red; */
+    padding-top: 10px;
+    min-height:102%
+  }
   .tab{
-    width: 90%;
+    height: 30px;
+    width: 85%;
     color: var(--color-text);
     display: flex;
     justify-content: space-between;
     font-size: 14px;
     margin: auto;
+    position: relative;
   }
-  /* .tab div:active{
-    color: white;
-  } */
-  .tab span{
+  .active{
+    color:white;
+  }
+  .count{
     font-size: 12px;
   }
-  .wrapper{
-    overflow: hidden;
-    height: calc(100vh - 125px);
+  /* 标签底下的高亮块 */
+  .tabHighLight{
+    background-color: #fff;
+    height: 3px;
+    width: 20px;
+    border-radius: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-left:10px;
+    transition: left 0.3s
   }
-  /*TODO: 即使内容未溢出也可以滚动 */
-  .content{
-    padding-top: 20px;
-    height: calc(100vh - 5px);
-  }
-  .listCount{
-    font-size: 16px;
-    width: 90%;
-    margin:auto;
-    margin-top: 15px;
-  }
-  .list{
-    width:90%;
-    margin:auto;
-    margin-top: 20px;
-  }
-  .picture img{
-    width:40px;
-    border-radius:5px;
-  }
-  .charAbove{
-    font-size: 11px;
-    color:var(--color-high-text);
-    margin-top: 3px;
-  }
-  .charBelow{
-    font-size: 11px;
-    margin-top: 6px;
-  }
-
+  
 </style>

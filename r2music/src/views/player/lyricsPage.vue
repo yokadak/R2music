@@ -178,14 +178,17 @@ export default {
       }
     },
     scrollLyrics(currentTime){
-      if(this.showPrompt !== true && 
+      if(this.showPrompt !== true && this.scrollIndex < this.lyricsObjArray.length &&
          this.lyricsObjArray[this.scrollIndex].lyricTime !== undefined){
            if(currentTime > this.lyricsObjArray[this.scrollIndex].lyricTime){
              //从第3行开始滚动
-             if(this.scrollIndex > 1){
+             if(this.scrollIndex > 1 ){
                //调用better-scroll提供的API实现歌词滚动
+               //TODO:有些歌词滚到底部就不再滚动了，大多数是歌词较多的歌
                let scrollLine = this.$refs.lyricLine[this.scrollIndex -1 ]
                this.$refs.lyricList.scrollToElement(scrollLine,1000)
+             }else{
+               this.$refs.lyricList.scrollToElement(0,0,1000)
              }
              this.scrollIndex ++
            }

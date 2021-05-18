@@ -1,5 +1,12 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2020-10-26 12:41:10
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-18 19:34:53
+-->
 <template>
-  <div class="Test">
     <!-- 使用滚动组件 -->
      <scroll class="wrapper" ref="lyricList">
        <!-- 下面的内容替换了默认插槽 -->
@@ -17,7 +24,6 @@
           >我也是要纵向和横向都滚动的内容</div>
        </div>
      </scroll>
-  </div>
 </template>
 
 <script>
@@ -53,8 +59,8 @@ export default {
 <style scoped >
   .wrapper{
     background-color: green;
-    height: 300px;
-    width:300px;
+    height: 625px;
+    width:375px;
     overflow: hidden;
   }
   /* 设置后该元素内的子元素都会横向排列，根据自己的需求来决定是否要设置
@@ -68,7 +74,7 @@ export default {
   .scrollTest,.scrollTest2{
      background-color:red;
      width: 900px;
-     height: 600px;
+     height: 1000px;
      font-size: 30px;
      font-weight: bold;
       /* margin-top: 200px; */

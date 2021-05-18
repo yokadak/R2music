@@ -18,7 +18,7 @@
       <div class="searchLabel-3"><slot name = "searchLabel-3">歌手</slot></div>
       <div class="searchLabel-4"><slot name = "searchLabel-4">歌单</slot></div>
     </div>
-    <scroll class="resultWrapper"  v-if="isShowRes">
+    <scroll class="resultWrapper"  v-if="isShowRes" ref="resultWrapper">
       <div class="result">
         //TODO:修改songs
         <songBox :songs = "songsResult"></songBox> 
@@ -80,8 +80,12 @@ export default {
     keywords(val,oldval){
       if(!val){
         this.isShowRes = false
-        // console.log("nav")
       }
+    },
+    songsResult(){
+        console.log(this.$refs.resultWrapper)
+
+      this.$refs.resultWrapper.scrollBy(20,20)
     }
   },
   methods: {

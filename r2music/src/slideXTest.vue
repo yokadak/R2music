@@ -23,7 +23,9 @@
       <operationBar class="homeOperationBar">
         <div slot="operation-3" class="biggerIcon"><span class="fa fa-heart-o" @click="like"></span></div>
       </operationBar> -->
-          <div class="page page1">page1</div>
+          <div class="page page1">
+            <scrollTest></scrollTest>
+          </div>
           <div class="page page2">page2</div>
           <div class="page page3">page3</div>
           <div class="page page4">page4</div>
@@ -34,10 +36,12 @@
 <script>
   import BScroll from '@better-scroll/core'
   import Slide from '@better-scroll/slide'
+  import scrollTest from './scrollTest.vue'
 
   BScroll.use(Slide)
 
   export default {
+  components: { scrollTest },
 
     mounted() {
       this.init()
