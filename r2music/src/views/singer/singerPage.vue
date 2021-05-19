@@ -15,8 +15,7 @@
         <div class="followButton"><i class="fa fa-plus"></i><button>关注</button></div>
       </div>
     </div>
-
-    <div class="worksSwitch"><switchPageBlock><div slot="switchRight">专辑</div></switchPageBlock></div>
+    <div class="tab"></div>
     <scroll class="singerSongs">
       <div>
         //TODO:修改songs
@@ -31,7 +30,6 @@
 <script>
   import navTop from 'components/common/navBar/navTop'
   import info from 'components/content/base/info'
-  import switchPageBlock from 'components/content/base/switchPageBlock'
   import scroll from 'components/common/scroll/scroll'
   import songBox from 'components/content/base/songBox'
   import playControl from 'components/content/base/playControl'
@@ -50,7 +48,6 @@ export default {
   components:{
     navTop,
     playControl,
-    switchPageBlock,
     songBox,
     info,
     scroll,

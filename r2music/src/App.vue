@@ -4,13 +4,17 @@
  * @Author: yrh
  * @Date: 2020-10-16 21:48:20
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-18 19:36:35
+ * @LastEditTime: 2021-05-19 23:11:42
 -->
 <template>
   <div id="app">
-    <!-- <keep-alive include="listDetail">
-    </keep-alive> -->
-    <router-view :key="this.$route.path + new Date()"></router-view>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive">
+      <!-- 这里是不被缓存的视图组件，比如详情B页面-->
+    </router-view>
+    <!-- <router-view :key="this.$route.path + new Date()"></router-view> -->
     <!-- <listDetail></listDetail> -->
     <!-- <home></home> -->
     <!-- <swiperTestY></swiperTestY> -->
@@ -30,6 +34,7 @@
     <!-- <slideXTest></slideXTest> -->
     <!-- <scrollTest></scrollTest> -->
     <!-- <navTest></navTest> -->
+    <!-- <playList></playList> -->
   </div>
 </template>
 
@@ -38,8 +43,6 @@
   import slideYTest from './slideYTest'  
   import slideXTest from './slideXTest'  
   import scrollTest from './scrollTest'  
-  import swiperTest from './swiperTest'
-  import swiperTestY from './swiperTestY'
   import home from './views/home/home'
   import searchResult from './views/search/searchResult'
   import search from './views/search/search'
@@ -50,11 +53,10 @@
   import listDetail from './views/songList/listDetail'
   import userLiked from './views/user/userLiked/userLiked.vue'
   import navTest from './navTest.vue'
+  import playList from './views/player/playList'
 export default {
   name:'app',
   components:{  
-    swiperTest,
-    swiperTestY,
     home,
     slideY,
     scrollTest,
@@ -68,11 +70,12 @@ export default {
     infoBox,
     info,
     userLiked,
-    navTest
+    navTest,
+    playList,
   },
 }
 </script>
-    NavTestript>
+
 <style lang="less">
   @import "assets/css/base.css";
 </style>

@@ -29,7 +29,6 @@
 
 <script>
   import navTop from 'components/common/navBar/navTop'
-  import switchPageBlock from 'components/content/base/switchPageBlock'
   import info from 'components/content/base/info'
   import scroll from 'components/common/scroll/scroll'
 
@@ -38,7 +37,6 @@ export default {
   name:"lyricsPage",
   components:{
     navTop,
-    switchPageBlock,
     info,
     scroll
   },

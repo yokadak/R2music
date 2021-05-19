@@ -10,6 +10,7 @@ const listDetail = () => import("../views/songList/listDetail.vue")
 const alOrPlList = () => import("../views/songList/alOrPlList.vue") 
 const singerPage = () => import("../views/singer/singerPage.vue") 
 const userLiked = () => import("../views/user/userLiked/userLiked.vue") 
+const user = () => import("../views/user/user.vue") 
 const scrollTest = () => import("../scrollTest.vue") 
 //解决报错
 const originalPush = VueRouter.prototype.push
@@ -33,13 +34,35 @@ const routes = [
     path:"/menu",
     component:menu
   },
+ 
+  //用户中心
   {
-    path:"/userCenter/:userName",
-    component:userCenter,
+    path:"/user/:userId",
+    component:user,
+    children:[
+      {
+        path:"",
+        component:userCenter,
+      },
+    ]
+  },
+  //用户收藏
+  {
+    path:"/myCollections",
+    name:'myCollections',
+    component:userLiked,
     meta:{
       keepAlive: true //需要被缓存
     }
   },
+  // {
+  //   path:"/userCenter/:userName",
+  //   component:userCenter,
+  //   meta:{
+  //     keepAlive: true, //需要被缓存
+  //     isBack:false //是否是后退进入该页面
+  //   }
+  // },
   {
     path:"/login",
     component:login,
@@ -66,14 +89,7 @@ const routes = [
   //   component:
   // },
 
-  {
-    path:"/myLiked",
-    name:'myLiked',
-    component:userLiked,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
-  },
+
   {
     path:"/myLiked/Songs",
     name:'myLikedSongs',
@@ -113,6 +129,18 @@ const routes = [
     meta:{
       keepAlive: true //需要被缓存
     }
+  },
+  {
+    path:"/album/:id",
+    component:listDetail
+  },
+  {
+    path:"/songList/:id",
+    component:listDetail
+  },
+  {
+    path:"/singer/:id",
+    component:singerPage
   },
 
 

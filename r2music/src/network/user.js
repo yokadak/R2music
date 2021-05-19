@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 请求用户数据的API
  * @version: 
  * @Author: yrh
  * @Date: 2021-04-08 11:36:50
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-17 17:00:05
+ * @LastEditTime: 2021-05-19 23:58:25
  */
 // 637944142
 import {request} from "./request"
@@ -37,6 +37,7 @@ export function getLikedAlbums(){
     url:'/album/sublist',
   })
 }
+//该api只能获取到所有歌单，所以要用js将用户自建歌单和收藏歌单分开
 export function getlikedPlayLists(uid){
   return request({
     url:'/user/playlist',

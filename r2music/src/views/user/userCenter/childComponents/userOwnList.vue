@@ -1,11 +1,19 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2021-05-14 16:16:46
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-19 23:40:47
+-->
 <template>
   <div class="userOwnList">
      <div class="ownListLabel">
        <span class="fa fa-music ownListIcon"></span>
        <span class="myownList">我的歌单</span>
      </div>
-     <div class="playListWrapper">
-      <infoBox v-for="item of ownPlayList" :key="item.id" @click.native="toListDetail(item.id)">
+     <div class="playListWrapper" v-if="ownPlayLists">
+      <infoBox v-for="item of ownPlayLists" :key="item.id" @click.native="toListDetail(item.id)">
         <div slot="pic" class="ownList"><img :src="item.image" alt=""></div>
         <div slot="charAbove" class="ownListCharAbove ellipsis"><span>{{item.name}}</span></div>
         <div slot="charBelow" class="ownListCharBelow ellipsis"><span>{{item.songsCount}}首歌曲</span></div>
@@ -24,7 +32,7 @@ export default {
     infoBox,
   },
   props:{
-    ownPlayList:{
+    ownPlayLists:{
       type:Array,
       default(){
         return[]

@@ -87,7 +87,7 @@ export default {
         this.trackProgress < 0 && (this.trackProgress = 0);
         this.trackProgress > 100 && (this.trackProgress = 100);
         this.progressControlStyle = `left:${this.trackProgress}%;
-           margin-top: -9px;
+          margin-top: -9px;
           height: 15px;
           width: 15px;`
         this.progressStyle = `width:${this.trackProgress}%`

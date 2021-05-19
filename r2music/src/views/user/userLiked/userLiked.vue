@@ -7,6 +7,7 @@
       <div slot="center"><span >我喜欢</span></div>
       <div slot="right"><span class="fa fa-ellipsis-h"></span></div>
     </navTop>
+    <!-- TODO:tab的标签是否应该用router-link来实现跳转？ -->
     <div class = "tab" v-if="collections">
       <div v-for="(item,index) of collections" 
         :key="index"
@@ -26,10 +27,10 @@
         <songBox :songs= "collections[0].collection"></songBox>
       </div>
     </scroll>
-    <div class="likedAlbums">
+    <div class="albumCollections">
       <alOrPlList :list= "collections[1]"></alOrPlList>
     </div>
-    <div class="likedPlayLists">
+    <div class="playListCollections">
       <alOrPlList :list= "collections[2]"></alOrPlList>
     </div>
   </slideX>

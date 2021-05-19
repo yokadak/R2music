@@ -1,11 +1,16 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2020-10-16 21:48:20
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-19 23:12:34
+ */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueLazyLoad from 'vue-lazyload'
-//引入swiper
-import VueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/swiper-bundle.css'
 //引入font-awesome
 import 'font-awesome/css/font-awesome.css';
 //引入FastClick
@@ -22,7 +27,6 @@ FastClick.prototype.focus =function(targetElement){
 Vue.prototype.$bus = new Vue()
 //图片懒加载
 Vue.use(VueLazyLoad,{loading:require("./assets/img/cover/loadingbg.png")})
-Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 
 Vue.config.productionTip = false
 Vue.prototype.$bus = new Vue()

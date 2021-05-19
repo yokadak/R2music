@@ -1,8 +1,16 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2021-05-14 16:16:46
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-19 21:57:26
+-->
 <template>
    <infoBox class="userInfoBox">
-      <div slot="pic" class="userPic"><img :src="userInfo.avatarUrl" alt=""></div>
-      <div slot="charAbove" class="userName"><span>{{userInfo.nickname}}</span></div>
-      <div slot="charBelow" class="userFollow"><span>{{userInfo.follows}}关注</span></div>
+      <div slot="pic" class="userPic"><img :src="profile.avatarUrl" alt=""></div>
+      <div slot="charAbove" class="userName"><span>{{profile.nickname}}</span></div>
+      <div slot="charBelow" class="userFollow"><span>{{profile.follows}}关注</span></div>
   </infoBox>
 </template>
 
@@ -15,7 +23,11 @@ export default {
   },
   data() {
     return {
-      userInfo:this.$store.state.profile
+    }
+  },
+  computed:{
+    profile(){
+      return this.$store.state.user.profile
     }
   }
   }

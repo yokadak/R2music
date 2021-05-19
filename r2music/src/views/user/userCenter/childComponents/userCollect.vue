@@ -5,25 +5,31 @@
        <span class="myLiked">我的喜欢</span>
      </div>
 
-    <infoBox v-if="likedSongs"
+    <infoBox v-if="show"
     @click.native="toUserLiked(0)">
-      <div slot="pic" class="liked"><img :src="likedSongsCover" alt=""></div>
+      <div slot="pic" class="liked">
+        <img :src="likedSongs[0].image">
+      </div>
       <div slot="charAbove" class="likedCharAbove"><span>歌曲</span></div>
       <div slot="charBelow" class="likedCharBelow"><span>{{likedSongs.length}}首歌曲</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-    <infoBox v-if="likedAlbums"
+    <infoBox v-if="show"
     @click.native="toUserLiked(1)">
-      <div slot="pic" class="liked"><img :src="likedAlbumsCover" alt=""></div>
+      <div slot="pic" class="liked">
+        <img :src="albumCollections[0].image">
+      </div>
       <div slot="charAbove" class="likedCharAbove"><span>专辑</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>{{likedAlbums.length}}张专辑</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{albumCollections.length}}张专辑</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
-    <infoBox v-if="likedPlayLists"
+    <infoBox v-if="showPlayLists"
     @click.native="toUserLiked(2)">
-      <div slot="pic" class="liked"><img :src="likedPlayListsCover" alt=""></div>
+      <div slot="pic" class="liked">
+        <img :src="playListCollections[0].image">
+      </div>
       <div slot="charAbove" class="likedCharAbove"><span>歌单</span></div>
-      <div slot="charBelow" class="likedCharBelow"><span>{{likedPlayLists.length}}歌单</span></div>
+      <div slot="charBelow" class="likedCharBelow"><span>{{playListCollections.length}}歌单</span></div>
       <div slot="rightIcon" class="likedRightIcon"><span class="fa fa-angle-right"></span></div>
     </infoBox>
   </div>
@@ -38,21 +44,24 @@ export default {
     infoBox
   },
   props:{
-    likedSongsCover:String,
-    likedPlayListsCover:String,
-    likedAlbumsCover:String,
     likedSongs:Array,
-    likedAlbums:Array,
-    likedPlayLists:Array,
+    albumCollections:Array,
+    playListCollections:Array,
   },
   data() {
     return {
-      collections:[]
+      collections:[],
+      show:false,
+      showPlayLists:false,
     }
   },
   //获取到父组件传递的数据后再进行处理
   watch:{
     likedSongs(){
+      this.show = true
+    },
+    playListCollections(){
+      this.showPlayLists = true
       this.getAllCollections()
     }
   },
@@ -65,30 +74,18 @@ export default {
         likedArray[0].category = '歌曲'
         likedArray[0].collection = this.likedSongs
         likedArray[1].category = '专辑'
-        likedArray[1].collection = this.likedAlbums
+        likedArray[1].collection = this.albumCollections
         likedArray[2].category = '歌单'
-        likedArray[2].collection = this.likedPlayLists
+        likedArray[2].collection = this.playListCollections
         this.collections = likedArray
         console.log(this.collections)
     },
     toUserLiked(from){
-      this.$router.push({name:'myLiked',params:{
+      this.$router.push({name:'myCollections',params:{
         collections:this.collections,
         fromIndex:from
         }})
     },
-    // toMyLikedSongs(Songs){
-    //   // console.log(Songs)
-    //   this.$router.push({name:'myLikedSongs',params:{myLikedSongs:Songs}})
-    // },
-    // toMyLikedAlbums(Albums){
-    //   // console.log(Albums)
-    //   this.$router.push({name:'myLikedAlbums',params:{myLikedAlbums:Albums}})
-    // },
-    // toMyLikedPlayLists(PlayLists){
-    //   // console.log(PlayLists)
-    //   this.$router.push({name:'myLikedPlayLists',params:{myLikedPlayLists:PlayLists}})
-    // },
   },
 }
 </script>

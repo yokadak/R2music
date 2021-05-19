@@ -36,8 +36,6 @@ export default {
     }
   },
   created() {
-    // this._login(17394942136,"yrh190701")
-    // console.log()
     this._loginStatus()
   },
   methods: {
@@ -46,16 +44,30 @@ export default {
     },
     _login(phone,password){
       login(phone,password).then(res =>{
+        console.log(phone,password);
         console.log(res);
-        this.$store.commit('SET_TOKEN', res.token)
-        this.$store.commit('SET_COOKIE', res.cookie)
-        this.$store.commit('SET_USER', res.account)
-        this.$store.commit('SET_PROFILE', res.profile)
-        this.$router.push(`/userCenter/${res.profile.nickname}`)
+        //判断返回的结果
+        if(res.code === 200){
+          //登录成功
+          console.log("登录成功")
+          this.$store.commit({
+            type:"getUserInfo",
+            account:res.account,
+            profile:res.profile
+          })
+          this.$store.commit('SET_TOKEN', res.token)
+          //跳转到用户中心
+          this.$router.push(`/user/${res.account.id}`)
+        }else if(res.code === 502){
+          //密码错误
+          console.log(res.msg)
+        }else if(res.code === 400){
+          //账户不存在
+          console.log("用户不存在")
+        }
       }).catch((err) =>{
         console.log(err)
       })
-      // console.log(this.phone,this.password)
     },
   },
 
@@ -68,7 +80,6 @@ export default {
     font-weight: bold;
   }
   .loginBox{
-    /* background-color: red; */
     width:90%;
     margin: auto;
     display: flex;

@@ -34,6 +34,11 @@
      recommendedMusic,
      miniPlayer,
    },
+   computed:{
+     account(){
+       return this.$store.state.user.account
+     }
+   },
    data() {
      return {
       recommendSongs:[],
@@ -46,7 +51,13 @@
 
    methods: {
      toUserCenter(){
-       this.$router.push('/userCenter');
+       //需要判断用户是否已经登录
+       if(this.account){
+         this.$router.push(`/user/${this.account.id}`);
+       }else{
+         //
+         this.$router.push(`/user/notLogIn`);
+       }
      },
      toLogin(){
        this.$router.push('/login');

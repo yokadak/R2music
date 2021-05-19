@@ -46,7 +46,6 @@
 <script>
   import navTop from 'components/common/navBar/navTop'
   import slideX from 'components/common/scroll/slideX.vue'
-  import switchPageBlock from 'components/content/base/switchPageBlock'
   import playerBgBox from './playerBgBox'
   import progressBar from './progressBar'
   import lyricsPage from './lyricsPage'
@@ -68,7 +67,6 @@
    components:{
      navTop,
      slideX,
-     switchPageBlock,
      playerBgBox,
      operationBar,
      progressBar,

@@ -1,16 +1,10 @@
 <template>
 <!-- 该组件显示的是歌单列表或专辑列表 -->
-<div>
-  <navTop>
-    <div slot="center" class="ellipsis"><span class="listName">{{title}}</span></div>
-    <div slot="right"><span class="fa fa-ellipsis-h"></span></div>
-  </navTop>
   <scroll class="wrapper">
     <div class="content">
-      <listInfo :playListDetail="playListDetail" v-if="isSongList || isAlbumDetail"></listInfo>
-      <div class="listCount" v-if="count" >{{count}} {{listItem}}</div>
-      <ul class="list">
-        <li v-for="item of list" :key="item.id" @click="toDetail(item.id)">
+      <div class="listCount" v-if="list">{{list.collection.length}} {{list.category}}</div>
+      <ul class="list" v-if="list">
+        <li v-for="item of list.collection" :key="item.id" @click="toDetail(item.id)">
           <infoBox>
             <div slot="pic" class="picture"><img :src="item.image" alt=""></div>
             <div slot="charAbove" class="charAbove ellipsis">{{item.name}}</div>
@@ -21,130 +15,65 @@
       </ul>
     </div>
   </scroll>
-  <miniPlayer></miniPlayer>
-</div>
 </template>
 
 <script>
-  import navTop from 'components/common/navBar/navTop'
-  import listInfo from './listInfo'
   import scroll from 'components/common/scroll/scroll'
-  import miniPlayer from 'components/content/base/miniPlayer'
-  //网络请求导入
-  import {getPlayListDetail} from "network/songList"
-  import {getAlbumDetail} from "network/songList"
-  import {getPlayListData} from "common/js/handleApiData"
-  import {getPlayListSongInfo} from "network/songs"
-  import {getWantedAlbumInfo} from "common/js/handleApiData"
-
+  import infoBox from 'components/content/base/infoBox'
  
 export default {
   name:"list",
   components:{
-    navTop,
     scroll,
-    listInfo,
-    miniPlayer,
+    infoBox,
   },
-  data() {
-    return {
-      playListId:this.$route.params.playListId,//歌单Id
-      albumId:this.$route.params.albumId,//专辑Id
-      count:0,//列表项计数
-      listItem:'',//判断列表的内容是歌单专辑还是歌曲
-      playListDetail:{},
-      list:[],//歌曲列表，未登录只能获取20首
-      listIds:[],//完整歌曲Id列表
-      routeName:this.$route.name,
-      isItemSongs:true,//判断列表的内容是歌单专辑还是歌曲，默认是歌曲
-      isSongList:this.$route.name === 'songList' ? true : false,
-      isAlbumDetail:this.$route.name === 'albumDetail' ? true : false,
-      title:this.$route.name === 'songList' ? "歌单" : "我喜欢",
-      myLikedSongs:this.$route.params.myLikedSongs,
-      myLikedAlbums:this.$route.params.myLikedAlbums,
-      myLikedPlayLists:this.$route.params.myLikedPlayLists,
+  props:{
+    list:{
+      default:[]
     }
   },
+  // data() {
+  //   return {
+  //     playListId:this.$route.params.playListId,//歌单Id
+  //     albumId:this.$route.params.albumId,//专辑Id
+  //     count:0,//列表项计数
+  //     listItem:'',//判断列表的内容是歌单专辑还是歌曲
+  //     listDetail:{},
+  //     list:[],//歌曲列表，未登录只能获取20首
+  //     listIds:[],//完整歌曲Id列表
+  //     routeName:this.$route.name,
+  //     myLikedSongs:this.$route.params.myLikedSongs,
+  //     myLikedAlbums:this.$route.params.myLikedAlbums,
+  //     myLikedPlayLists:this.$route.params.myLikedPlayLists,
+  //   }
+  // },
 
-  created() {
-    this.$nextTick(()=>{
-      this.judgeRoute()
-      // console.log(this.routeName)
-    })
-  },
-  //TODO:if判断改为Switch语句
-  //TODO:未登录获取完整歌单、专辑信息
+  // created() {
+  //   this.$nextTick(()=>{
+  //     this.judgeRoute()
+  //   })
+  // },
   methods: {
-    judgeRoute(){
-      if(this.routeName === 'songList'){
-        this._getplayListDetail(this.playListId)
-        this.listItem = '首歌曲'
-      }
-      if(this.routeName === 'albumDetail'){
-        this._getAlbumDetail(this.albumId)
-        this.listItem = '首歌曲'
-      }
-      if(this.routeName === 'myLikedSongs'){
-        this.list = this.myLikedSongs
-        // this.listIds = this.list.map((item)=>{
-        //   return item.id
-        // })//已经登录可以获取到完整歌曲列表
-        this.count = this.myLikedSongs.length
-        this.listItem = '首歌曲'
-      }
-      if(this.routeName === 'myLikedAlbums'){
-        this.list = this.myLikedAlbums
-        // console.log(this.list)
-        this.count = this.myLikedAlbums.length
-        this.isItemSongs = false
-        this.listItem = '张专辑'
-      }
-      if(this.routeName === 'myLikedPlayLists'){
-        this.list = this.myLikedPlayLists
-        // console.log(this.list)
-        this.isItemSongs = false
-        this.listItem = '张歌单'
-      }
-      console.log(this.list)
-    },
-    _getplayListDetail(id){
-      getPlayListDetail(id).then((res) =>{
-        this.playListDetail = getPlayListData(res.playlist)
-        // console.log(this.playListDetail)
-        this.count = this.playListDetail.songsCount
-        this.list = res.playlist.tracks.map((item) =>{
-          return getPlayListSongInfo(item)
-        })
-        // console.log(this.list)
-        //未登录获取完整歌单音乐
-        this.listIds = res.playlist.trackIds.map((item)=>{
-          return item.id
-        })
-        // console.log(this.listIds)
-      })
-    },
-    _getAlbumDetail(id){
-      // console.log(id)
-      getAlbumDetail(id).then((res) =>{
-        // console.log(res.songs)
-        const albumSongs = res.songs.map((item)=>{
-          this.listIds.push(item.id)//未登录获取完整专辑歌曲列表
-          return getPlayListSongInfo(item)
-        })
-        const album = getWantedAlbumInfo(res.album)
-        this.playListDetail = album
-        this.list = albumSongs 
-        this.count = albumSongs.length  
-        // console.log(this.list)
-      })
-    },
+    // judgeRoute(){
+    //   if(this.routeName === 'myLikedAlbums'){
+    //     this.list = this.myLikedAlbums
+    //     this.count = this.myLikedAlbums.length
+    //     this.listItem = '张专辑'
+    //   }
+    //   if(this.routeName === 'myLikedPlayLists'){
+    //     this.list = this.myLikedPlayLists
+    //     this.count = this.myLikedPlayLists.length
+    //     this.listItem = '张歌单'
+    //   }
+    //   // console.log(this.list)
+    // },
     toDetail(id){
       if(this.$route.name === "myLikedAlbums"){
         this.$router.push({name:'albumDetail',params: {albumId:id}})
       }
       else{
         this.$router.push({name:'songList',params: {playListId:id}})
-        console.log("songList")
+        // console.log("songList")
       }
     },
   },
@@ -154,32 +83,39 @@ export default {
 <style scoped>
   .wrapper{
     overflow: hidden;
-    height: calc(100vh - 115px);
+    height: calc(100vh - 155px);
+    background-color: green;
+  }
+  /*即使内容未溢出也可以滚动 */
+  .content{
+    background-color: red;
+    min-height:800px
+  }
+  .listCount{
+    font-size: 16px;
+    width: 90%;
+    margin:auto;
+    margin-top: 15px;
   }
   .list{
     width:90%;
     margin:auto;
+    margin-top: 20px;
   }
   .picture img{
     width:40px;
     border-radius:5px;
   }
-  .likedListCharAbove{
+  .charAbove{
     font-size: 11px;
     color:var(--color-high-text);
     margin-top: 3px;
   }
-  .likedListCharBelow{
+  .charBelow{
     font-size: 11px;
     margin-top: 6px;
   }
-  .listPlayControl{
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 55px;
-  }
+
 
 
 </style>
