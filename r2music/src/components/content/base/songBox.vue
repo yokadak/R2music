@@ -55,6 +55,7 @@ export default {
         })
       },
       getSongsQueue(songs){
+         let playQueue = [];
          for(let item of songs){
           if(item.copyRight === false){
             //没有版权的歌曲
@@ -66,9 +67,13 @@ export default {
             continue
           }else{
             //vip歌曲和普通歌曲加入播放队列
-            this.songsQueue.push(item)
+            playQueue.push(item)
           }
         }
+        this.$store.commit({
+          type:'getPlayQueue',
+          playQueue:playQueue
+        })
       },
       toPlayer(item,songs,index){
         //跳之前先判断当前歌曲是否有版权
@@ -79,7 +84,8 @@ export default {
           console.log("还未购买该歌曲哦")
         }else{
           this.getSongsQueue(songs)
-          this.$router.push({name:'player',params: {song:item,songs:this.songsQueue,songIndex:index}})
+          this.$store.commit({type:"getPlayingSong",playingSong:item,index:index})
+          this.$router.push(`/player/${item.id}`)
         }
       },
       toSingerPage(id){

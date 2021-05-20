@@ -4,7 +4,7 @@
  * @Author: yrh
  * @Date: 2020-10-26 14:45:01
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-18 20:57:50
+ * @LastEditTime: 2021-05-20 19:58:52
 -->
 <template>
   <div class="wrapper" ref="wrapper">
@@ -29,6 +29,7 @@ export default {
         disableTouch: false,//启用手指触摸
         scrollX: true,  //X轴滚动启用 
         click: true, //可点击
+        // stopPropagation: true,
         // eventPassthrough: 'vertical',//设置该属性为vertical 则只会滚动设置为true的轴
       })
     })

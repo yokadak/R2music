@@ -7,8 +7,8 @@
     </navTop>
     <scroll class="wrapper">
       <div>
-        <listInfo :playListDetail="playListDetail"></listInfo>
-        <div class="listCount" v-if="count">{{count}} {{listItem}}</div>
+        <listInfo :detail="detail"></listInfo>
+        <div class="listCount" v-if="list">{{list.length}} 首歌曲</div>
         <songBox
         :songs="list"
         ></songBox>
@@ -42,41 +42,31 @@ export default {
   },
   data() {
     return {
-      playListId:this.$route.params.playListId,//歌单Id
-      albumId:this.$route.params.albumId,//专辑Id
-      count:0,//列表项计数
-      listItem:'首歌曲',//列表的内容是歌曲
-      playListDetail:{},
+      id:this.$route.params.id,//专辑或歌单Id
+      detail:{},//专辑或歌单的信息
       list:[],//歌曲列表，未登录只能获取20首
       listIds:[],//完整歌曲Id列表
-      routeName:this.$route.name,
+      path:this.$route.path,
       title: '' ,
-      myLikedSongs:this.$route.params.myLikedSongs,
     }
   },
   created() {
-    this.$nextTick(()=>{
       this.judgeRoute()
-    })
   },
   methods: {
+    //判断显示专辑列表还是歌单列表
     judgeRoute(){
-      if(this.routeName === 'songList'){
-        this._getplayListDetail(this.playListId)
-      }
-      if(this.routeName === 'albumDetail'){
-        this._getAlbumDetail(this.albumId)
-      }
-      if(this.routeName === 'myLikedSongs'){
-        this.list = this.myLikedSongs
-        this.count = this.myLikedSongs.length
-        this.title = '我喜欢'
+      if(this.path.includes("songList")){
+        this._getplayListDetail(this.id)
+      }else if(this.path.includes('album')){
+        this._getAlbumDetail(this.id)
       }
     },
+    //获取歌单歌曲及详情信息
     _getplayListDetail(id){
       getPlayListDetail(id).then((res) =>{
-        this.playListDetail = getPlayListData(res.playlist)
-        this.count = this.playListDetail.songsCount
+        this.detail = getPlayListData(res.playlist)
+        this.count = this.detail.songsCount
         this.title = '歌单'
         let index = 0;
         this.list = res.playlist.tracks.map((item) =>{
@@ -93,6 +83,7 @@ export default {
         // console.log(this.listIds)
       })
     },
+    //获取专辑歌曲及详情信息
     _getAlbumDetail(id){
       getAlbumDetail(id).then((res) =>{
         const albumSongs = res.songs.map((item)=>{
@@ -100,7 +91,7 @@ export default {
           return getPlayListSongInfo(item)
         })
         const album = getWantedAlbumInfo(res.album)
-        this.playListDetail = album
+        this.detail = album
         this.title = '专辑'
         this.list = albumSongs
         console.log(this.list)

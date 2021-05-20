@@ -4,15 +4,17 @@
        <div slot="left"><span class="fa fa-angle-down"></span></div>
        <div slot="center">
          <div class="tab">
-           <span :class="{'active': currentPageIndex === 0}">歌曲</span>
+           <span :class="{'active': currentPageIndex === 0}"
+           @click="slidePlayingPage">歌曲</span>
            <span class="divider">I</span>
-           <span :class="{'active': currentPageIndex === 1}">歌词</span>
+           <span :class="{'active': currentPageIndex === 1}"
+           @click="slideToLyricsPage">歌词</span>
           </div>
        </div>
   </navTop>
   <slideX class="slideX-wrapper bgBox" ref="playerSlideX">
     <div class="player">
-      <playerBgBox :song ="song"></playerBgBox>
+      <playerBgBox :playingLyric = "playingLyric"></playerBgBox>
       <audio :src="songUrl" autoplay ref="music"></audio>
       <operationBar class="playerOperationBar">
         <div slot="operation-1" class ="boxOp"><span class="fa fa-volume-down"></span></div>
@@ -38,6 +40,7 @@
       :lyrics= "songLyrics" 
       :transLyrics= "tansLyrics"
       :showPrompt= "showPrompt"
+      @lyricChange= "changePlayingLyric"
     ></lyricsPage>
   </slideX>
 </div>
@@ -54,11 +57,9 @@
   import playControl from 'components/content/base/playControl'
 
   //网络请求导入
-  import {getSongUrl} from "network/songs"
-  import {getSongLyrics} from "network/songs"
+  import {getSongUrl,getSongLyrics} from "network/songs"
   //工具函数
-  import {getSongTime} from "common/js/utils"
-  import {debounce} from 'common/js/utils.js'
+  import {getSongTime,debounce} from "common/js/utils"
 
 
   
@@ -74,84 +75,115 @@
      info,
      playControl,
    },
-  data()
-   {
-     return {
-       song:this.$route.params.song,
-       songIndex:this.$route.params.songIndex,
-       currentPageIndex:0,//当前slide页面的索引值
-       songs:this.$route.params.songs,//未登录只能获取歌单/专辑20首歌曲
-       songUrl:'',//歌曲音源链接
-       copyRight:true,//是否有音源
-       songLyrics:'',//歌曲歌词
-       tansLyrics:undefined,//歌词翻译
-       gotLyrics:false,//是否获取到歌词
-       showPrompt:false,//是否提示没有歌词
-       showLyrics:false,//是否显示歌词
-       duration:0,//歌曲持续时间，单位秒
-       currentTime:0,//歌曲当前时间，单位秒
-       progress:0,//当前歌曲进度
-       playing:false,//是否播放
-       playStateIcon:"fa fa-play-circle",//设定播放按钮的状态，默认为暂停状态
-       volume: 100,//音量
-       playList:[],//播放列表
-       playMode:'inOrder',//播放模式，默认顺序播放
-       playModeIcon:'fa fa-exchange',//设置播放模式的图标默认为顺序播放
-       randomOrder:[],//随机播放是支持有序的，可返回上下曲，需要用数组保存顺序
-       //TODO:随机播放记录上一曲，下一曲，并非全部打乱顺序
+   computed:{
+     playQueue(){
+       return this.$store.state.playQueue //播放列表
+     },
+     playingSong(){
+       return this.$store.state.playingSong.song //当前播放的歌曲
+     },
+     playingSongIndex(){
+       return this.$store.state.playingSong.index //当前播放的歌曲
      }
    },
+    data()
+    {
+     return {
+        currentPageIndex:0,//当前slide页面的索引值
+        songUrl:'',//歌曲音源链接
+        copyRight:true,//是否有音源
+        songLyrics:'',//歌曲歌词
+        tansLyrics:undefined,//歌词翻译
+        gotLyrics:false,//是否获取到歌词
+        showPrompt:false,//是否提示没有歌词
+        showLyrics:false,//是否显示歌词
+        playingLyric: '',//播放界面显示的当前播放的歌词行
+        duration:0,//歌曲持续时间，单位秒
+        currentTime:0,//歌曲当前时间，单位秒
+        progress:0,//当前歌曲进度
+        playing:false,//是否播放
+        playStateIcon:"fa fa-play-circle",//设定播放按钮的状态，默认为暂停状态
+        volume: 100,//音量
+        playMode:'inOrder',//播放模式，默认顺序播放
+        playModeIcon:'fa fa-exchange',//设置播放模式的图标默认为顺序播放
+        randomOrder:[],//随机播放是支持有序的，可返回上下曲，需要用数组保存顺序
+        //TODO:随机播放记录上一曲，下一曲，并非全部打乱顺序
+      }
+    },
    watch:{
      volume(){
        this.$refs.music.volume = this.volume / 100
      },
    },
    created() {
-     this._getSongUrl(this.song.id)
-     this._getSongLyrics(this.song.id)
+     this._getSongUrl(this.playingSong.id)
+     this._getSongLyrics(this.playingSong.id)
    },
    mounted() {
-     this.init();
-
-     let music = this.$refs.music
-     music.addEventListener("durationchange",e =>{
-       this.duration = e.target.duration
-       this.playStateIcon = "fa fa-play-circle"
-       this.$bus.$emit('durationchanged')
-     })
-     music.addEventListener("timeupdate",e =>{
-       this.currentTime = e.target.currentTime
-       this.progress = (this.currentTime / this.duration) * 100
-       this.$bus.$emit('timeUpdated',this.currentTime)
-      //  console.log(this.progress)
-     })
-     music.addEventListener("playing", e => {
-       this.playing = true;
-       //播放时，图标变暂停图标
-       this.playStateIcon = "fa fa-pause-circle"
-    });
-     music.addEventListener("pause", e => {
-       this.playing = false;
-       //暂停时，图标变播放图标
-       this.playStateIcon = "fa fa-play-circle"
-    });
-     music.addEventListener("ended", e => {
-       this.playing = false;
-       //单曲循环不进行切换操作默认重复播放
-       if(this.playMode === "singleCycle"){
-         this.startPlay()
-       }else{
-         this.playNextSong()
-       }
-    });
-   },
-   methods: {
-     init(){
-      const slideX = this.$refs.playerSlideX
-      // slideX.goToPage(0,0,0)
-      slideX.slideX.on("slideWillChange",(page)=>{
-      this.slideWillChange(page)
+     this.$nextTick(()=>{
+       //确保视图已经渲染完毕
+       this.init();
+       this.$bus.$on("slideToLyricsPage",this.slideToLyricsPage)
+       let music = this.$refs.music
+       //监听音乐的切换
+       music.addEventListener("durationchange",e =>{
+         this.duration = e.target.duration
+         this.playStateIcon = "fa fa-play-circle"
+         this.$bus.$emit('durationchanged')
+       })
+       //监听音乐的进度
+       music.addEventListener("timeupdate",e =>{
+         this.currentTime = e.target.currentTime
+         this.progress = (this.currentTime / this.duration) * 100
+         this.$bus.$emit('timeUpdated',this.currentTime)
+         //  console.log(this.progress)
+       })
+       //监听音乐是否正在播放
+       music.addEventListener("playing", e => {
+         this.playing = true;
+         //播放时，图标变暂停图标
+         this.playStateIcon = "fa fa-pause-circle"
+       });
+       //监听音乐是否暂停
+       music.addEventListener("pause", e => {
+         this.playing = false;
+         //暂停时，图标变播放图标
+         this.playStateIcon = "fa fa-play-circle"
+       });
+       //监听音乐是否结束,自动播放下一首
+       music.addEventListener("ended", e => {
+         this.playing = false;
+         this.$bus.$emit("songEnded")
+         if(this.playMode === "singleCycle"){
+         //单曲循环不进行切换操作默认重复播放
+           this.startPlay()
+         }else{
+           this.playNextSong()
+         }
+      });
+      //
     })
+  },
+  methods:{
+
+    init(){
+      const slideX = this.$refs.playerSlideX
+      //监听slidewWillChange事件
+      slideX.slideX.on("slideWillChange",(page)=>{
+        this.slideWillChange(page)
+      })
+    },
+    slideToLyricsPage(){
+      const slideX = this.$refs.playerSlideX
+      if(slideX){
+        slideX.goToPage(1,0,500)
+      }
+    },
+    slidePlayingPage(){
+      const slideX = this.$refs.playerSlideX
+      if(slideX){
+        slideX.goToPage(0,0,500)
+      }
     },
     slideWillChange(page){
       this.currentPageIndex = page.pageX
@@ -184,6 +216,7 @@
      startPlay(){
        this.$refs.music.play()
      },
+     //改变播放模式
      changePlayMode(){
        if(this.playMode === "singleCycle"){
          this.playMode = "random"
@@ -197,6 +230,7 @@
        }
        console.log(this.playMode)
      },
+     //改变歌曲的播放状态
      changePlayState(){
        if(this.playing){
         this.$refs.music.pause()
@@ -204,82 +238,97 @@
         this.$refs.music.play()
        }
      },
+     //改变音量
      changeVolume(newVolume){
        this.volume = newVolume
      },
+     //改变歌曲进度
      changeCurrentTime(newProgress) {
        this.progress = newProgress
        this.progress >= 0 && this.progress < 100 && (this.startPlay())
        this.currentTime = (newProgress / 100) * this.duration
        this.$refs.music.currentTime = this.currentTime;
     },
+    //改变播放器界面当前显示的歌词
+     changePlayingLyric(lyric){
+      this.playingLyric = lyric
+    },
     //TODO:每次随机播放一定要循环到列表每一首歌
     //播放下一首
     playNextSong(){
+      this.playingLyric = ''
       //判断播放列表是否只有一首歌
-      if(this.songs.length === 1){
-        this._getSongUrl(this.song.id)
-        this._getSongLyrics(this.song.id)
+      if(this.playQueue.length === 1){
+        //TODO:即使只有一首歌，也要刷新歌曲的播放进度
+        this._getSongUrl(this.playingSong.id)
+        this._getSongLyrics(this.playingSong.id)
       }
       else if(this.playMode === 'inOrder' || this.playMode === 'singleCycle'){
         //顺序播放或者单曲循环
-        if(this.songIndex === this.songs.length - 1){
-          this.songIndex = -1
+        if(this.playingSongIndex === this.playQueue.length - 1){
+          //当前歌曲是播放队列的最后一首，则其下一首是播放队列的第一首
+          this.$store.commit({type:'getPlayingSong',playingSong:this.playingSong,index:-1})
         }
         //获取歌曲链接和歌词
-        this._getSongUrl(this.songs[this.songIndex + 1].id)
-        this._getSongLyrics(this.songs[this.songIndex + 1].id)
-        this.song = this.songs[this.songIndex + 1 ]
-        this.songIndex += 1
+        const nextSong = this.playQueue[this.playingSongIndex + 1 ]
+        const nextSongIndex = this.playingSongIndex + 1 
+        this.$store.commit({type:'getPlayingSong',playingSong:nextSong,index:nextSongIndex})
+        this._getSongUrl(nextSong.id)
+        this._getSongLyrics(nextSong.id)
       }else{
         //随机播放 取0至length-1索引,不允许和当前索引相同
-        const randomIndex = Math.floor(Math.random()*(this.songs.length))
-        if(this.songIndex === randomIndex){
+        const randomIndex = Math.floor(Math.random()*(this.playQueue.length))
+        if(this.playingSongIndex === randomIndex){
           this.playNextSong()
         }else{
-          this.songIndex = randomIndex
-          this._getSongUrl(this.songs[this.songIndex].id)
-          this._getSongLyrics(this.songs[this.songIndex].id)
-          this.song = this.songs[this.songIndex]
-          console.log(this.songIndex)
+          const nextSong = this.playQueue[randomIndex]
+          this.$store.commit({type:'getPlayingSong',playingSong:nextSong,index:randomIndex})
+          this._getSongUrl(nextSong.id)
+          this._getSongLyrics(nextSong.id)
           //记录随机播放的顺序，为了返回上一曲
-          // this.randomOrder.push(this.songIndex)
+          // this.randomOrder.push(this.playingSongIndex)
           // console.log(this.randomOrder)
         }
       }
     },
     //播放上一首
     playPrevSong(){
-      if(this.songs.length === 1){
-        this._getSongUrl(this.song.id)
-        this._getSongLyrics(this.song.id)
+      this.playingLyric = ''
+      if(this.playQueue.length === 1){
+        this._getSongUrl(this.playingSong.id)
+        this._getSongLyrics(this.playingSong.id)
       }//顺序播放
       else if(this.playMode === 'inOrder' || this.playMode === 'singleCycle'){
-        if(this.songIndex === 0){
-          this.songIndex = this.songs.length
+        if(this.playingSongIndex === 0){
+          //如果当前播放的是第一首，那上一首就是列队的最后一首
+          this.$store.commit({
+            type:'getPlayingSong',
+            playingSong:this.playingSong,
+            index:this.playQueue.length
+          })
         }
-        this._getSongUrl(this.songs[this.songIndex - 1].id)
-        this._getSongLyrics(this.songs[this.songIndex - 1].id)
-        this.song = this.songs[this.songIndex - 1 ]
-        this.songIndex -= 1
+        const prevSong = this.playQueue[this.playingSongIndex - 1]
+        const prevSongIndex = this.playingSongIndex - 1
+        this.$store.commit({type:'getPlayingSong',playingSong:prevSong,index:prevSongIndex})
+        this._getSongUrl(prevSong.id)
+        this._getSongLyrics(prevSong.id)
       }else{
         //随机播放,如果随机播放列队不为空，记录上一首index
-        const randomIndex = Math.floor(Math.random()*(this.songs.length))
-        if(this.songIndex === randomIndex){
+        const randomIndex = Math.floor(Math.random()*(this.playQueue.length))
+        if(this.playingSongIndex === randomIndex){
           this.playPrevSong()
         }else{
-          this.songIndex = randomIndex
-          this._getSongUrl(this.songs[this.songIndex].id)
-          this._getSongLyrics(this.songs[this.songIndex].id)
-          this.song = this.songs[this.songIndex]
-          console.log(this.songIndex)
+          const prevSong = this.playQueue[randomIndex]
+          this.$store.commit({type:'getPlayingSong',playingSong:prevSong,index:randomIndex})
+          this._getSongUrl(prevSong.id)
+          this._getSongLyrics(prevSong.id)
         }
       }
     },
     openPlayList(){
       console.log("playListOpen")
     },
-   },
+  },
 }
 </script>
 
@@ -287,7 +336,7 @@
   .slideX-wrapper{
     overflow: hidden;
     height: calc(100vh - 95px);
-    background-color:red;
+    /* background-color:red; */
   }
   .player{
     width: 100%;

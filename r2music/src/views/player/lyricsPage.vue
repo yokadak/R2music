@@ -20,6 +20,7 @@
               >{{item.tranLyric}}</div>
             </info>
           </li>
+          <div class="alwaysScroll"></div>
         </ul>
       </scroll>
     </div>
@@ -179,11 +180,14 @@ export default {
       if(this.showPrompt !== true && this.scrollIndex < this.lyricsObjArray.length &&
          this.lyricsObjArray[this.scrollIndex].lyricTime !== undefined){
            if(currentTime > this.lyricsObjArray[this.scrollIndex].lyricTime){
+             //将当前播放的歌词发送给播放页进行展示
+             this.$emit("lyricChange",this.lyricsObjArray[this.scrollIndex].lyric)
              //从第3行开始滚动
              if(this.scrollIndex > 1 ){
                //调用better-scroll提供的API实现歌词滚动
-               //TODO:有些歌词滚到底部就不再滚动了，大多数是歌词较多的歌
-               let scrollLine = this.$refs.lyricLine[this.scrollIndex -1 ]
+               //TODO:有些歌词滚到底部就不再滚动了，大多数是歌词较多的歌,应该是bscroll的问题
+               //TODO:滚动优化，当直接定位进度时，滚动也应该立刻定位，以及滑动歌词控制进度功能
+               let scrollLine = this.$refs.lyricLine[this.scrollIndex -1]
                this.$refs.lyricList.scrollToElement(scrollLine,1000)
              }else{
                this.$refs.lyricList.scrollToElement(0,0,1000)

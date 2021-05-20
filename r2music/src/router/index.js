@@ -22,19 +22,26 @@ const originalPush = VueRouter.prototype.push
 Vue.use(VueRouter)
 //创建路由对象
 const routes = [
+  //重定向到首页
   {
     path:"",
     redirect:"/home"
   },
+  //首页
   {
     path:"/home",
     component:home
   },
+  //菜单
   {
     path:"/menu",
     component:menu
   },
- 
+  //登录
+  {
+    path:"/login",
+    component:login,
+  },
   //用户中心
   {
     path:"/user/:userId",
@@ -51,9 +58,9 @@ const routes = [
     path:"/myCollections",
     name:'myCollections',
     component:userLiked,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
+    // meta:{
+    //   keepAlive: true //需要被缓存
+    // }
   },
   // {
   //   path:"/userCenter/:userName",
@@ -63,26 +70,35 @@ const routes = [
   //     isBack:false //是否是后退进入该页面
   //   }
   // },
+  //播放界面
   {
-    path:"/login",
-    component:login,
-  },
-  {
-    path:"/player",
+    path:"/player/:id",
     name:"player",
     component:player
   },
+  //搜索
   {
     path:"/search",
     component:search
   },
+  //歌单和专辑详情
   {
-    path:"/songList",
+    path:"/songList/:id",
     name:'songList',
+    alias:'/album/:id',
     component:listDetail,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
+    // meta:{
+    //   keepAlive: true //需要被缓存
+    // }
+  },
+  //歌手详情
+  {
+    path:"/singer/:id",
+    name:'singerPage',
+    component:singerPage,
+    // meta:{
+    //   keepAlive: true //需要被缓存
+    // }
   },
   // {
   //   path:"/myliked"
@@ -90,59 +106,38 @@ const routes = [
   // },
 
 
-  {
-    path:"/myLiked/Songs",
-    name:'myLikedSongs',
-    component:listDetail,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
-  },
-  {
-    path:"/myLiked/Albums",
-    name:'myLikedAlbums',
-    component:alOrPlList,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
-  },
-  {
-    path:"/myLiked/PlayLists",
-    name:'myLikedPlayLists',
-    component:alOrPlList,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
-  },
-  {
-    path:"/albumDetail",
-    name:'albumDetail',
-    component:listDetail,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
-  },
-  {
-    path:"/singer",
-    name:'singerPage',
-    component:singerPage,
-    meta:{
-      keepAlive: true //需要被缓存
-    }
-  },
-  {
-    path:"/album/:id",
-    component:listDetail
-  },
-  {
-    path:"/songList/:id",
-    component:listDetail
-  },
-  {
-    path:"/singer/:id",
-    component:singerPage
-  },
-
+  // {
+  //   path:"/myLiked/Songs",
+  //   name:'myLikedSongs',
+  //   component:listDetail,
+  //   meta:{
+  //     keepAlive: true //需要被缓存
+  //   }
+  // },
+  // {
+  //   path:"/myLiked/Albums",
+  //   name:'myLikedAlbums',
+  //   component:alOrPlList,
+  //   meta:{
+  //     keepAlive: true //需要被缓存
+  //   }
+  // },
+  // {
+  //   path:"/myLiked/PlayLists",
+  //   name:'myLikedPlayLists',
+  //   component:alOrPlList,
+  //   meta:{
+  //     keepAlive: true //需要被缓存
+  //   }
+  // },
+  // {
+  //   path:"/albumDetail",
+  //   name:'albumDetail',
+  //   component:listDetail,
+  //   meta:{
+  //     keepAlive: true //需要被缓存
+  //   }
+  // },
 
 ]
 const router = new VueRouter({

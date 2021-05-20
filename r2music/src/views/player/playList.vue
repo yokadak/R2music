@@ -4,10 +4,16 @@
  * @Author: yrh
  * @Date: 2021-05-19 14:08:07
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-19 14:54:21
+ * @LastEditTime: 2021-05-20 22:51:50
 -->
 <template>
-  <div class="playList">
+  <div class="playListPage">
+    <div class="mask" @click="hidePlayList">
+      点击这里关闭
+    </div>
+    <div class="playList">
+
+    </div>
     <navTop>
       <div slot="left"><span class="fa fa-random"></span></div>
       <div slot="center" class="title">
@@ -16,9 +22,9 @@
       </div>
       <div slot="right"><span></span></div>
     </navTop>
-    <!-- <songBox></songBox> -->
+    <!-- <songBox :songs= "playQueue"></songBox> -->
     <!-- <progressBar></progressBar> -->
-    <div class="close"><span>关闭</span></div>
+    <div class="close" @click="hidePlayList"><span>关闭</span></div>
   </div>
 </template>
 
@@ -28,15 +34,15 @@
   import songBox from 'components/content/base/songBox'
 export default {
   name: "playList",
-  data() {
-    return {
-      count:25
-    }
-  },
   components: {
     navTop,
     songBox,
     progressBar
+  },
+  computed:{
+    playQueue(){
+      return this.$store.state.playQueue
+    }
   },
   methods: {
   }
@@ -44,16 +50,22 @@ export default {
 </script>
 
 <style  scoped>
+  .playListPage{
+    height: 100vh;
+    position: relative;
+  }
+  .mask{
+    width:100%;
+    height:200px;
+    background-color: rgba(0,0.0, 0.2);
+  }
   .playList{
     width:100%;
-    height: calc(100vh - 200px);
     background-color: var(--popUpBgColor);
     position:absolute;
+    margin-top: 200px;
     bottom: 0;
   }
-  /* .title{
-  
-  } */
   .title span{
     margin-left: 10px;
   }

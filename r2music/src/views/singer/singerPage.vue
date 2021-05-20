@@ -56,7 +56,7 @@ export default {
     return {
       singerInfo: [],
       singerSongs: [],
-      singerId:this.$route.params.singerId,
+      singerId:this.$route.params.id,
     }
   },
   created() {

@@ -68,12 +68,10 @@ export default {
     //   // console.log(this.list)
     // },
     toDetail(id){
-      if(this.$route.name === "myLikedAlbums"){
-        this.$router.push({name:'albumDetail',params: {albumId:id}})
-      }
-      else{
-        this.$router.push({name:'songList',params: {playListId:id}})
-        // console.log("songList")
+      if(this.list.category === '专辑'){
+        this.$router.push(`/album/${id}`)
+      }else{
+        this.$router.push(`/songList/${id}`)
       }
     },
   },

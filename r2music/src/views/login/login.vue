@@ -44,8 +44,6 @@ export default {
     },
     _login(phone,password){
       login(phone,password).then(res =>{
-        console.log(phone,password);
-        console.log(res);
         //判断返回的结果
         if(res.code === 200){
           //登录成功

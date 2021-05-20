@@ -87,15 +87,7 @@ export default {
     },
     goToPage(index){
       // this.currentPageIndex = index
-      this.$refs.userLikedSlideX.goToPage(index,0,0.3)
-    },
-    toDetail(id){
-      if(this.$route.name === "myLikedAlbums"){
-        this.$router.push({name:'albumDetail',params: {albumId:id}})
-      }
-      else{
-        this.$router.push({name:'songList',params: {playListId:id}})
-      }
+      this.$refs.userLikedSlideX.goToPage(index,0,300)
     },
   },
 }

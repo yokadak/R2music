@@ -68,3 +68,8 @@ li {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.alwaysScroll{
+  width: 100%;
+  height: 60vh;
+  background-color: greenyellow;
+}

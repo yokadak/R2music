@@ -1,10 +1,10 @@
 <!--
- * @Descripttion: 
+ * @Descripttion: 用户中心下半部分 “我的歌单”
  * @version: 
  * @Author: yrh
  * @Date: 2021-05-14 16:16:46
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-19 23:40:47
+ * @LastEditTime: 2021-05-20 15:54:48
 -->
 <template>
   <div class="userOwnList">
@@ -41,8 +41,7 @@ export default {
   },
   methods: {
     toListDetail(id){
-      this.$router.push({name:'songList',params: {playListId:id}})
-      // console.log(id)
+      this.$router.push(`/songList/${id}`)
     }
   },
 }

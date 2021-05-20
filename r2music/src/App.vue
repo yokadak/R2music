@@ -4,16 +4,15 @@
  * @Author: yrh
  * @Date: 2020-10-16 21:48:20
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-19 23:11:42
+ * @LastEditTime: 2021-05-20 23:00:33
 -->
 <template>
   <div id="app">
-    <keep-alive>
+    <!-- <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive">
-      <!-- 这里是不被缓存的视图组件，比如详情B页面-->
-    </router-view>
+    </router-view> -->
     <!-- <router-view :key="this.$route.path + new Date()"></router-view> -->
     <!-- <listDetail></listDetail> -->
     <!-- <home></home> -->
@@ -33,7 +32,7 @@
     <!-- <slideYTest></slideYTest> -->
     <!-- <slideXTest></slideXTest> -->
     <!-- <scrollTest></scrollTest> -->
-    <!-- <navTest></navTest> -->
+    <navTest></navTest>
     <!-- <playList></playList> -->
   </div>
 </template>
