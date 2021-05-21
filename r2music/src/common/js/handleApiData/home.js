@@ -4,7 +4,7 @@
  * @Author: yrh
  * @Date: 2021-05-15 21:50:03
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-17 16:24:25
+ * @LastEditTime: 2021-05-21 19:01:03
  */
 import {Song} from './publicClass'
 import {getSingerName} from '../utils'
@@ -14,7 +14,7 @@ export function getWantedSongInfo(theSong){
   //TODO:搜索结果Api数据，无bought属性,专辑属性无图片
   let privilege = theSong.privilege?theSong.privilege:theSong
   return new Song({
-    // id: theSong.id,
+    id: theSong.id,
     name: theSong.name,
     singer: getSingerName(theSong.artists),
     singerId: getSingerId(theSong.artists),

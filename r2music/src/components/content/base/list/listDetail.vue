@@ -14,7 +14,6 @@
         ></songBox>
       </div>
     </scroll>
-  <miniPlayer></miniPlayer>
   </div>
 </template>
 
@@ -23,7 +22,6 @@
   import listInfo from './listInfo'
   import songBox from 'components/content/base/songBox'
   import scroll from 'components/common/scroll/scroll'
-  import miniPlayer from 'components/content/base/miniPlayer'
   //网络请求导入
   import {getPlayListDetail} from "network/songList"
   import {getAlbumDetail} from "network/songList"
@@ -38,7 +36,6 @@ export default {
     listInfo,
     songBox,
     scroll,
-    miniPlayer
   },
   data() {
     return {

@@ -22,7 +22,6 @@
         <songBox class="singerSongBox" :songs= "singerSongs"></songBox>  
       </div>
     </scroll>
-    <playControl class="singerPagePlayControl"></playControl>
   </div>
   
 </template>
@@ -32,7 +31,6 @@
   import info from 'components/content/base/info'
   import scroll from 'components/common/scroll/scroll'
   import songBox from 'components/content/base/songBox'
-  import playControl from 'components/content/base/playControl'
   //网络请求
   import {getSingerSongsAndInfo} from "network/singer"
   import {getSingerAlbums} from "network/singer"
@@ -47,7 +45,6 @@ export default {
   name:"singerPage",
   components:{
     navTop,
-    playControl,
     songBox,
     info,
     scroll,

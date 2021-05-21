@@ -11,7 +11,6 @@
     <div class="page page2">page2</div>
     <div class="page page3">page3</div>
   </slideX>
-  <miniPlayer></miniPlayer>
 </div>
 </template>
 
@@ -20,7 +19,6 @@
   import navTop from 'components/common/navBar/navTop'
   import slideX from 'components/common/scroll/slideX.vue'
   import recommendedMusic from './childComponents/recommendedMusic'
-  import miniPlayer from 'components/content/base/miniPlayer'
   //网络请求导入
   import {getRecommendSong} from "network/home"
   //处理数据的js导入（抽取歌曲有用信息)
@@ -32,7 +30,6 @@
      navTop,
      slideX,
      recommendedMusic,
-     miniPlayer,
    },
    computed:{
      account(){
@@ -44,11 +41,20 @@
       recommendSongs:[],
      }
    },
+   watch:{
+     recommendSongs:{
+       handler(val){
+         //请求到推荐歌曲后，设置播放列表和正在播放的歌(请求后会自动播放,将播放状态置为true)
+          this.$store.commit({type:'getPlayQueue',playQueue:val})
+          this.$store.commit({type:'getPlayingSong',playingSong:val[0],index:0})
+          this.$store.commit({type:'setFirstInFlag',isFirstIn:true})
+       }
+     }
+   },
    created() {
     //请求首页推荐歌曲数据（未登录显示新歌速递）
      this._getRecommendSong(0)//type = 0 请求全部地区类型的歌曲
    },
-
    methods: {
      toUserCenter(){
        //需要判断用户是否已经登录
@@ -77,7 +83,7 @@
             }
           }
           this.recommendSongs.splice(29)
-          console.log(this.recommendSongs)
+          // console.log(this.recommendSongs)
         })
       },
       
@@ -87,8 +93,7 @@
 
 <style scoped >
 #home{
-    height: 667px;
-    position: relative;
+  height: 100vh;
 }
 .slideX-wrapper{
   overflow: hidden;

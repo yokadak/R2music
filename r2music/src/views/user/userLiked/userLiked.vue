@@ -34,9 +34,6 @@
       <alOrPlList :list= "collections[2]"></alOrPlList>
     </div>
   </slideX>
-
-  <miniPlayer></miniPlayer>
-
 </div>
 </template>
 
@@ -45,7 +42,6 @@
   import slideX from 'components/common/scroll/slideX.vue'
   import scroll from 'components/common/scroll/scroll'
   import songBox from 'components/content/base/songBox'
-  import miniPlayer from 'components/content/base/miniPlayer'
   import alOrPlList from '../../songList/alOrPlList'
  
 export default {
@@ -55,7 +51,6 @@ export default {
     slideX,
     scroll,
     songBox,
-    miniPlayer,
     alOrPlList
   },
   data() {

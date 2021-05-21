@@ -4,10 +4,10 @@
  * @Author: yrh
  * @Date: 2021-05-19 14:08:07
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-20 22:51:50
+ * @LastEditTime: 2021-05-21 18:23:22
 -->
 <template>
-  <div class="playListPage">
+  <div>
     <div class="mask" @click="hidePlayList">
       点击这里关闭
     </div>
@@ -18,7 +18,7 @@
       <div slot="left"><span class="fa fa-random"></span></div>
       <div slot="center" class="title">
         <span>随机播放</span>
-        <span>（{{count}}）首</span>
+        <span>（{{}}）首</span>
       </div>
       <div slot="right"><span></span></div>
     </navTop>
@@ -45,15 +45,15 @@ export default {
     }
   },
   methods: {
+    hidePlayList(){
+      this.$emit("hidePlayList")
+    }
   }
 }
 </script>
 
 <style  scoped>
-  .playListPage{
-    height: 100vh;
-    position: relative;
-  }
+
   .mask{
     width:100%;
     height:200px;

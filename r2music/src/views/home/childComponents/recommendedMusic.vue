@@ -47,11 +47,11 @@
     mounted() {
     },
     methods: {
-     toPlayer(thisSong,recommendedSongs,index){
-       //歌曲都是可以播放的
-        this.$bus.$emit("songPlay")
-        this.$router.push({name:'player',params: {song:thisSong,songs:recommendedSongs,songIndex:index}})
-      },
+    //  toPlayer(thisSong,recommendedSongs,index){
+    //    //歌曲都是可以播放的
+    //     this.$bus.$emit("songPlay")
+    //     this.$router.push({name:'player',params: {song:thisSong,songs:recommendedSongs,songIndex:index}})
+    //   },
       like(){
         console.log("i like");
       }

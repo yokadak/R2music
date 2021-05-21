@@ -70,12 +70,6 @@ const routes = [
   //     isBack:false //是否是后退进入该页面
   //   }
   // },
-  //播放界面
-  {
-    path:"/player/:id",
-    name:"player",
-    component:player
-  },
   //搜索
   {
     path:"/search",

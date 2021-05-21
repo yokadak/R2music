@@ -73,3 +73,15 @@ li {
   height: 60vh;
   background-color: greenyellow;
 }
+.vipSong{
+  height: 15px;
+  width: 30px;
+  margin:auto;
+  margin-left: 3px;
+  border: 1.5px solid;
+  border-radius: 3px;
+  color:white;
+  font-size: 12px;
+  text-align: center;
+  transform: scale(0.7);
+}

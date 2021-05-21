@@ -171,7 +171,7 @@ export default {
           this.lyricsArray = originalLyrics
           this.getOriginalLyrics(this.lyricsArray)
         }
-        console.log(this.lyricsObjArray)
+        // console.log(this.lyricsObjArray)
         //获取到歌词后再滚动
         this.$bus.$on("timeUpdated",this.scrollLyrics)
       }

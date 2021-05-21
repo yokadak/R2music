@@ -19,7 +19,6 @@
         </div>
       </scroll>
     </div>
-    <miniPlayer></miniPlayer>
   </div>
 </template>
 
@@ -30,7 +29,6 @@
   import userCollect from './childComponents/userCollect'
   import userOwnList from './childComponents/userOwnList'
   import scroll from 'components/common/scroll/scroll'
-  import miniPlayer from 'components/content/base/miniPlayer'
   //网络请求，数据处理
   import {getSongsDetail} from "network/songs"
   import {
@@ -53,7 +51,6 @@ export default {
     userCollect,
     userOwnList,
     scroll,
-    miniPlayer,
   },
   computed:{
     userId(){

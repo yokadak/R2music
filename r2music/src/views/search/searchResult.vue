@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2020-10-24 20:05:59
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-21 18:16:33
+-->
 <template>
   <div class="searchResult">
     <searchNav></searchNav>
@@ -6,7 +14,6 @@
         <songBox></songBox>
       </div>
     </scroll>
-    <playControl class="PlayControl"></playControl>
   </div>
 </template>
 
@@ -14,7 +21,6 @@
   import searchNav from './searchNav'
   import songBox from 'components/content/base/songBox'
   import scroll from 'components/common/scroll/scroll'
-  import playControl from 'components/content/base/playControl'
 
 
 export default {
@@ -22,7 +28,6 @@ export default {
   components:{
     searchNav,
     songBox ,
-    playControl,
     scroll,
   },
   data(){

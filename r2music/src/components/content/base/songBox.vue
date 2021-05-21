@@ -76,7 +76,7 @@ export default {
         })
       },
       toPlayer(item,songs,index){
-        //跳之前先判断当前歌曲是否有版权
+        //显示播放器之前先判断当前歌曲是否有版权
         if(item.copyRight === false){
           console.log("没有版权")
         }else if(item.needToBuy === true && item.bought === false){
@@ -85,7 +85,7 @@ export default {
         }else{
           this.getSongsQueue(songs)
           this.$store.commit({type:"getPlayingSong",playingSong:item,index:index})
-          this.$router.push(`/player/${item.id}`)
+          this.$store.commit({type:"IsShowPlayer",show:true})
         }
       },
       toSingerPage(id){

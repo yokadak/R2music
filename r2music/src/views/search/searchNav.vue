@@ -24,7 +24,6 @@
         <songBox :songs = "songsResult"></songBox> 
       </div>
     </scroll>
-    <playControl class="searchPlayControl"></playControl>
 
   </div>
 
@@ -34,7 +33,6 @@
 
 <script>
   import songBox from 'components/content/base/songBox'
-  import playControl from 'components/content/base/playControl'
   import scroll from 'components/common/scroll/scroll'
   import {debounce} from 'common/js/utils.js'
   //网络请求，搜索结果
@@ -52,7 +50,6 @@ export default {
   name:"searchNav",
   components:{
     songBox,
-    playControl,
     scroll,
   },
   props: {

@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yrh
+ * @Date: 2021-05-21 17:52:33
+ * @LastEditors: yrh
+ * @LastEditTime: 2021-05-21 18:14:05
+-->
 <template>
   <div class="playControl">
    <operationBar class="playOperation">
@@ -21,7 +29,8 @@
 </template>
 
 <script>
-  import operationBar from './operationBar'
+  import operationBar from 'components/content/base/operationBar'
+  
   export default {
     name:'playControl',
     components:{

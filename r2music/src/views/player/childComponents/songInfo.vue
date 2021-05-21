@@ -4,16 +4,18 @@
  * @Author: yrh
  * @Date: 2020-10-24 20:08:22
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-20 19:42:02
+ * @LastEditTime: 2021-05-22 01:24:06
 -->
 <template>
-   <div>
-    <img :src="song.image" alt="">
+   <div v-if="song">
+    <img :src="song.image">
     <div class="playerBoxCenter">
       <div class="playerInfo">
         <info>
           <div slot="infoAbove" class="ellipsis songName">
-            <span>{{song.name}}</span></div>
+            <span>{{song.name}}</span>
+            <div class="vipSong" v-if="song.vipSong">VIP</div>
+          </div>
           <div slot="infoBetween" class="ellipsis singerName">
             <span @click="toSingerPage(song.singerId)">{{song.singer}}</span>
           </div>
@@ -28,16 +30,10 @@
 
 <script>
   import info from 'components/content/base/info'
-  import operationBar from 'components/content/base/operationBar'
-  import playControl from 'components/content/base/playControl'
-  import progressBar from './progressBar'
   
   export default {
-    name:"playerBgBox",
+    name:"songInfo",
     components:{
-      operationBar,
-      progressBar,
-      playControl,
       info
   },
   props:{
@@ -86,6 +82,7 @@
   .songName{
     font-weight:bold;
     color:var(--color-high-text);
+    display: flex;
   }
   .singerName,.albumName{
     margin-top:4px;
