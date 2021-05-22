@@ -4,7 +4,7 @@
  * @Author: yrh
  * @Date: 2021-05-21 15:09:27
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-22 01:22:51
+ * @LastEditTime: 2021-05-22 18:04:14
 -->
 <template>
   <div class="miniPlayer">
@@ -13,7 +13,7 @@
         <img :src="playingSong.image">
       </div>
       <div class="songInfo">{{playingSong.name}} - {{playingSong.singer}}</div>
-       <div class="vipSong" v-if="playingSong.vipSong">VIP</div>
+      <div class="vipSong" v-if="playingSong.vipSong">VIP</div>
     </div>
     <div class="playButton">
       <span :class="playStateIcon" @click.stop="changePlayState"></span>
@@ -34,7 +34,7 @@ export default {
        return this.$store.state.playingSong.song
     },
     playState(){
-       return this.$store.state.playingState
+       return this.$store.state.playingSong.playingState
     }
   },
   data() {
@@ -69,6 +69,7 @@ export default {
     },
     showPlaylist(){
       this.$emit("showPlaylist")
+      this.$bus.$emit("scrollToPlayingSong")
     }
   },
 }
@@ -95,6 +96,7 @@ export default {
   color: white;
   font-size: 13px;
 }
+ 
 .songCover {
   width: 45px;
   height: 100%;

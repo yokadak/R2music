@@ -4,7 +4,7 @@
  * @Author: yrh
  * @Date: 2021-05-19 20:26:47
  * @LastEditors: yrh
- * @LastEditTime: 2021-05-22 00:54:55
+ * @LastEditTime: 2021-05-22 19:29:49
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -19,10 +19,14 @@ export default new Vuex.Store({
       profile:{}
     },
     playQueue:[],//播放列表
+    //当前播放的歌曲
     playingSong:{
       song:{},
-      index:0
-    },//当前播放的歌曲
+      index:0,
+      playingState:false,
+      lyrics:'',
+      transLyrics:''
+    },
     //歌曲播放状态
     playingState:false,
     //是否第一次进入应用
@@ -47,11 +51,17 @@ export default new Vuex.Store({
       state.playingSong.song = payload.playingSong
       state.playingSong.index = payload.index
     },
+    setPlayingState(state,payload){
+      state.playingSong.playingState = payload.playingState
+    },
+    getPlayingLyrics(state,payload){
+      state.playingSong.lyrics = payload.lyrics
+    },
+    getPlayingTransLyrics(state,payload){
+      state.playingSong.transLyrics = payload.transLyrics
+    },
     IsShowPlayer(state,payload){
       state.showPlayer = payload.show
-    },
-    setPlayingState(state,payload){
-      state.playingState = payload.playingState
     },
     setFirstInFlag(state,payload){
       state.isFirstIn = payload.isFirstIn

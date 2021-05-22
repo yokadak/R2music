@@ -37,9 +37,7 @@
           :playModeIcon= "playModeIcon"
         ></playControl>
       </div>
-      <lyricsPage v-if="gotLyrics"
-        :lyrics= "songLyrics" 
-        :transLyrics= "tansLyrics"
+      <lyricsPage
         :showPrompt= "showPrompt"
         @lyricChange= "changePlayingLyric">
       </lyricsPage>
@@ -84,10 +82,10 @@
        return this.$store.state.playingSong.song //当前播放的歌曲
      },
      playingSongIndex(){
-       return this.$store.state.playingSong.index //当前播放的歌曲
+       return this.$store.state.playingSong.index //当前播放的歌曲在播放列表的索引
      },
      playing(){
-       return this.$store.state.playingState //当前播放状态
+       return this.$store.state.playingSong.playingState //当前播放状态
      },
      isFirstIn(){
        return this.$store.state.isFirstIn //是否首次进入应用
@@ -98,12 +96,8 @@
      return {
         currentPageIndex:0,//当前slide页面的索引值
         songUrl:'',//歌曲音源链接
-        copyRight:true,//是否有音源
-        songLyrics:'',//歌曲歌词
-        tansLyrics:undefined,//歌词翻译
         gotLyrics:false,//是否获取到歌词
         showPrompt:false,//是否提示没有歌词
-        showLyrics:false,//是否显示歌词
         playingLyric: '',//播放界面显示的当前播放的歌词行
         duration:0,//歌曲持续时间，单位秒
         currentTime:0,//歌曲当前时间，单位秒
@@ -226,20 +220,17 @@
     _getSongLyrics(id){
       getSongLyrics(id).then(res =>{
         if(!res.nolyric){
-          if(res.lrc.lyric === ''){
+          if(res.uncollected || res.lrc.lyric === '' ){
             this.showPrompt = true
-            this.songLyrics = '暂无歌词'
-            this.gotLyrics = true;
+            this.$store.commit({type:"getPlayingLyrics",lyrics:'暂无歌词'})
           }else{
-            this.gotLyrics = true;
             this.showPrompt = false
-            this.songLyrics = res.lrc.lyric
-            this.tansLyrics = res.tlyric.lyric
+            this.$store.commit({type:"getPlayingLyrics",lyrics:res.lrc.lyric})
+            this.$store.commit({type:"getPlayingTransLyrics",transLyrics:res.tlyric.lyric})
           }
         }else if(res.nolyric){
           this.showPrompt = true
-          this.gotLyrics = true;
-          this.songLyrics = "此歌曲为没有填词的纯音乐，请您欣赏"
+          this.$store.commit({type:"getPlayingLyrics",lyrics:"此歌曲为没有填词的纯音乐，请您欣赏"})
         }
        })
      },
