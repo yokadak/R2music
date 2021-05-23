@@ -131,9 +131,16 @@
          }
        }
      },
-     volume(){
-       this.$refs.music.volume = this.volume / 100
-     },
+     currentTime(newVal,oldVal){
+       //监听歌曲进度的改变，将之前的时间和现在的时间发送给歌词页判断滚动方向
+       newVal = +(newVal.toFixed(4))
+       oldVal = +(oldVal.toFixed(4))
+       this.$bus.$emit("currentTimeChanged",newVal,oldVal)
+      //  console.log(newVal,oldVal)
+     }
+    //  volume(){
+    //    this.$refs.music.volume = this.volume / 100
+    //  },
    },
    mounted() {
      this.$nextTick(()=>{

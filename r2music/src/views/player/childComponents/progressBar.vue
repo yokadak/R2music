@@ -117,6 +117,8 @@ export default {
     jumpProgress(e){
       const progressWidth = 297.25
       this.trackProgress = (e.offsetX / progressWidth) * 100
+      this.trackProgress < 0 && (this.trackProgress = 0);
+      this.trackProgress > 100 && (this.trackProgress = 100);
       this.progressStyle = `width:${this.trackProgress}%`
       this.progressControlStyle = `left:${this.trackProgress}%;`
       this.$emit("progressChanged", this.trackProgress);

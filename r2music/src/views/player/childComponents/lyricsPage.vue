@@ -8,16 +8,15 @@
         <ul class="lyricsBox" v-else>
           <li class="lyrics" v-for="(item,index) of finalLyrics" 
               :key="index"
-              :class="{'noLyric':item.lyric === ''}"
               ref="lyricLine"> 
             <info>
               <div slot="infoAbove" class="songLyrics"
               v-if="item.lyric"
-              :style="index === activeLine ? playingLyricStyle: ''"
+              :style="index === scrollIndex - 1 ? playingLyricStyle: ''"
               >{{item.lyric}}</div>
               <div slot="infoBelow" class="translation"
               v-if="item.transLyric"
-              :style="index === activeLine  ? transLyricStyle: ''"
+              :style="index === scrollIndex - 1 ? transLyricStyle: ''"
               >{{item.transLyric}}</div>
             </info>
           </li>
@@ -60,8 +59,7 @@ export default {
       finalLyrics:[],//保存了歌曲原歌词，歌词对应时间，（歌词翻译）
       translator:'',//歌词翻译者
       //为了实现当歌词为空时，应总保持上一行为active
-      activeLine: -1 ,//正在播放的行
-      scrollIndex:0,//歌词滚动索引
+      scrollIndex:0,//歌词滚动索引,正在播放的行
       playingLyricStyle:"color:white;font-size:18px;font-weight:bold;",//正在播放的歌词的样式
       transLyricStyle:"color:white;"
     }
@@ -95,7 +93,7 @@ export default {
       lyricObj.lyric = line === ''?'':line //有些行占据时间，但是没有歌词
       let lyricTime = lyric.match(/\[\d{2}\:\d{2}\.\d{2,}\]/g)
       if(!lyricTime){
-        console.log(lyric,"这一行没有时间")
+        // console.log(lyric,"这一行没有时间")
         return lyric
       }else{
         lyricTime = lyricTime[lyricTime.length - 1] //获取歌词时间
@@ -111,23 +109,32 @@ export default {
         }else{
           let lyricObj = this.getLyric(item)
           if( typeof lyricObj === 'object'){
-            lyricsObjArray.push(lyricObj) 
+            if(lyricObj.lyric === ''){
+              let noLyricFlag = true
+              // console.log("nolyric")
+            }else{
+              lyricsObjArray.push(lyricObj) 
+            }
           }else{
             this.translator = lyricObj
+            console.log(this.translator)
           }
         }
       })
+      // console.log(lyricsObjArray)
       return lyricsObjArray
     },
     getLyricsWithTrans(origin,trans){
       let originIndex = 0;
       trans.forEach((lyricObj,index)=>{
-        while(origin[originIndex].lyricTime !== trans[index].lyricTime){
-          origin[originIndex].transLyric = ''
+          while(origin[originIndex].lyricTime !== trans[index].lyricTime)
+          {
+            origin[originIndex].transLyric = ''
+            originIndex += 1
+          }
+          origin[originIndex].transLyric = trans[index].lyric
+          //TODO:
           originIndex += 1
-        }
-        origin[originIndex].transLyric = trans[index].lyric
-        originIndex += 1
       })
       return origin
     },
@@ -138,7 +145,6 @@ export default {
         //切换歌曲先进行重置
         this.finalLyrics = [];
         this.scrollIndex = 0;
-        this.activeLine = -1;
         // this.showPrompt = false
         let originalLyricsArray = lyrics.split(/\n/) //根据换行符分割字符串,将每句歌词保存到数组
         originalLyricsArray = this.getLyricsObjArray(originalLyricsArray)
@@ -153,37 +159,37 @@ export default {
         }
         // console.log(this.finalLyrics)
         // 获取到歌词后再滚动
-        this.$bus.$on("timeUpdated",this.scrollLyrics)
+        this.$bus.$on("currentTimeChanged",this.scrollLyrics)
       }
     },
-    scrollLyrics(currentTime){
-      if(this.showPrompt !== true && this.scrollIndex < this.finalLyrics.length &&
-         this.finalLyrics[this.scrollIndex].lyricTime !== undefined){
-           if(currentTime > this.finalLyrics[this.scrollIndex].lyricTime){
-             //将当前播放的歌词发送给播放页进行展示
-             if(this.finalLyrics[this.scrollIndex].lyric !== ''){
-               this.activeLine += 1
-               if(this.finalLyrics[this.activeLine].lyric === ''){
-               this.activeLine += 1
-               }
-             }else{
-               this.activeLine += 0
-             }
-             this.$emit("lyricChange",this.finalLyrics[this.activeLine].lyric)
-             //从第3行开始滚动
-             if(this.scrollIndex > 1 ){
-               //调用better-scroll提供的API实现歌词滚动
-               //TODO:有些歌词滚到底部就不再滚动了，大多数是歌词较多的歌,应该是bscroll的问题
-               //TODO:进度条回退，歌词不会滚动，如下TODO
-               //TODO:滚动优化，当直接定位进度时，滚动也应该立刻定位，以及滑动歌词控制进度功能
-               let scrollLine = this.$refs.lyricLine[this.scrollIndex -1]
-               this.$refs.lyricList.scrollToElement(scrollLine,1000)
-             }else{
-               this.$refs.lyricList.scrollToElement(0,0,1000)
-             }
-             this.scrollIndex ++
-           }
-      }
+    //TODO:有些歌词滚到底部就不再滚动了，大多数是歌词较多的歌,应该是bscroll的问题
+    //TODO:以及滑动歌词控制进度功能
+    scrollLyrics(currentTime,prevTime){
+      if(this.scrollIndex < this.finalLyrics.length){
+        //判断歌曲是前进还是后退
+        if(currentTime < prevTime){
+          //歌曲后退,将scrollIndex置0
+          this.scrollIndex = 0;
+          if(currentTime < this.finalLyrics[0].lyricTime) {
+            //回退到歌曲还没有播放的时候
+            this.$emit("lyricChange",'')
+            this.$refs.lyricList.scrollToElement(0,0,1000)
+          }
+        }
+        while(this.scrollIndex < this.finalLyrics.length 
+              && currentTime > this.finalLyrics[this.scrollIndex].lyricTime){
+              this.$emit("lyricChange",this.finalLyrics[this.scrollIndex].lyric)
+              if(this.scrollIndex > 1){
+                //  从第3行开始滚动
+                let scrollLine = this.$refs.lyricLine[this.scrollIndex -1]
+                this.$refs.lyricList.scrollToElement(scrollLine,1000)
+              }else{
+                let scrollLine = this.$refs.lyricLine[0]
+                this.$refs.lyricList.scrollToElement(scrollLine)
+              }
+              this.scrollIndex ++
+            }
+      }            
     },
   },
 }
